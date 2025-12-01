@@ -1,0 +1,106 @@
+\documentclass[margin,line]{res}
+\usepackage{fontspec}
+% \setmainfont{Source Serif Pro}
+\usepackage{hyperref}
+
+
+%\oddsidemargin -.5in
+%\evensidemargin -.5in
+%\textwidth=6.0in
+%\itemsep=0in
+%\parsep=0in
+
+\newenvironment{list1}{
+  \begin{list}{\ding{113}}{%
+      \setlength{\itemsep}{0in}
+      \setlength{\parsep}{0in} \setlength{\parskip}{0in}
+      \setlength{\topsep}{0in} \setlength{\partopsep}{0in} 
+      \setlength{\leftmargin}{0.17in}}}{\end{list}}
+\newenvironment{list2}{
+  \begin{list}{$\bullet$}{%
+      \setlength{\itemsep}{0in}
+      \setlength{\parsep}{0in} \setlength{\parskip}{0in}
+      \setlength{\topsep}{0in} \setlength{\partopsep}{0in} 
+      \setlength{\leftmargin}{0.2in}}}{\end{list}}
+
+
+\begin{document}
+
+
+\name{Dr. Martin Sch\"af \vspace*{.1in}}
+
+\begin{resume}
+\section{\sc Contact\\ Information}
+
+\begin{tabular}{@{}p{3in}p{4in}}
+Amazon Web Services  & \\% 10 Coleman Place, Apt 7\\
+7 West 34 Street &\\
+New York, NY 10001 & \\
+%\emph{phone:}  +1 (650) 859-5957 & \\% +1 (650) 504-3879\\
+\emph{email:}  \texttt{martinschaef@gmail.com} & \\
+\emph{web:} \url{https://www.martinschaef.de} & \\
+\end{tabular}
+
+
+
+%\input{researchstatement}
+%\newpage
+
+\section{\sc Summary}
+With more than a decade of experience in designing, implementing, and delivering static application security testing tools, 
+I possess a solid track record of providing innovative and top-quality solutions. I have led distributed, high-velocity 
+teams that have successfully delivered cloud-scale security solutions, all while prioritizing quality and scientific advancement. 
+My primary goal is to always delight customers, and I strive to continually track data and gather feedback to enhance the customer experience.
+
+\section{\sc Professional Employment}
+
+\textbf{Principal Applied Scientist} at \textbf{Amazon Web Services}, 2017 - now.\\
+Designed, implemented, and shipped cloud-scale SAST solutions, including customer facing products
+like \href{https://aws.amazon.com/codeguru/}{Amazon CodeGuru}. Contributed to innovative security solutions both as individual contributor
+and as manager of distributed teams.
+ 
+
+\textbf{Senior Computer Scientist} at \textbf{SRI International}, 2013 - 2017.\\
+Lead cross-institution DARPA research project on mining and inferring code and bug fixes from large code repositories
+ (\href{https://www.darpa.mil/program/mining-and-understanding-software-enclaves}{DARPA Muse}), 
+and coordinated research on crowd-sourcing of verification problems (\href{https://www.darpa.mil/program/crowd-sourced-formal-verification}{DARPA CSFV}).
+
+
+\textbf{Post-doctoral research fellow} at \textbf{United Nations University}, 2010 - 2013.\\
+Designed and implemented different static and dynamic program analysis tools.
+Raised research grants for, and owned the implementation of bug finding tool for JVM bytecode, and 
+collaborated on a Selenium-based test-automation for graphical user interfaces. 
+
+\bigskip
+\section{\sc Education}
+
+\begin{tabular}{@{}ll@{}}
+2006--2011 & {\bf University of Freiburg}, Freiburg, Germany\\
+& Ph.D. in Computer Science\\
+& Thesis: Static Detection of Inevitable Errors\\
+& Adviser: Prof. Andreas Podelski \\
+\\
+2002--2006 & {\bf Saarland University}, Saarbr\" ucken, Germany\\
+& M.Sc. Honor's Degree in Computer Science, April 2006\\
+& Thesis: Transition relations as a means of proving program properties\\
+& Adviser: Prof. Andreas Podelski
+\end{tabular}
+
+\newpage
+\input{publications}
+\bigskip
+\input{grants}
+\bigskip
+\input{projects}
+\bigskip
+% \newpage
+% \input{teaching}
+% \bigskip
+% \input{mentoring}
+% \bigskip
+%\input{invited}
+
+% \input{service}
+
+\end{resume}
+\end{document}
