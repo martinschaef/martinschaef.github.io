@@ -1,165 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Martin Sch&auml;f - Homepage</title>
-
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font: 16px Helvetica, Sans-Serif;
-            line-height: 24px;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        #page-wrap {
-            width: 800px;
-            margin: 40px auto 60px;
-        }
-
-        #pic {
-            float: right;
-            margin: -140px 0px 0 0;
-        }
-
-        h1 {
-            margin: 0 0 16px 0;
-            padding: 0 0 16px 0;
-            font-size: 42px;
-            font-weight: bold;
-            letter-spacing: -2px;
-            border-bottom: 1px solid #E68A00;
-        }
-
-        h2 {
-            font-size: 20px;
-            margin: 0 0 6px 0;
-            position: relative;
-        }
-
-        h2 span {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            font-style: italic;
-            font-family: Georgia, Serif;
-            font-size: 16px;
-            color: #999;
-            font-weight: normal;
-        }
-
-        p {
-            margin: 0 0 16px 0;
-        }
-
-        a {
-            color: black;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: #E68A00;
-        }
-
-        ul {
-            margin: 0 0 32px 17px;
-        }
-
-        #objective {
-            width: 550px;
-            float: left;
-        }
-
-        #objective p {
-            font-family: Georgia, Serif;
-            font-style: italic;
-            color: #666;
-        }
-
-        dt {
-            font-style: italic;
-            font-weight: bold;
-            font-size: 18px;
-            text-align: right;
-            padding: 0 26px 0 0;
-            width: 150px;
-            float: left;
-            height: 100px;
-            border-right: 1px solid #E68A00;
-        }
-
-        dd {
-            width: 600px;
-            float: right;
-        }
-
-        dd.clear {
-            float: none;
-            margin: 0;
-            height: 15px;
-        }
-    </style>
+    <link rel="stylesheet" href="stylesheets/modern-style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 
-<body>
+<body class="home">
 
     <div id="page-wrap">
 
-        <div id="contact-info" class="vcard">
+        <nav style="text-align: center; margin-bottom: 20px;">
+            <a href="index.html" style="margin-right: 20px; font-weight: 600;">Home</a>
+            <a href="pub.html" style="font-weight: 600;">Publications</a>
+        </nav>
 
-            <!-- Microformats! -->
-            <h1 class="fn">Martin Sch&auml;f</h1>
+        <div id="contact-info" class="vcard"></div>
 
-            <table border="0" bordercolor="#888" cellspacing="0"
-                style="border-collapse:collapse;border-color:rgb(136,136,136);border-width:0px">
-                <tbody>
-                    <tr>
-                        <td style="width:70px">&nbsp;<a href="https://github.com/martinschaef" target="_blank"><img
-                                    border="0" src="images/github.png"></a></td>
-                        <td style="width:70px">&nbsp;<a
-                                href="https://www.linkedin.com/pub/martin-sch%C3%A4f/11/655/505/en" target="_blank"><img
-                                    border="0" src="images/linkedin.png"></a></td>
-                        <td style="width:70px">&nbsp;<a href="https://www.facebook.com/martinschaef"
-                                target="_blank"><img alt="fb" border="0" src="images/facebook.png"></a></td>
-                        <td style="width:70px">&nbsp;<a
-                                href="https://github.com/martinschaef/cv/releases/download/resume/cv_schaef.pdf"
-                                target="_blank"><img alt="fb" border="0" src="images/cv.png"></a></td>
-                        <td style="width:70px">
-                            <a href="https://orcid.org/0000-0002-6804-0178" target="_blank" rel="noopener noreferrer">
-                                <img src="images/orcid.png" alt="ORCID iD" style="width:50px; height:50px;"/> 
-                            </a>                                                                
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-
-        </div>
-
-        <h1> <img src="images/me_old.png" alt="That's me!" id="pic" /> </h1>
+        <img src="images/me.png" alt="Martin Schäf" id="pic" />
 
         <div id="objective">
             <p>
-                Dr. Martin Sch&auml;f is an Applied Scientist at Amazon Web Services. 
-                Prior to that, he worked as a
-                Senior Computer Scientist at <a href="http://www.sri.com/" target="_blank">SRI International</a> in
-                Menlo Park, CA, and at
-                the <a href="http://www.unu.edu/" target="_blank">United Nations University</a> in Macau.
-                He received his PhD from <a href="http://swt.informatik.uni-freiburg.de/" target="_blank">University of
-                    Freiburg</a> in 2011, and his MS degree in computer science from
-                <a href="http://www.cs.uni-saarland.de/" target="_blank">Saarland University</a> in 2006.
-                His research interests include static analysis, software verification, fault localization, and test
-                automation.</br>
+                Principal Applied Scientist at Amazon Web Services, specializing in neuro-symbolic AI, 
+                automated reasoning, static analysis, fault localization, and test automation. Previously Senior Computer 
+                Scientist at <a href="http://www.sri.com/" target="_blank">SRI International</a> and 
+                researcher at the <a href="http://www.unu.edu/" target="_blank">United Nations University</a>.
+            </p>
+            <p>
+                PhD in Computer Science from <a href="http://swt.informatik.uni-freiburg.de/" target="_blank">University of Freiburg</a> (2011) 
+                | MS from <a href="http://www.cs.uni-saarland.de/" target="_blank">Saarland University</a> (2006)
             </p>
         </div>
 
@@ -172,31 +44,14 @@
 
             <dt>Recent Publications</dt>
             <dd>
-                <ul>
-                    <li>
-                        <b><a href="https://www.amazon.science/publications/safe-validation-of-pricing-agreements" target="_blank">Safe validation of pricing agreements</a></b><br />
-                        J. Kolesar, T. Lepoint, M. Schäf, W. Visser<br />
-                        47th International Conference on Software Engineering (ICSE - SEIP), 2025
-                    </li>
-
-                    <li>
-                        <b><a href="https://www.amazon.science/publications/understanding-developer-analyzer-interactions-in-code-reviews" target="_blank">Understanding Developer-Analyzer Interactions in Code Reviews</a></b><br />
-                        B. Cirisci, L. Luo, N. Mansur, D. Sanchez, Martin Schäf, O. Tripp, B. Zafar, Q. Zhou<br />
-                        39th IEEE/ACM International Conference on Automated Software Engineering, 2024
-                    </li>  
-                    <li>
-                        <b><a href="https://www.amazon.science/publications/inference-for-ever-changing-policy-of-taint-analysis" target="_blank">Inference for ever-changing policy of taint analysis</a></b><br />
-                        W. Chiang, . Li, Q. Zhou, S. Banerjee, M. Schäf, Y. Lyu, . Nguyen, O. Tripp<br />
-                        46th International Conference on Software Engineering, 2024
-                    </li>                    
-                </ul>
+                <ul id="recent-publications"></ul>
 
                 <span>See the full list of publications <b><a href="./pub.html">here</a></b> or at:
                 </span><br/>
 
                 <span>
                 <a href="https://dblp.org/pid/41/7506.html" target="_blank"><img
-                        border="0" style="width:130px" src="images/dblp.png"></a> 
+                        border="0" style="width:130px; margin-right: 50px;" src="images/dblp.png"></a> 
 
                 <a href="http://scholar.google.com/citations?user=WNktVKIAAAAJ&amp;hl=en" target="_blank"><img
                         border="0" style="width:130px;PADDING-BOTTOM:10px"
@@ -247,6 +102,20 @@
 </body>
 
 <script>
+    fetch('contact-info.html')
+        .then(r => r.text())
+        .then(html => document.getElementById('contact-info').innerHTML = html);
+
+    fetch('publications.json')
+        .then(r => r.json())
+        .then(pubs => {
+            const recent = pubs.filter(p => p.year >= new Date().getFullYear() - 2);
+            document.getElementById('recent-publications').innerHTML = recent.map(p =>
+                `<li><b><a href="${p.url}" target="_blank">${p.title}</a></b><br />${p.authors}<br />${p.venue}</li>`
+            ).join('');
+        })
+        .catch(e => console.error('Failed to load publications:', e));
+
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
             (i[r].q = i[r].q || []).push(arguments)

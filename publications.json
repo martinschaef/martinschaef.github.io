@@ -1,0 +1,359 @@
+[
+  {
+    "year": 2026,
+    "title": "Delta Debugging for LLM-integrated Systems",
+    "authors": "Hao-Nan Zhu, Muhammad Numair Mansur, Martin Schäf, Zeya Chen, Tancrède Lepoint, and Willem Visser",
+    "venue": "48th International Conference on Software Engineering (ICSE - SEIP), Rio de Janeiro, Brazil, April 2026",
+    "url": "https://www.amazon.science/publications/"
+  },
+  {
+    "year": 2025,
+    "title": "Safe Validation of Pricing Agreements",
+    "authors": "John Kolesar, Tancrède Lepoint, Martin Schäf, and Willem Visser",
+    "venue": "47th International Conference on Software Engineering (ICSE - SEIP), Ottawa, Canada, April 2025",
+    "url": "https://www.amazon.science/publications/safe-validation-of-pricing-agreements"
+  },
+  {
+    "year": 2024,
+    "title": "Understanding Developer-Analyzer Interactions in Code Reviews",
+    "authors": "Berk Cirisci, Linghui Luo, Muhammad Numair Mansur, Daniel Sanchez, Martin Schäf, Omer Tripp, Muhammad Bilal Zafar, and Qiang Zhou",
+    "venue": "39th IEEE/ACM International Conference on Automated Software Engineering (ASE), Sacramento, CA, October 2024",
+    "url": "https://www.amazon.science/publications/understanding-developer-analyzer-interactions-in-code-reviews"
+  },
+  {
+    "year": 2024,
+    "title": "Inference for ever-changing policy of taint analysis",
+    "authors": "Wen-Hao Chiang, Peixuan Li, Qiang Zhou, Subarno Banerjee, Martin Schaef, Yingjun Lyu, Hoan Nguyen, and Omer Tripp",
+    "venue": "45th International Conference on Software Engineering (ICSE - SEIP), Lisbon, Portugal, May 2024",
+    "url": "https://www.amazon.science/publications/inference-for-ever-changing-policy-of-taint-analysis"
+  },
+  {
+    "year": 2023,
+    "title": "Long-term Static Analysis Rule Quality Monitoring Using True Negatives",
+    "authors": "Linghui Luo, Rajdeep Mukherjee, Omer Tripp, Martin Schäf, Qiang Zhou, and Daniel Sanchez",
+    "venue": "45th International Conference on Software Engineering (ICSE - SEIP), Melbourne, Australia, May 2023",
+    "url": "https://www.amazon.science/publications/long-term-static-analysis-rule-quality-monitoring-using-true-negatives"
+  },
+  {
+    "year": 2023,
+    "title": "Shifting left for early detection of machine-learning bugs",
+    "authors": "Ben Liblit, Linghui Luo, Alejandro Molina Ramirez, Rajdeep Mukherjee, Zachary Patterson, Goran Piskachev, Martin Schäf, Omer Tripp, and Willem Visser",
+    "venue": "25th international symposium in a series organized by Formal Methods Europe (FME), Lübeck, Germany, March 2023",
+    "url": "https://www.amazon.science/publications/shifting-left-for-early-detection-of-machine-learning-bugs"
+  },
+  {
+    "year": 2023,
+    "title": "Model Generation For Java Frameworks",
+    "authors": "Linghui Luo, Goran Piskachev, Ranjith Krishnamurthy, Julian Dolby, Eric Bodden, and Martin Schäf",
+    "venue": "International Conference on Software Testing, Verification and Validation (ICST), Dublin, Ireland, 2023",
+    "url": "https://linghuiluo.github.io/ICST2023.pdf"
+  },
+  {
+    "year": 2022,
+    "title": "Input Splitting for Cloud-Based Static Application Security Testing Platforms",
+    "authors": "Maria Christakis, Thomas Cottenier, Antonio Filieri, Linghui Luo, Muhammad Numair Mansur, Lee Pike, Nico Rosner, Martin Schäf, Aritra Sengupta, and Willem Visser",
+    "venue": "22nd ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE), Singapore, November 2022",
+    "url": "https://www.amazon.science/publications/input-splitting-for-cloud-based-static-application-security-testing-platforms"
+  },
+  {
+    "year": 2021,
+    "title": "IDE Support for Cloud-Based Static Analyses",
+    "authors": "Linghui Luo, Martin Schäf, Daniel J Sanchez, and Eric Bodden",
+    "venue": "21st ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE), Athens, Greece, August 2021",
+    "url": "https://www.amazon.science/publications/ide-support-for-cloud-based-static-analyses"
+  },
+  {
+    "year": 2021,
+    "title": "RAPID: API Checking for the Cloud in the Cloud",
+    "authors": "Michael Emmi, Liana Hadarean, Ranjit Jhala, Lee Pike, Nico Rosner, Martin Schäf, Aritra Sengupta, Willem Visser",
+    "venue": "21st ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE), Athens, Greece, August 2021",
+    "url": "https://www.amazon.science/publications/rapid-checking-api-usage-for-the-cloud-in-the-cloud"
+  },
+  {
+    "year": 2021,
+    "title": "Analyzing Infrastructure as Code to Prevent Intra-update Sniping Vulnerabilities",
+    "authors": "Julien Lepiller, Ruzica Piskac, Martin Schäf, and Mark Santolucito",
+    "venue": "27th International Conference on Tools and Algorithms for the Construction and Analysis of Systems (TACAS), Luxembourg, Luxembourg, March 2021",
+    "url": "http://marksantolucito.com/papers/tacas2021.pdf"
+  },
+  {
+    "year": 2020,
+    "title": "Continuous Compliance",
+    "authors": "Martin Kellogg, Martin Schäf, Serdar Tasiran, Michael D. Ernst",
+    "venue": "35th International Conference on Automated Software Engineering (ASE), Melbourne, Australia, September 2020",
+    "url": "https://homes.cs.washington.edu/~mernst/pubs/continuous-compliance-ase2020.pdf"
+  },
+  {
+    "year": 2020,
+    "title": "Verifying Object Construction",
+    "authors": "Martin Kellogg, Manli Ran, Manu Sridharan, Martin Schäf, Michael D. Ernst",
+    "venue": "42nd International Conference on Software Engineering (ICSE), Seoul, South Korea, July 2020",
+    "url": "https://conf.researchr.org/details/icse-2020/icse-2020-papers/126/Verifying-Object-Construction"
+  },
+  {
+    "year": 2019,
+    "title": "One-Click Formal Methods",
+    "authors": "John Backes, Pauline Bolignano, Byron Cook, Andrew Gacek, Kasper Luckow, Neha Rungta, Martin Schäf, Cole Schlesinger, Rima Tanash, Carsten Varming, Michael Whalen",
+    "venue": "IEEE Software 36",
+    "url": "http://www0.cs.ucl.ac.uk/staff/b.cook/oneclick.pdf"
+  },
+  {
+    "year": 2019,
+    "title": "JayHorn: A Java Model Checker - (Competition Contribution)",
+    "authors": "Temesghen Kahsai, Philipp Rümmer, and Martin Schäf",
+    "venue": "International Conference on Tools and Algorithms for the Construction and Analysis of Systems (TACAS), Prague, Czech Republic, April 2019",
+    "url": "https://link.springer.com/chapter/10.1007%2F978-3-030-17502-3_16"
+  },
+  {
+    "year": 2017,
+    "title": "Quantified Heap Invariants for Object-Oriented Programs",
+    "authors": "Temesghen Kahsai, Rody Kersten, Philipp Rümmer, and Martin Schäf",
+    "venue": "21st International Conferences on Logic for Programming, Artificial Intelligence and Reasoning (LPAR), Maun, Botswana, March 2017",
+    "url": "papers/lpar17_01.pdf"
+  },
+  {
+    "year": 2017,
+    "title": "Abduction by Non-Experts",
+    "authors": "Nikolaj Bjørner, Dejan Jovanović, Tancrède Lepoint, Philipp Rümmer, and Martin Schäf",
+    "venue": "21st International Conferences on Logic for Programming, Artificial Intelligence and Reasoning (LPAR), Maun, Botswana, March 2017",
+    "url": "papers/lpar17_02.pdf"
+  },
+  {
+    "year": 2016,
+    "title": "Resource Contracts for Java",
+    "authors": "Temesghen Kahsai, Rody Kersten, and Martin Schäf",
+    "venue": "Java PathFinder Workshop, Seattle, WA, November 2016",
+    "url": "https://www.andrew.cmu.edu/user/rkersten/publications/jpf2016-kersten.pdf"
+  },
+  {
+    "year": 2016,
+    "title": "JayHorn: A Framework for Verifying Java programs",
+    "authors": "Temesghen Kahsai, Huascar Sanchez, Philipp Rümmer, and Martin Schäf",
+    "venue": "28th International Conference on Computer Aided Verification (CAV), Toronto, Canada, July 2016",
+    "url": "papers/cav2016.pdf"
+  },
+  {
+    "year": 2016,
+    "title": "Classifying Bugs with Interpolants",
+    "authors": "Andreas Podelski, Martin Schäf, and Thomas Wies",
+    "venue": "10th International Conference on Tests and Proofs (TAP), Vienna, Austria, July 2016",
+    "url": "papers/tap2016.pdf"
+  },
+  {
+    "year": 2016,
+    "title": "Multistaging to Understand: Distilling the Essence of Java Code Examples",
+    "authors": "Huascar Sanchez, E. James Whitehead, and Martin Schäf",
+    "venue": "24th IEEE International Conference on Program Comprehension (ICPC), Austin, TX, May 2016",
+    "url": "papers/icpc2016.pdf"
+  },
+  {
+    "year": 2016,
+    "title": "Detecting Similar Programs via the Weisfeiler-Leman Graph Kernel",
+    "authors": "Wenchao Li, Hassen Saidi, Huascar Sanchez, Martin Schäf, and Pascal Schweitzer",
+    "venue": "15th International Conference on Software Reuse (ICSR), Limassol, Cyprus, June 2016",
+    "url": "papers/icsr2016.pdf"
+  },
+  {
+    "year": 2016,
+    "title": "Crowd-Sourcing Program Preconditions via a Classification Game",
+    "authors": "Daniel Fava, Dan Shapiro, Joseph Osborn, Martin Schäf, and E. James Whitehead",
+    "venue": "38th International Conference on Software Engineering (ICSE), Austin, TX, May 2016",
+    "url": "papers/icse2016.pdf"
+  },
+  {
+    "year": 2015,
+    "title": "Finding Inconsistencies in Programs with Loops",
+    "authors": "Temesghen Kahsai, Jorge A. Navas, Dejan Jovanović, and Martin Schäf",
+    "venue": "20th International Conferences on Logic for Programming, Artificial Intelligence and Reasoning (LPAR), Suva, Fiji, November 2015",
+    "url": "papers/lpar15_01.pdf"
+  },
+  {
+    "year": 2015,
+    "title": "Gamifying Program Analysis",
+    "authors": "Daniel Fava, Julien Signoles, Matthieu Lemerre, Martin Schäf, and Ashish Tiwari",
+    "venue": "20th International Conferences on Logic for Programming, Artificial Intelligence and Reasoning (LPAR), Suva, Fiji, November 2015",
+    "url": "papers/lpar15_02.pdf"
+  },
+  {
+    "year": 2015,
+    "title": "Severity Levels of Inconsistent Code",
+    "authors": "Martin Schäf, and Ashish Tiwari",
+    "venue": "13th International Symposium on Automated Technology for Verification and Analysis (ATVA), Shanghai, PRC, October 2015",
+    "url": "papers/atva15.pdf"
+  },
+  {
+    "year": 2015,
+    "title": "Non-Monotonic Program Analysis",
+    "authors": "Daniel Schwartz-Narbonne, Chanseok Oh, Martin Schäf, Philipp Rümmer, Ashish Tiwari, and Thomas Wies",
+    "venue": "Workshop on Horn Clauses for Verification and Synthesis (HCVS), San Francisco, USA, July 2015",
+    "url": "papers/hcvs15.pdf"
+  },
+  {
+    "year": 2015,
+    "title": "Bixie: Finding and Understanding Inconsistent Code",
+    "authors": "Tim McCarthy, Philipp Rümmer, Martin Schäf",
+    "venue": "37th International Conference on Software Engineering (ICSE), Demonstration, Florence, Italy, May 2015",
+    "url": "papers/bixie_tool.pdf"
+  },
+  {
+    "year": 2015,
+    "title": "VERMEER: A Tool for Tracing and Explaining Faulty C Programs",
+    "authors": "Daniel Schwartz-Narbonne, Chanseok Oh, Martin Schäf, and Thomas Wies",
+    "venue": "37th International Conference on Software Engineering (ICSE), Demonstration, Florence, Italy, May 2015",
+    "url": "papers/vermeer_tool.pdf"
+  },
+  {
+    "year": 2015,
+    "title": "Conflict-Directed Graph Coverage",
+    "authors": "Daniel Schwartz-Narbonne, Martin Schäf, Dejan Jovanović, Philipp Rümmer, and Thomas Wies",
+    "venue": "7th Nasa Formal Methods Symposium (NFM), Pasadena, CA, USA, April 2015",
+    "url": "http://cs.nyu.edu/wies/publ/conflict_directed_graph_coverage.pdf"
+  },
+  {
+    "year": 2014,
+    "title": "Concolic Fault Abstraction",
+    "authors": "Chanseok Oh, Martin Schäf, Daniel Schwartz-Narbonne, and Thomas Wies",
+    "venue": "4th IEEE International Working Conference on Software Code Analysis and Manipulation (SCAM), Victoria, Canada, September 2014",
+    "url": "http://cs.nyu.edu/wies/publ/concolic_fault_abstraction.pdf"
+  },
+  {
+    "year": 2014,
+    "title": "Quantification of Verification Progress",
+    "authors": "Stephan Arlt, John Murray, and Martin Schäf",
+    "venue": "2nd Verisure Workshop, Vienna, Austria, July 2014",
+    "url": null
+  },
+  {
+    "year": 2014,
+    "title": "Chekofv: Crowd-sourced Formal Verification",
+    "authors": "Heather Logas, Florent Kirchner, John Murray, Martin Schäf, and Jim Whitehead",
+    "venue": "2nd Workshop on Fun With Formal Methods (FWFM), Vienna, Austria, July 2014",
+    "url": null
+  },
+  {
+    "year": 2014,
+    "title": "The Gradual Verifier",
+    "authors": "Stephan Arlt, Cindy Rubio-González, Philipp Rümmer, Martin Schäf, and Natarajan Shankar",
+    "venue": "6th Nasa Formal Methods Symposium (NFM), Houston, TX, USA, April 2014",
+    "url": "papers/nfm14.pdf"
+  },
+  {
+    "year": 2013,
+    "title": "Reconstructing Paths for Reachable Code",
+    "authors": "Stephan Arlt and Martin Schäf",
+    "venue": "15th International Conference on Formal Engineering Methods (ICFEM), Queenstown, New Zealand, October 2013",
+    "url": "papers/icfem13.pdf"
+  },
+  {
+    "year": 2013,
+    "title": "A Theory for Control-Flow Graph Exploration",
+    "authors": "Stephan Arlt, Philipp Rümmer, and Martin Schäf",
+    "venue": "11th International Symposium on Automated Technology for Verification and Analysis (ATVA), Hanoi, Vietnam, October 2013",
+    "url": "papers/atva13.pdf"
+  },
+  {
+    "year": 2013,
+    "title": "Explaining Inconsistent Code",
+    "authors": "Martin Schäf, Daniel Schwartz-Narbonne, and Thomas Wies",
+    "venue": "21st ACM SIGSOFT symposium and the 14th European conference on Foundations of software engineering (ESEC/FSE), Saint Petersburg, Russia, August 2013",
+    "url": "http://cs.nyu.edu/wies/publ/fse2013.pdf"
+  },
+  {
+    "year": 2013,
+    "title": "Joogie: From Java through Jimple to Boogie",
+    "authors": "Stephan Arlt, Philipp Rümmer, and Martin Schäf",
+    "venue": "ACM SIGPLAN International Workshop on State of the Art in Java Program analysis (SOAP), Seattle, USA, June 2013",
+    "url": "http://www.philipp.ruemmer.org/publications/joogie-translation.pdf"
+  },
+  {
+    "year": 2013,
+    "title": "Flow-sensitive Fault Localization",
+    "authors": "Jürgen Christ, Evren Ermis, Martin Schäf, and Thomas Wies",
+    "venue": "14th International Conference on Verification, Model Checking, and Abstract Interpretation (VMCAI), Rome, Italy, January 2013",
+    "url": "http://cs.nyu.edu/wies/publ/flow-sensitive_fault_localization.pdf"
+  },
+  {
+    "year": 2013,
+    "title": "Monitoring Student Activity in Collaborative Software Development",
+    "authors": "D. Dietsch, A. Podelski, J. Nam, P. M. Papadopoulos, M. Schäf",
+    "venue": "arXiv:1305.0787, 2013",
+    "url": "http://arxiv.org/pdf/1305.0787.pdf"
+  },
+  {
+    "year": 2012,
+    "title": "Infeasible Code Detection",
+    "authors": "C. Bertolini, M. Schäf, and P. Schweitzer",
+    "venue": "4th International Conference on Verified Software: Theories, Tools, and Experiments (VSTTE), 2012",
+    "url": "papers/vstte12.pdf"
+  },
+  {
+    "year": 2012,
+    "title": "Error Invariants",
+    "authors": "E. Ermis, M. Schäf, and T. Wies",
+    "venue": "18th International Symposium on Formal Methods (FM), 2012",
+    "url": "http://cs.nyu.edu/wies/publ/error_invariants.pdf"
+  },
+  {
+    "year": 2012,
+    "title": "Joogie: Infeasible Code Detection for Java",
+    "authors": "S. Arlt, and M. Schäf",
+    "venue": "24th International Conference on Computer Aided Verification (CAV), 2012",
+    "url": "https://orbilu.uni.lu/bitstream/10993/10427/1/chp%253A10.1007%252F978-3-642-31424-7_62.pdf"
+  },
+  {
+    "year": 2012,
+    "title": "Parameterized GUI Tests",
+    "authors": "S. Arlt, P. Borromeo, A. Podelski, and M. Schäf",
+    "venue": "The 24th IFIP Int. Conference on Testing Software and Systems (ICTSS), 2012",
+    "url": "http://www2.informatik.uni-freiburg.de/~arlt/papers/ictss2012.pdf"
+  },
+  {
+    "year": 2012,
+    "title": "Lightweight Static Analysis for GUI Testing",
+    "authors": "S. Arlt, P. Borromeo, A. Podelski, and M. Schäf",
+    "venue": "23rd annual International Symposium on Software Reliability Engineering (ISSRE), 2012",
+    "url": "http://www2.informatik.uni-freiburg.de/~arlt/papers/issre2012.pdf"
+  },
+  {
+    "year": 2012,
+    "title": "Trends in Model-based GUI Testing",
+    "authors": "Stephan Arlt, Cristiano Bertolini, and Martin Schäf",
+    "venue": "Advances in Computers, Volume 86",
+    "url": null
+  },
+  {
+    "year": 2011,
+    "title": "Behind the Scenes: An Approach to Incorporate Context in GUI Test Case Generation",
+    "authors": "S. Arlt, C. Bertolini, and M. Schäf",
+    "venue": "4th International Conference on Software Testing, Verification and Validation Workshops, 2012",
+    "url": null
+  },
+  {
+    "year": 2011,
+    "title": "Slicing Abstraction using Path Formulas",
+    "authors": "E. Ermis, J. Hoenicke, A. Podelski, and M. Schäf",
+    "venue": "UNU-IIST Technical Report, 2011",
+    "url": null
+  },
+  {
+    "year": 2010,
+    "title": "Doomed Program Points",
+    "authors": "Jochen Hoenicke, K. Rustan M. Leino, Andreas Podelski, Martin Schäf, Andreas Podelski",
+    "venue": "37th Journal on Formal Methods in System Design, September 2010",
+    "url": null
+  },
+  {
+    "year": 2010,
+    "title": "AutoPA: Automatic Prototyping from Requirements",
+    "authors": "X. Li, Z. Liu, M. Schäf, and L. Yin",
+    "venue": "3rd International Symposium On Leveraging Applications of Formal Methods, Verification and Validation (ISoLA), 2010",
+    "url": null
+  },
+  {
+    "year": 2009,
+    "title": "It's Doomed; We Can Prove It",
+    "authors": "J. Hoenicke, R. K. Leino, A. Podelski, M. Schäf, and T. Wies",
+    "venue": "15th International Symposium on Formal Methods (FM), 2009",
+    "url": "http://cs.nyu.edu/wies/publ/doomed_program_points.pdf"
+  }
+]

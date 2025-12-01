@@ -1,0 +1,29 @@
+name: Build LaTeX document
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v1
+      - name: Generate publications.tex
+        run: cd cv && python3 generate_publications.py
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@master
+        with:
+          working_directory: cv
+          root_file: cv_schaef.tex
+          args: "-xelatex -file-line-error -interaction=nonstopmode"
+      - uses: meeDamian/github-release@2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: "resume"
+          name: CV Schaef
+          body: >
+            Auto release by github actions 
+          allow_override: true
+          gzip: false
+          files: >
+            cv/cv_schaef.pdf
