@@ -1,7 +1,5 @@
 # Raw source assets (large, not needed at runtime)
-assets/sprites/martin.png
-assets/sprites/podelski_sheet.png
-assets/sprites/wolfgang_sheet.png
+assets/sprites/sheets/
 assets/saarbrücken-map.png
 
 # Debug/temp

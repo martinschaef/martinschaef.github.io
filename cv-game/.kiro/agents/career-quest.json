@@ -1,0 +1,7 @@
+{
+  "name": "career-quest",
+  "description": "Career Quest RPG game development agent",
+  "skills": [
+    ".kiro/skills/SHEET_CONVERT.md"
+  ]
+}

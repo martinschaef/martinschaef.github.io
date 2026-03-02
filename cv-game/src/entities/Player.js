@@ -1,7 +1,7 @@
 const SPEED = 160;
 const SCALE = 0.4;
 
-// martin_sheet.png: 104x183 frames, 8 cols x 4 rows
+// martin.png: 104x183 frames, 8 cols x 4 rows
 // Row 0: idle per direction — 0:down, 1:right, 2:up, 3:left
 // Row 1: walk_down (7 frames: 8-14)
 // Row 2: walk_right (8 frames: 16-23) — flip for left
@@ -19,6 +19,8 @@ export class Player {
     constructor(scene, x, y) {
         this.scene = scene;
         this.facing = 'down';
+        this._touchAction = false;
+        this._touchDir = null;
 
         this.sprite = scene.physics.add.sprite(x, y, 'martin', IDLE.down)
             .setScale(SCALE)
@@ -39,6 +41,11 @@ export class Player {
         this.spaceKey = scene.input.keyboard.addKey('SPACE');
 
         this._createAnims();
+
+        // Mobile touch controls
+        if (!scene.sys.game.device.os.desktop) {
+            this._createTouchControls();
+        }
     }
 
     _createAnims() {
@@ -54,6 +61,57 @@ export class Player {
         }
     }
 
+    _createTouchControls() {
+        const s = this.scene;
+        // Virtual joystick (left side)
+        const joyX = 100, joyY = 500, joyR = 50;
+        this._joyBase = s.add.circle(joyX, joyY, joyR, 0xffffff, 0.15)
+            .setScrollFactor(0).setDepth(200);
+        this._joyThumb = s.add.circle(joyX, joyY, 22, 0xffffff, 0.4)
+            .setScrollFactor(0).setDepth(201);
+
+        // Action button (right side)
+        this._actionBtn = s.add.circle(700, 500, 30, 0xf4e842, 0.3)
+            .setScrollFactor(0).setDepth(200).setInteractive();
+        s.add.text(700, 500, 'A', {
+            fontSize: '18px', fontFamily: 'monospace', color: '#f4e842'
+        }).setOrigin(0.5).setScrollFactor(0).setDepth(201);
+
+        this._actionBtn.on('pointerdown', () => { this._touchAction = true; });
+
+        // Joystick drag
+        s.input.on('pointerdown', (p) => {
+            if (p.x < 400) this._joyPointer = p;
+        });
+        s.input.on('pointermove', (p) => {
+            if (this._joyPointer && p.id === this._joyPointer.id) {
+                const dx = p.x - joyX, dy = p.y - joyY;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist > 15) {
+                    const angle = Math.atan2(dy, dx);
+                    const clamp = Math.min(dist, joyR);
+                    this._joyThumb.setPosition(joyX + Math.cos(angle)*clamp, joyY + Math.sin(angle)*clamp);
+                    // Determine direction (4-way)
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        this._touchDir = dx > 0 ? 'right' : 'left';
+                    } else {
+                        this._touchDir = dy > 0 ? 'down' : 'up';
+                    }
+                } else {
+                    this._touchDir = null;
+                    this._joyThumb.setPosition(joyX, joyY);
+                }
+            }
+        });
+        s.input.on('pointerup', (p) => {
+            if (this._joyPointer && p.id === this._joyPointer.id) {
+                this._joyPointer = null;
+                this._touchDir = null;
+                this._joyThumb.setPosition(joyX, joyY);
+            }
+        });
+    }
+
     update() {
         if (this.scene.dialogueActive) {
             this.sprite.setVelocity(0);
@@ -61,10 +119,10 @@ export class Player {
             return;
         }
 
-        const up = this.cursors.up.isDown || this.wasd.up.isDown;
-        const down = this.cursors.down.isDown || this.wasd.down.isDown;
-        const left = this.cursors.left.isDown || this.wasd.left.isDown;
-        const right = this.cursors.right.isDown || this.wasd.right.isDown;
+        const up = this.cursors.up.isDown || this.wasd.up.isDown || this._touchDir === 'up';
+        const down = this.cursors.down.isDown || this.wasd.down.isDown || this._touchDir === 'down';
+        const left = this.cursors.left.isDown || this.wasd.left.isDown || this._touchDir === 'left';
+        const right = this.cursors.right.isDown || this.wasd.right.isDown || this._touchDir === 'right';
 
         let vx = 0, vy = 0;
         if (up) { vy = -SPEED; this.facing = 'up'; }
@@ -89,7 +147,10 @@ export class Player {
     }
 
     isAction() {
-        return Phaser.Input.Keyboard.JustDown(this.actionKey) ||
+        const touch = this._touchAction;
+        this._touchAction = false;
+        return touch ||
+               Phaser.Input.Keyboard.JustDown(this.actionKey) ||
                Phaser.Input.Keyboard.JustDown(this.spaceKey);
     }
 }

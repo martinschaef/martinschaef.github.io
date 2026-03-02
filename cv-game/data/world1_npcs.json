@@ -1,0 +1,68 @@
+{
+  "mom": {
+    "sprite": "doris",
+    "dialogue": [
+      { "text": "Martin! Don't forget your Abitur scroll!" },
+      { "text": "Are you really leaving us?", "choices": [
+        { "text": "Yes, it's time.", "next": "farewell" },
+        { "text": "Not yet.", "next": "stay" }
+      ]},
+      { "id": "farewell", "text": "Good luck out there, son. Make us proud." },
+      { "id": "stay", "text": "Take your time, dear. We'll be here." }
+    ]
+  },
+  "dad": {
+    "sprite": "father",
+    "dialogue": [
+      { "text": "The world is big, Martin." },
+      { "text": "Where will you go first?", "choices": [
+        { "text": "Freiburg, to study.", "next": "freiburg" },
+        { "text": "I'm not sure yet.", "next": "unsure" }
+      ]},
+      { "id": "freiburg", "text": "Good choice. The Black Forest will treat you well." },
+      { "id": "unsure", "text": "You'll figure it out. You always do." }
+    ]
+  },
+  "wolfgang": {
+    "sprite": "wolfgang",
+    "dialogue": [
+      { "text": "Can't catch me!" },
+      { "text": "...fine, you caught me. What do you want?" }
+    ]
+  },
+  "monika": {
+    "sprite": "monika",
+    "dialogue": [
+      { "text": "Mom said it's my turn on the computer." },
+      { "text": "Just kidding. Good luck out there, bro." }
+    ]
+  },
+  "christine": {
+    "sprite": "christine",
+    "dialogue": [
+      { "text": "Are you really leaving?" },
+      { "text": "Promise you'll write?", "choices": [
+        { "text": "Every week.", "next": "promise" },
+        { "text": "I'll try.", "next": "try" }
+      ]},
+      { "id": "promise", "text": "You better! I'll hold you to it." },
+      { "id": "try", "text": "That's not very reassuring..." }
+    ]
+  },
+  "valentin": {
+    "sprite": "valentin",
+    "dialogue": [{ "text": "..." }]
+  },
+  "tobert": {
+    "sprite": "tobert",
+    "dialogue": [{ "text": "..." }]
+  },
+  "ben": {
+    "sprite": "ben",
+    "dialogue": [{ "text": "..." }]
+  },
+  "podelski": {
+    "sprite": "podelski",
+    "dialogue": [{ "text": "..." }]
+  }
+}

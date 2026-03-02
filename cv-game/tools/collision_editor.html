@@ -34,6 +34,13 @@
   <button class="tool-btn" data-tool="erase">⬜ Erase Block</button>
   <button class="tool-btn" data-tool="player">🧑 Place Player Spawn</button>
   <button class="tool-btn" data-tool="npc">👤 Place NPC</button>
+  <button class="tool-btn" data-tool="door">🚪 Place Door/Exit</button>
+
+  <h3>🚪 Door Settings</h3>
+  <label>Target Scene:</label>
+  <input id="doorTarget" value="World2_Freiburg" style="width:100%;padding:4px;font-family:monospace;background:#0f3460;color:#eee;border:1px solid #444;">
+  <label>Label:</label>
+  <input id="doorLabel" value="Exit →" style="width:100%;padding:4px;font-family:monospace;background:#0f3460;color:#eee;border:1px solid #444;">
 
   <h3>👤 NPC to Place</h3>
   <select id="npcSelect">
@@ -45,6 +52,7 @@
     <option value="valentin">valentin</option>
     <option value="tobert">tobert</option>
     <option value="ben">ben</option>
+    <option value="podelski">podelski</option>
   </select>
   <label>Custom ID:</label>
   <input id="customNpc" placeholder="e.g. professor" style="width:100%;padding:4px;font-family:monospace;background:#0f3460;color:#eee;border:1px solid #444;">
@@ -67,12 +75,13 @@ let manualBlocked = new Set();
 let waterSet = new Set();
 let tool = 'block';
 let playerSpawn = null;  // {x, y} in map pixels
-let npcs = [];           // [{id, x, y, color}]
+let npcs = [];           // [{id, x, y}]
+let doors = [];          // [{x, y, target, label}]
 
 const NPC_COLORS = {
   mom:'#4488ff', dad:'#44aa44', wolfgang:'#ff8844',
   monika:'#ff4488', christine:'#aa44ff', valentin:'#44ffcc',
-  tobert:'#ff6644', ben:'#88aaff'
+  tobert:'#ff6644', ben:'#88aaff', podelski:'#ffcc44'
 };
 function npcColor(id) { return NPC_COLORS[id] || '#ffff00'; }
 
@@ -114,6 +123,7 @@ function init() {
 
   playerSpawn = colData.player_spawn || null;
   npcs = colData.npcs || [];
+  doors = colData.doors || [];
 
   updateCharList();
   draw();
@@ -154,6 +164,16 @@ function draw() {
     ctx.fillText(npc.id, npc.x, npc.y-14);
   });
 
+  // Doors
+  doors.forEach(d => {
+    ctx.fillStyle='rgba(244,232,66,0.3)'; ctx.strokeStyle='#f4e842'; ctx.lineWidth=2;
+    ctx.fillRect(d.x-20, d.y-20, 40, 40); ctx.strokeRect(d.x-20, d.y-20, 40, 40);
+    ctx.fillStyle='#f4e842'; ctx.font='bold 8px monospace'; ctx.textAlign='center';
+    ctx.fillText('🚪 ' + (d.label||'Exit'), d.x, d.y-24);
+    ctx.fillStyle='#aaa'; ctx.font='7px monospace';
+    ctx.fillText(d.target||'', d.x, d.y+4);
+  });
+
   ctx.textAlign='start';
 }
 
@@ -164,11 +184,16 @@ function updateCharList() {
   npcs.forEach((n,i) => {
     html += `<div>👤 ${n.id} (${n.x},${n.y}) <span class="del" onclick="removeNpc(${i})">✕</span></div>`;
   });
+  doors.forEach((d,i) => {
+    html += `<div>🚪 ${d.label||'Exit'} (${d.x},${d.y}) <span class="del" onclick="removeDoor(${i})">✕</span></div>`;
+  });
+  });
   el.innerHTML = html || '<div style="color:#666">None placed</div>';
 }
 
 window.removePlayer = () => { playerSpawn = null; updateCharList(); draw(); };
 window.removeNpc = (i) => { npcs.splice(i,1); updateCharList(); draw(); };
+window.removeDoor = (i) => { doors.splice(i,1); updateCharList(); draw(); };
 
 // Mouse interaction
 let painting = false;
@@ -188,9 +213,15 @@ canvas.onmousedown = (e) => {
   else if (tool === 'npc') {
     const id = document.getElementById('customNpc').value.trim() || document.getElementById('npcSelect').value;
     const pos = getMapPos(e);
-    // Replace if same id exists
     npcs = npcs.filter(n => n.id !== id);
     npcs.push({ id, x: pos.x, y: pos.y });
+    updateCharList(); draw();
+  }
+  else if (tool === 'door') {
+    const pos = getMapPos(e);
+    const target = document.getElementById('doorTarget').value.trim();
+    const label = document.getElementById('doorLabel').value.trim();
+    doors.push({ x: pos.x, y: pos.y, target, label });
     updateCharList(); draw();
   }
 };
@@ -216,6 +247,7 @@ document.getElementById('btnSave').onclick = () => {
   colData.blocked_tiles = [...manualBlocked].map(s => s.split(',').map(Number));
   colData.player_spawn = playerSpawn;
   colData.npcs = npcs;
+  colData.doors = doors;
   const blob = new Blob([JSON.stringify(colData, null, 2)], {type:'application/json'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = mapName + '_collision.json'; a.click();

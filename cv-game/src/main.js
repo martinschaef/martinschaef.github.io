@@ -7,9 +7,16 @@ const config = {
     height: 600,
     pixelArt: true,
     backgroundColor: '#222034',
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     physics: {
         default: 'arcade',
         arcade: { gravity: { y: 0 }, debug: false }
+    },
+    input: {
+        activePointers: 2
     },
     scene: [TitleScreen, World1_Saarbruecken]
 };
