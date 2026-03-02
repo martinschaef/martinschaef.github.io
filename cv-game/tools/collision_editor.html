@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<title>Level Editor — Career Quest</title>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; background:#1a1a2e; color:#eee; font-family:monospace; display:flex; height:100vh; }
+  #sidebar { width:220px; padding:10px; background:#16213e; display:flex; flex-direction:column; gap:8px; overflow-y:auto; }
+  #sidebar h3 { margin:8px 0 4px; color:#f4e842; font-size:13px; }
+  #sidebar button { padding:6px; cursor:pointer; font-family:monospace; font-size:12px; border:1px solid #444; background:#0f3460; color:#eee; }
+  #sidebar button:hover { background:#1a5276; }
+  #sidebar button.active { background:#e94560; border-color:#e94560; }
+  .tool-btn { text-align:left; }
+  #sidebar label { font-size:11px; color:#aaa; }
+  #sidebar select { width:100%; padding:4px; font-family:monospace; background:#0f3460; color:#eee; border:1px solid #444; }
+  #main { flex:1; overflow:auto; position:relative; }
+  canvas { display:block; image-rendering:pixelated; cursor:crosshair; }
+  #status { position:fixed; bottom:0; left:220px; right:0; background:#16213e; padding:4px 10px; font-size:11px; color:#aaa; border-top:1px solid #333; }
+  .char-list { font-size:11px; }
+  .char-list div { padding:2px 4px; display:flex; justify-content:space-between; align-items:center; }
+  .char-list div:hover { background:#0f3460; }
+  .char-list .del { cursor:pointer; color:#e94560; }
+</style>
+</head><body>
+<div id="sidebar">
+  <h3>📁 Map</h3>
+  <label>Map: <select id="mapSelect"><option value="world1">world1</option></select></label>
+  <button id="btnSave">💾 Save JSON</button>
+  <button id="btnLoad">📂 Load JSON</button>
+  <input type="file" id="fileInput" accept=".json" style="display:none">
+
+  <h3>🖌 Tools</h3>
+  <button class="tool-btn active" data-tool="block">🟧 Block Tile</button>
+  <button class="tool-btn" data-tool="erase">⬜ Erase Block</button>
+  <button class="tool-btn" data-tool="player">🧑 Place Player Spawn</button>
+  <button class="tool-btn" data-tool="npc">👤 Place NPC</button>
+
+  <h3>👤 NPC to Place</h3>
+  <select id="npcSelect">
+    <option value="mom">mom</option>
+    <option value="dad">dad</option>
+    <option value="wolfgang">wolfgang</option>
+    <option value="monika">monika</option>
+    <option value="christine">christine</option>
+    <option value="valentin">valentin</option>
+    <option value="tobert">tobert</option>
+    <option value="ben">ben</option>
+  </select>
+  <label>Custom ID:</label>
+  <input id="customNpc" placeholder="e.g. professor" style="width:100%;padding:4px;font-family:monospace;background:#0f3460;color:#eee;border:1px solid #444;">
+
+  <h3>📍 Placed Characters</h3>
+  <div id="charList" class="char-list"></div>
+</div>
+
+<div id="main"><canvas id="c"></canvas></div>
+<div id="status">Ready</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const status = document.getElementById('status');
+
+let mapName = 'world1', img, colData;
+let gridW, gridH, blockSize;
+let manualBlocked = new Set();
+let waterSet = new Set();
+let tool = 'block';
+let playerSpawn = null;  // {x, y} in map pixels
+let npcs = [];           // [{id, x, y, color}]
+
+const NPC_COLORS = {
+  mom:'#4488ff', dad:'#44aa44', wolfgang:'#ff8844',
+  monika:'#ff4488', christine:'#aa44ff', valentin:'#44ffcc',
+  tobert:'#ff6644', ben:'#88aaff'
+};
+function npcColor(id) { return NPC_COLORS[id] || '#ffff00'; }
+
+// Tool selection
+document.querySelectorAll('.tool-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    tool = btn.dataset.tool;
+  };
+});
+
+// Map loading
+document.getElementById('mapSelect').onchange = function() { mapName = this.value; loadMap(); };
+
+function loadMap() {
+  img = new Image();
+  img.src = '../assets/tilemaps/' + mapName + '_bg.png';
+  img.onload = () => {
+    fetch('../assets/tilemaps/' + mapName + '_collision.json')
+      .then(r => r.json()).then(data => { colData = data; init(); });
+  };
+}
+
+function init() {
+  blockSize = colData.block_size;
+  gridW = Math.ceil(colData.world_width / blockSize);
+  gridH = Math.ceil(colData.world_height / blockSize);
+  canvas.width = colData.world_width;
+  canvas.height = colData.world_height;
+
+  waterSet.clear();
+  colData.water_rects.forEach(r => {
+    waterSet.add(Math.floor(r.x/blockSize) + ',' + Math.floor(r.y/blockSize));
+  });
+
+  manualBlocked.clear();
+  if (colData.blocked_tiles) colData.blocked_tiles.forEach(([tx,ty]) => manualBlocked.add(tx+','+ty));
+
+  playerSpawn = colData.player_spawn || null;
+  npcs = colData.npcs || [];
+
+  updateCharList();
+  draw();
+  status.textContent = `Loaded ${mapName}: ${gridW}×${gridH} grid, block=${blockSize}px`;
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  // Tile overlays
+  for (let ty = 0; ty < gridH; ty++) {
+    for (let tx = 0; tx < gridW; tx++) {
+      const key = tx+','+ty, x = tx*blockSize, y = ty*blockSize;
+      if (waterSet.has(key)) { ctx.fillStyle='rgba(255,0,0,0.2)'; ctx.fillRect(x,y,blockSize,blockSize); }
+      if (manualBlocked.has(key)) { ctx.fillStyle='rgba(255,160,0,0.4)'; ctx.fillRect(x,y,blockSize,blockSize); }
+    }
+  }
+
+  // Grid
+  ctx.strokeStyle='rgba(255,255,255,0.06)'; ctx.lineWidth=0.5;
+  for (let x=0;x<=canvas.width;x+=blockSize) { ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke(); }
+  for (let y=0;y<=canvas.height;y+=blockSize) { ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke(); }
+
+  // Player spawn
+  if (playerSpawn) {
+    ctx.fillStyle='#00ff88'; ctx.strokeStyle='#000'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(playerSpawn.x, playerSpawn.y, 10, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#000'; ctx.font='bold 9px monospace'; ctx.textAlign='center';
+    ctx.fillText('P', playerSpawn.x, playerSpawn.y+3);
+  }
+
+  // NPCs
+  npcs.forEach(npc => {
+    ctx.fillStyle = npcColor(npc.id); ctx.strokeStyle='#000'; ctx.lineWidth=2;
+    ctx.fillRect(npc.x-10, npc.y-10, 20, 20); ctx.strokeRect(npc.x-10, npc.y-10, 20, 20);
+    ctx.fillStyle='#fff'; ctx.font='bold 8px monospace'; ctx.textAlign='center';
+    ctx.fillText(npc.id, npc.x, npc.y-14);
+  });
+
+  ctx.textAlign='start';
+}
+
+function updateCharList() {
+  const el = document.getElementById('charList');
+  let html = '';
+  if (playerSpawn) html += `<div>🧑 Player (${playerSpawn.x},${playerSpawn.y}) <span class="del" onclick="removePlayer()">✕</span></div>`;
+  npcs.forEach((n,i) => {
+    html += `<div>👤 ${n.id} (${n.x},${n.y}) <span class="del" onclick="removeNpc(${i})">✕</span></div>`;
+  });
+  el.innerHTML = html || '<div style="color:#666">None placed</div>';
+}
+
+window.removePlayer = () => { playerSpawn = null; updateCharList(); draw(); };
+window.removeNpc = (i) => { npcs.splice(i,1); updateCharList(); draw(); };
+
+// Mouse interaction
+let painting = false;
+function getMapPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scale = canvas.width / rect.width;
+  return { x: Math.round((e.clientX-rect.left)*scale), y: Math.round((e.clientY-rect.top)*scale) };
+}
+function getTile(e) {
+  const p = getMapPos(e);
+  return { tx: Math.floor(p.x/blockSize), ty: Math.floor(p.y/blockSize) };
+}
+
+canvas.onmousedown = (e) => {
+  if (tool === 'block' || tool === 'erase') { painting = true; paintTile(e); }
+  else if (tool === 'player') { playerSpawn = getMapPos(e); updateCharList(); draw(); }
+  else if (tool === 'npc') {
+    const id = document.getElementById('customNpc').value.trim() || document.getElementById('npcSelect').value;
+    const pos = getMapPos(e);
+    // Replace if same id exists
+    npcs = npcs.filter(n => n.id !== id);
+    npcs.push({ id, x: pos.x, y: pos.y });
+    updateCharList(); draw();
+  }
+};
+canvas.onmousemove = (e) => {
+  if (painting) paintTile(e);
+  const p = getMapPos(e);
+  const t = getTile(e);
+  status.textContent = `Tile: ${t.tx},${t.ty} | Pixel: ${p.x},${p.y} | Tool: ${tool}`;
+};
+canvas.onmouseup = () => painting = false;
+canvas.onmouseleave = () => painting = false;
+
+function paintTile(e) {
+  const {tx,ty} = getTile(e);
+  if (tx<0||ty<0||tx>=gridW||ty>=gridH) return;
+  const key = tx+','+ty;
+  if (tool==='block') manualBlocked.add(key); else manualBlocked.delete(key);
+  draw();
+}
+
+// Save
+document.getElementById('btnSave').onclick = () => {
+  colData.blocked_tiles = [...manualBlocked].map(s => s.split(',').map(Number));
+  colData.player_spawn = playerSpawn;
+  colData.npcs = npcs;
+  const blob = new Blob([JSON.stringify(colData, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = mapName + '_collision.json'; a.click();
+  status.textContent = 'Saved! Move file to assets/tilemaps/' + mapName + '_collision.json';
+};
+
+// Load external JSON
+document.getElementById('btnLoad').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => { colData = JSON.parse(ev.target.result); init(); };
+  reader.readAsText(file);
+};
+
+loadMap();
+</script>
+</body></html>
