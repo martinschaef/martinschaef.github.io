@@ -3,12 +3,10 @@ import { World1_Saarbruecken } from './scenes/World1_Saarbruecken.js';
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
     pixelArt: true,
     backgroundColor: '#222034',
     scale: {
-        mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     physics: {

@@ -2,5 +2,33 @@
   "podelski": {
     "sprite": "podelski",
     "dialogue": [{ "text": "..." }]
+  },
+  "byron": {
+    "sprite": "byron",
+    "dialogue": [{ "text": "..." }]
+  },
+  "byron2": {
+    "sprite": "byron2",
+    "dialogue": [{ "text": "..." }]
+  },
+  "dejan": {
+    "sprite": "dejan",
+    "dialogue": [{ "text": "..." }]
+  },
+  "evren": {
+    "sprite": "evren",
+    "dialogue": [{ "text": "..." }]
+  },
+  "john": {
+    "sprite": "john",
+    "dialogue": [{ "text": "..." }]
+  },
+  "stephan": {
+    "sprite": "stephan",
+    "dialogue": [{ "text": "..." }]
+  },
+  "zhiming": {
+    "sprite": "zhiming",
+    "dialogue": [{ "text": "..." }]
   }
 }

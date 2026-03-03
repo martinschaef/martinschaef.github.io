@@ -7,12 +7,16 @@ export class BaseScene extends Phaser.Scene {
         this._choiceTexts = [];
         this._textDone = false;
 
+        const cam = this.cameras.main;
+        const w = cam.width, h = cam.height;
         const boxH = choices ? 130 : 100;
-        this._msgBox = this.add.rectangle(400, 560 - boxH/2, 760, boxH, 0x000000, 0.92)
+        const boxW = Math.min(760, w - 40);
+
+        this._msgBox = this.add.rectangle(w/2, h - boxH/2 - 10, boxW, boxH, 0x000000, 0.92)
             .setStrokeStyle(2, 0xf4e842).setScrollFactor(0).setDepth(100);
-        this._msgText = this.add.text(40, 560 - boxH + 10, '', {
+        this._msgText = this.add.text(w/2 - boxW/2 + 16, h - boxH - 2, '', {
             fontSize: '16px', fontFamily: 'monospace', color: '#ffffff',
-            wordWrap: { width: 720 }
+            wordWrap: { width: boxW - 32 }
         }).setScrollFactor(0).setDepth(101);
 
         let i = 0;
@@ -30,9 +34,12 @@ export class BaseScene extends Phaser.Scene {
     }
 
     _showChoices() {
+        const cam = this.cameras.main;
+        const boxW = Math.min(760, cam.width - 40);
+        const baseX = cam.width/2 - boxW/2 + 32;
         const baseY = this._msgText.y + this._msgText.height + 8;
         this._choices.forEach((c, i) => {
-            const t = this.add.text(60, baseY + i * 22, `${i === this._choiceIndex ? '▶' : ' '} ${c.text}`, {
+            const t = this.add.text(baseX, baseY + i * 22, `${i === this._choiceIndex ? '▶' : ' '} ${c.text}`, {
                 fontSize: '14px', fontFamily: 'monospace', color: i === this._choiceIndex ? '#f4e842' : '#aaaaaa'
             }).setScrollFactor(0).setDepth(101);
             this._choiceTexts.push(t);

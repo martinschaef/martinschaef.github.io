@@ -63,53 +63,57 @@ export class Player {
 
     _createTouchControls() {
         const s = this.scene;
-        // Virtual joystick (left side)
-        const joyX = 100, joyY = 500, joyR = 50;
-        this._joyBase = s.add.circle(joyX, joyY, joyR, 0xffffff, 0.15)
-            .setScrollFactor(0).setDepth(200);
-        this._joyThumb = s.add.circle(joyX, joyY, 22, 0xffffff, 0.4)
-            .setScrollFactor(0).setDepth(201);
-
-        // Action button (right side)
-        this._actionBtn = s.add.circle(700, 500, 30, 0xf4e842, 0.3)
-            .setScrollFactor(0).setDepth(200).setInteractive();
-        s.add.text(700, 500, 'A', {
+        this._joyBase = s.add.circle(0, 0, 50, 0xffffff, 0.15).setScrollFactor(0).setDepth(200);
+        this._joyThumb = s.add.circle(0, 0, 22, 0xffffff, 0.4).setScrollFactor(0).setDepth(201);
+        this._actionBtn = s.add.circle(0, 0, 30, 0xf4e842, 0.3).setScrollFactor(0).setDepth(200).setInteractive();
+        this._actionLabel = s.add.text(0, 0, 'A', {
             fontSize: '18px', fontFamily: 'monospace', color: '#f4e842'
         }).setOrigin(0.5).setScrollFactor(0).setDepth(201);
 
         this._actionBtn.on('pointerdown', () => { this._touchAction = true; });
+        this._layoutTouch();
+
+        // Reposition on resize
+        s.scale.on('resize', () => this._layoutTouch());
 
         // Joystick drag
+        const self = this;
         s.input.on('pointerdown', (p) => {
-            if (p.x < 400) this._joyPointer = p;
+            if (p.x < s.cameras.main.width / 2) self._joyPointer = p;
         });
         s.input.on('pointermove', (p) => {
-            if (this._joyPointer && p.id === this._joyPointer.id) {
-                const dx = p.x - joyX, dy = p.y - joyY;
+            if (self._joyPointer && p.id === self._joyPointer.id) {
+                const jx = self._joyBase.x, jy = self._joyBase.y;
+                const dx = p.x - jx, dy = p.y - jy;
                 const dist = Math.sqrt(dx*dx + dy*dy);
                 if (dist > 15) {
                     const angle = Math.atan2(dy, dx);
-                    const clamp = Math.min(dist, joyR);
-                    this._joyThumb.setPosition(joyX + Math.cos(angle)*clamp, joyY + Math.sin(angle)*clamp);
-                    // Determine direction (4-way)
-                    if (Math.abs(dx) > Math.abs(dy)) {
-                        this._touchDir = dx > 0 ? 'right' : 'left';
-                    } else {
-                        this._touchDir = dy > 0 ? 'down' : 'up';
-                    }
+                    const clamp = Math.min(dist, 50);
+                    self._joyThumb.setPosition(jx + Math.cos(angle)*clamp, jy + Math.sin(angle)*clamp);
+                    self._touchDir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
                 } else {
-                    this._touchDir = null;
-                    this._joyThumb.setPosition(joyX, joyY);
+                    self._touchDir = null;
+                    self._joyThumb.setPosition(jx, jy);
                 }
             }
         });
         s.input.on('pointerup', (p) => {
-            if (this._joyPointer && p.id === this._joyPointer.id) {
-                this._joyPointer = null;
-                this._touchDir = null;
-                this._joyThumb.setPosition(joyX, joyY);
+            if (self._joyPointer && p.id === self._joyPointer.id) {
+                self._joyPointer = null;
+                self._touchDir = null;
+                self._joyThumb.setPosition(self._joyBase.x, self._joyBase.y);
             }
         });
+    }
+
+    _layoutTouch() {
+        const cam = this.scene.cameras.main;
+        const w = cam.width, h = cam.height;
+        const jx = 100, jy = h - 100;
+        this._joyBase.setPosition(jx, jy);
+        this._joyThumb.setPosition(jx, jy);
+        this._actionBtn.setPosition(w - 80, h - 100);
+        this._actionLabel.setPosition(w - 80, h - 100);
     }
 
     update() {

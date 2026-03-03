@@ -35,12 +35,29 @@
   <button class="tool-btn" data-tool="player">🧑 Place Player Spawn</button>
   <button class="tool-btn" data-tool="npc">👤 Place NPC</button>
   <button class="tool-btn" data-tool="door">🚪 Place Door/Exit</button>
+  <button class="tool-btn" data-tool="enemy">🐛 Place Enemy</button>
+  <button class="tool-btn" data-tool="item">⭐ Place Item</button>
 
   <h3>🚪 Door Settings</h3>
   <label>Target Scene:</label>
   <input id="doorTarget" value="World2_Freiburg" style="width:100%;padding:4px;font-family:monospace;background:#0f3460;color:#eee;border:1px solid #444;">
   <label>Label:</label>
   <input id="doorLabel" value="Exit →" style="width:100%;padding:4px;font-family:monospace;background:#0f3460;color:#eee;border:1px solid #444;">
+
+  <h3>🐛 Enemy to Place</h3>
+  <select id="enemySelect">
+    <option value="bug">bug</option>
+  </select>
+
+  <h3>⭐ Item to Place</h3>
+  <select id="itemSelect">
+    <option value="diploma">diploma</option>
+    <option value="accepted_paper">accepted_paper</option>
+    <option value="laptop">laptop</option>
+    <option value="journal">journal</option>
+    <option value="passport">passport</option>
+    <option value="hat">hat</option>
+  </select>
 
   <h3>👤 NPC to Place</h3>
   <select id="npcSelect">
@@ -53,6 +70,13 @@
     <option value="tobert">tobert</option>
     <option value="ben">ben</option>
     <option value="podelski">podelski</option>
+    <option value="byron">byron</option>
+    <option value="byron2">byron2</option>
+    <option value="dejan">dejan</option>
+    <option value="evren">evren</option>
+    <option value="john">john</option>
+    <option value="stephan">stephan</option>
+    <option value="zhiming">zhiming</option>
   </select>
   <label>Custom ID:</label>
   <input id="customNpc" placeholder="e.g. professor" style="width:100%;padding:4px;font-family:monospace;background:#0f3460;color:#eee;border:1px solid #444;">
@@ -77,6 +101,8 @@ let tool = 'block';
 let playerSpawn = null;  // {x, y} in map pixels
 let npcs = [];           // [{id, x, y}]
 let doors = [];          // [{x, y, target, label}]
+let enemies = [];        // [{type, x, y}]
+let items = [];          // [{id, x, y}]
 
 const NPC_COLORS = {
   mom:'#4488ff', dad:'#44aa44', wolfgang:'#ff8844',
@@ -124,6 +150,8 @@ function init() {
   playerSpawn = colData.player_spawn || null;
   npcs = colData.npcs || [];
   doors = colData.doors || [];
+  enemies = colData.enemies || [];
+  items = colData.items || [];
 
   updateCharList();
   draw();
@@ -174,6 +202,23 @@ function draw() {
     ctx.fillText(d.target||'', d.x, d.y+4);
   });
 
+  // Enemies
+  enemies.forEach(e => {
+    ctx.fillStyle='rgba(255,50,50,0.4)'; ctx.strokeStyle='#ff3232'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(e.x, e.y, 10, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#ff6666'; ctx.font='bold 8px monospace'; ctx.textAlign='center';
+    ctx.fillText('🐛 ' + e.type, e.x, e.y-14);
+  });
+
+  // Items
+  items.forEach(it => {
+    ctx.fillStyle='rgba(66,244,166,0.4)'; ctx.strokeStyle='#42f4a6'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(it.x, it.y-12); ctx.lineTo(it.x+10, it.y+6); ctx.lineTo(it.x-10, it.y+6); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#42f4a6'; ctx.font='bold 8px monospace'; ctx.textAlign='center';
+    ctx.fillText('⭐ ' + it.id, it.x, it.y-16);
+  });
+
   ctx.textAlign='start';
 }
 
@@ -187,6 +232,11 @@ function updateCharList() {
   doors.forEach((d,i) => {
     html += `<div>🚪 ${d.label||'Exit'} (${d.x},${d.y}) <span class="del" onclick="removeDoor(${i})">✕</span></div>`;
   });
+  enemies.forEach((e,i) => {
+    html += `<div>🐛 ${e.type} (${e.x},${e.y}) <span class="del" onclick="removeEnemy(${i})">✕</span></div>`;
+  });
+  items.forEach((it,i) => {
+    html += `<div>⭐ ${it.id} (${it.x},${it.y}) <span class="del" onclick="removeItem(${i})">✕</span></div>`;
   });
   el.innerHTML = html || '<div style="color:#666">None placed</div>';
 }
@@ -194,6 +244,8 @@ function updateCharList() {
 window.removePlayer = () => { playerSpawn = null; updateCharList(); draw(); };
 window.removeNpc = (i) => { npcs.splice(i,1); updateCharList(); draw(); };
 window.removeDoor = (i) => { doors.splice(i,1); updateCharList(); draw(); };
+window.removeEnemy = (i) => { enemies.splice(i,1); updateCharList(); draw(); };
+window.removeItem = (i) => { items.splice(i,1); updateCharList(); draw(); };
 
 // Mouse interaction
 let painting = false;
@@ -224,6 +276,18 @@ canvas.onmousedown = (e) => {
     doors.push({ x: pos.x, y: pos.y, target, label });
     updateCharList(); draw();
   }
+  else if (tool === 'enemy') {
+    const pos = getMapPos(e);
+    const type = document.getElementById('enemySelect').value;
+    enemies.push({ type, x: pos.x, y: pos.y });
+    updateCharList(); draw();
+  }
+  else if (tool === 'item') {
+    const pos = getMapPos(e);
+    const id = document.getElementById('itemSelect').value;
+    items.push({ id, x: pos.x, y: pos.y });
+    updateCharList(); draw();
+  }
 };
 canvas.onmousemove = (e) => {
   if (painting) paintTile(e);
@@ -248,6 +312,8 @@ document.getElementById('btnSave').onclick = () => {
   colData.player_spawn = playerSpawn;
   colData.npcs = npcs;
   colData.doors = doors;
+  colData.enemies = enemies;
+  colData.items = items;
   const blob = new Blob([JSON.stringify(colData, null, 2)], {type:'application/json'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = mapName + '_collision.json'; a.click();

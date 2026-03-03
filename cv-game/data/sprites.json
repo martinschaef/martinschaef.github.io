@@ -1,28 +1,165 @@
 {
   "sprites": {
-    "doris":     { "path": "assets/sprites/doris.png",     "frameWidth": 305, "frameHeight": 753,  "scale": 0.1 },
-    "father":    { "path": "assets/sprites/father.png",    "frameWidth": 375, "frameHeight": 924,  "scale": 0.08 },
-    "wolfgang":  { "path": "assets/sprites/wolfgang.png",  "frameWidth": 448, "frameHeight": 476,  "scale": 0.15 },
-    "monika":    { "path": "assets/sprites/monika.png",    "frameWidth": 303, "frameHeight": 759,  "scale": 0.1 },
-    "christine": { "path": "assets/sprites/christine.png", "frameWidth": 305, "frameHeight": 745,  "scale": 0.1 },
-    "valentin":  { "path": "assets/sprites/valentin.png",  "frameWidth": 435, "frameHeight": 1185, "scale": 0.06 },
-    "tobert":    { "path": "assets/sprites/tobert.png",    "frameWidth": 453, "frameHeight": 917,  "scale": 0.08 },
-    "ben":       { "path": "assets/sprites/ben.png",       "frameWidth": 414, "frameHeight": 959,  "scale": 0.08 },
-    "podelski":  { "path": "assets/sprites/podelski.png",  "frameWidth": 412, "frameHeight": 533,  "scale": 0.14 }
+    "doris": {
+      "path": "assets/sprites/doris.png",
+      "frameWidth": 76,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "father": {
+      "path": "assets/sprites/father.png",
+      "frameWidth": 76,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "wolfgang": {
+      "path": "assets/sprites/wolfgang.png",
+      "frameWidth": 177,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "monika": {
+      "path": "assets/sprites/monika.png",
+      "frameWidth": 75,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "christine": {
+      "path": "assets/sprites/christine.png",
+      "frameWidth": 77,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "valentin": {
+      "path": "assets/sprites/valentin.png",
+      "frameWidth": 69,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "tobert": {
+      "path": "assets/sprites/tobert.png",
+      "frameWidth": 93,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "ben": {
+      "path": "assets/sprites/ben.png",
+      "frameWidth": 81,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "podelski": {
+      "path": "assets/sprites/podelski.png",
+      "frameWidth": 145,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "byron": {
+      "path": "assets/sprites/byron.png",
+      "frameWidth": 60,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "byron2": {
+      "path": "assets/sprites/byron2.png",
+      "frameWidth": 57,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "dejan": {
+      "path": "assets/sprites/dejan.png",
+      "frameWidth": 80,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "evren": {
+      "path": "assets/sprites/evren.png",
+      "frameWidth": 115,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "john": {
+      "path": "assets/sprites/john.png",
+      "frameWidth": 72,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "stephan": {
+      "path": "assets/sprites/stephan.png",
+      "frameWidth": 82,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "zhiming": {
+      "path": "assets/sprites/zhiming.png",
+      "frameWidth": 71,
+      "frameHeight": 188,
+      "scale": 0.4
+    }
+  },
+  "enemies": {
+    "bug": {
+      "path": "assets/sprites/bug.png",
+      "frameWidth": 101,
+      "frameHeight": 94,
+      "scale": 0.4
+    }
+  },
+  "items": {
+    "path": "assets/sprites/items.png",
+    "frameWidth": 121,
+    "frameHeight": 100,
+    "scale": 0.5,
+    "frames": {
+      "diploma": 0,
+      "accepted_paper": 1,
+      "laptop": 2,
+      "journal": 3,
+      "passport": 4,
+      "hat": 5,
+      "diploma2": 6,
+      "laptop2": 7,
+      "passport2": 8,
+      "hat2": 9
+    }
   },
   "martin_actions": {
     "path": "assets/sprites/martin_actions.png",
     "frameWidth": 442,
     "frameHeight": 360,
     "animations": {
-      "climbing":     { "start": 0,  "count": 12 },
-      "push_pull":    { "start": 12, "count": 10 },
-      "getting_hit":  { "start": 22, "count": 8 },
-      "falling":      { "start": 30, "count": 7 },
-      "opening":      { "start": 37, "count": 3 },
-      "powerup":      { "start": 40, "count": 2 },
-      "energy_blast": { "start": 42, "count": 3 },
-      "bonus_attack": { "start": 45, "count": 8 }
+      "climbing": {
+        "start": 0,
+        "count": 12
+      },
+      "push_pull": {
+        "start": 12,
+        "count": 10
+      },
+      "getting_hit": {
+        "start": 22,
+        "count": 8
+      },
+      "falling": {
+        "start": 30,
+        "count": 7
+      },
+      "opening": {
+        "start": 37,
+        "count": 3
+      },
+      "powerup": {
+        "start": 40,
+        "count": 2
+      },
+      "energy_blast": {
+        "start": 42,
+        "count": 3
+      },
+      "bonus_attack": {
+        "start": 45,
+        "count": 8
+      }
     }
   }
 }

@@ -19,15 +19,15 @@ export class World1_Saarbruecken extends BaseScene {
         this.load.json('spriteData', 'data/sprites.json');
 
         // NPC spritesheets for this level
-        this.load.spritesheet('doris',     'assets/sprites/doris.png',     { frameWidth: 305, frameHeight: 753 });
-        this.load.spritesheet('father',    'assets/sprites/father.png',    { frameWidth: 375, frameHeight: 924 });
-        this.load.spritesheet('wolfgang',  'assets/sprites/wolfgang.png',  { frameWidth: 448, frameHeight: 476 });
-        this.load.spritesheet('monika',    'assets/sprites/monika.png',    { frameWidth: 303, frameHeight: 759 });
-        this.load.spritesheet('christine', 'assets/sprites/christine.png', { frameWidth: 305, frameHeight: 745 });
-        this.load.spritesheet('valentin',  'assets/sprites/valentin.png',  { frameWidth: 435, frameHeight: 1185 });
-        this.load.spritesheet('tobert',    'assets/sprites/tobert.png',    { frameWidth: 453, frameHeight: 917 });
-        this.load.spritesheet('ben',       'assets/sprites/ben.png',       { frameWidth: 414, frameHeight: 959 });
-        this.load.spritesheet('podelski',  'assets/sprites/podelski.png',  { frameWidth: 412, frameHeight: 533 });
+        this.load.spritesheet('doris',     'assets/sprites/doris.png',     { frameWidth: 76, frameHeight: 188 });
+        this.load.spritesheet('father',    'assets/sprites/father.png',    { frameWidth: 76, frameHeight: 188 });
+        this.load.spritesheet('wolfgang',  'assets/sprites/wolfgang.png',  { frameWidth: 177, frameHeight: 188 });
+        this.load.spritesheet('monika',    'assets/sprites/monika.png',    { frameWidth: 75, frameHeight: 188 });
+        this.load.spritesheet('christine', 'assets/sprites/christine.png', { frameWidth: 77, frameHeight: 188 });
+        this.load.spritesheet('valentin',  'assets/sprites/valentin.png',  { frameWidth: 69, frameHeight: 188 });
+        this.load.spritesheet('tobert',    'assets/sprites/tobert.png',    { frameWidth: 93, frameHeight: 188 });
+        this.load.spritesheet('ben',       'assets/sprites/ben.png',       { frameWidth: 81, frameHeight: 188 });
+        this.load.spritesheet('podelski',  'assets/sprites/podelski.png',  { frameWidth: 145, frameHeight: 188 });
     }
 
     create() {
@@ -145,6 +145,13 @@ export class World1_Saarbruecken extends BaseScene {
             fontSize: '11px', fontFamily: 'monospace', color: '#cbdbfc',
             stroke: '#000', strokeThickness: 2
         }).setScrollFactor(0).setDepth(100);
+
+        // Handle resize
+        this._ww = ww; this._wh = wh;
+        this.scale.on('resize', (gameSize) => {
+            this.cameras.main.setSize(gameSize.width, gameSize.height);
+            this.cameras.main.setBounds(0, 0, this._ww, this._wh);
+        });
     }
 
     update() {
