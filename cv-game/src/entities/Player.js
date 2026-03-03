@@ -21,6 +21,11 @@ export class Player {
         this.facing = 'down';
         this._touchAction = false;
         this._touchDir = null;
+        this.hp = 3;
+        this.maxHp = 3;
+        this.attacking = false;
+        this.invincible = false;
+        this.attackHitbox = null;
 
         this.sprite = scene.physics.add.sprite(x, y, 'martin', IDLE.down)
             .setScale(SCALE)
@@ -39,6 +44,8 @@ export class Player {
         };
         this.actionKey = scene.input.keyboard.addKey('E');
         this.spaceKey = scene.input.keyboard.addKey('SPACE');
+        this.attackKey = scene.input.keyboard.addKey('Z');
+        this._touchAttack = false;
 
         this._createAnims();
 
@@ -71,6 +78,13 @@ export class Player {
         }).setOrigin(0.5).setScrollFactor(0).setDepth(201);
 
         this._actionBtn.on('pointerdown', () => { this._touchAction = true; });
+
+        this._atkBtn = s.add.circle(0, 0, 30, 0xff4444, 0.3).setScrollFactor(0).setDepth(200).setInteractive();
+        this._atkLabel = s.add.text(0, 0, 'Z', {
+            fontSize: '18px', fontFamily: 'monospace', color: '#ff4444'
+        }).setOrigin(0.5).setScrollFactor(0).setDepth(201);
+        this._atkBtn.on('pointerdown', () => { this._touchAttack = true; });
+
         this._layoutTouch();
 
         // Reposition on resize
@@ -114,6 +128,10 @@ export class Player {
         this._joyThumb.setPosition(jx, jy);
         this._actionBtn.setPosition(w - 80, h - 100);
         this._actionLabel.setPosition(w - 80, h - 100);
+        if (this._atkBtn) {
+            this._atkBtn.setPosition(w - 140, h - 70);
+            this._atkLabel.setPosition(w - 140, h - 70);
+        }
     }
 
     update() {
@@ -156,5 +174,56 @@ export class Player {
         return touch ||
                Phaser.Input.Keyboard.JustDown(this.actionKey) ||
                Phaser.Input.Keyboard.JustDown(this.spaceKey);
+    }
+
+    isAttack() {
+        const touch = this._touchAttack;
+        this._touchAttack = false;
+        return touch || Phaser.Input.Keyboard.JustDown(this.attackKey);
+    }
+
+    attack() {
+        if (this.attacking) return;
+        this.attacking = true;
+
+        // Hitbox offset based on facing
+        const offsets = { down: [0, 40], up: [0, -40], left: [-40, 0], right: [40, 0] };
+        const [ox, oy] = offsets[this.facing];
+        const w = this.facing === 'left' || this.facing === 'right' ? 30 : 50;
+        const h = this.facing === 'left' || this.facing === 'right' ? 50 : 30;
+
+        const hb = this.scene.add.zone(this.sprite.x + ox, this.sprite.y + oy, w, h);
+        this.scene.physics.add.existing(hb, false);
+        hb.body.setAllowGravity(false);
+        this.attackHitbox = hb;
+
+        // Visual slash
+        const slash = this.scene.add.rectangle(this.sprite.x + ox, this.sprite.y + oy, w, h, 0xf4e842, 0.6).setDepth(15);
+
+        this.scene.time.delayedCall(150, () => {
+            slash.destroy();
+            hb.destroy();
+            this.attackHitbox = null;
+            this.attacking = false;
+        });
+    }
+
+    takeDamage(amount) {
+        if (this.invincible || this.hp <= 0) return;
+        this.hp -= amount;
+        this.invincible = true;
+
+        // Flash effect
+        this.scene.tweens.add({
+            targets: this.sprite, alpha: 0.3, yoyo: true, repeat: 5, duration: 80,
+            onComplete: () => { this.sprite.alpha = 1; this.invincible = false; }
+        });
+
+        // Knockback
+        const kb = { down: [0, -120], up: [0, 120], left: [120, 0], right: [-120, 0] };
+        const [kx, ky] = kb[this.facing];
+        this.sprite.setVelocity(kx, ky);
+
+        if (this.hp <= 0 && this.scene.onPlayerDeath) this.scene.onPlayerDeath();
     }
 }

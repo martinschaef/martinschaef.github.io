@@ -28,6 +28,9 @@ export class World1_Saarbruecken extends BaseScene {
         this.load.spritesheet('tobert',    'assets/sprites/tobert.png',    { frameWidth: 93, frameHeight: 188 });
         this.load.spritesheet('ben',       'assets/sprites/ben.png',       { frameWidth: 81, frameHeight: 188 });
         this.load.spritesheet('podelski',  'assets/sprites/podelski.png',  { frameWidth: 145, frameHeight: 188 });
+
+        this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 101, frameHeight: 94 });
+        this.load.json('enemyData', 'data/enemies.json');
     }
 
     create() {
@@ -123,6 +126,64 @@ export class World1_Saarbruecken extends BaseScene {
             });
         }
 
+        // Enemies
+        const enemyData = this.cache.json.get('enemyData');
+        this.enemies = [];
+        this.enemyGroup = this.physics.add.group();
+        if (col.enemies) {
+            // Bug walk animation
+            if (!this.anims.exists('bug_walk')) {
+                const bCfg = enemyData.bug.animations.walk;
+                this.anims.create({
+                    key: 'bug_walk',
+                    frames: this.anims.generateFrameNumbers('bug', { start: bCfg.start, end: bCfg.start + bCfg.count - 1 }),
+                    frameRate: bCfg.rate, repeat: -1
+                });
+            }
+            if (!this.anims.exists('bug_death')) {
+                const dCfg = enemyData.bug.animations.death;
+                this.anims.create({
+                    key: 'bug_death',
+                    frames: this.anims.generateFrameNumbers('bug', { start: dCfg.start, end: dCfg.start + dCfg.count - 1 }),
+                    frameRate: dCfg.rate, repeat: 0
+                });
+            }
+            col.enemies.forEach(e => {
+                const cfg = enemyData[e.type];
+                if (!cfg) return;
+                const spr = this.physics.add.sprite(e.x * S, e.y * S, e.type, 0)
+                    .setScale(cfg.speed ? 0.4 : 0.4).setDepth(8);
+                spr.body.setCollideWorldBounds(true);
+                spr.play('bug_walk');
+                spr.enemyCfg = cfg;
+                spr._wanderTimer = 0;
+                this.enemyGroup.add(spr);
+                this.enemies.push(spr);
+            });
+        }
+
+        // Crates (placeholder boxes near door area)
+        this.crates = this.physics.add.staticGroup();
+        if (col.doors && col.doors.length > 0) {
+            const door = col.doors[0];
+            const dx = door.x * S, dy = door.y * S;
+            for (let i = -1; i <= 1; i++) {
+                const crate = this.add.rectangle(dx + i * 50, dy + 60, 40, 40, 0x8B4513).setDepth(5)
+                    .setStrokeStyle(2, 0x5C3317);
+                this.physics.add.existing(crate, true);
+                this.crates.add(crate);
+            }
+        }
+
+        // Combat collisions
+        this.physics.add.collider(this.player.sprite, this.enemyGroup);
+        this.physics.add.collider(this.enemyGroup, this.walls);
+        this.physics.add.collider(this.player.sprite, this.crates);
+        this.physics.add.overlap(this.player.sprite, this.enemyGroup, (_, enemy) => {
+            this.player.takeDamage(enemy.enemyCfg.damage);
+            this._updateHearts();
+        });
+
         // Camera
         this.cameras.main.setBounds(0, 0, ww, wh);
         this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
@@ -141,10 +202,19 @@ export class World1_Saarbruecken extends BaseScene {
             fontSize: '14px', fontFamily: 'monospace', color: '#f4e842',
             stroke: '#000', strokeThickness: 3
         }).setScrollFactor(0).setDepth(100);
-        this.add.text(16, 36, 'WASD/Arrows: Move | E/Space: Talk | ↑↓: Choose', {
+        this.add.text(16, 36, 'WASD/Arrows: Move | E/Space: Talk | Z: Attack | ↑↓: Choose', {
             fontSize: '11px', fontFamily: 'monospace', color: '#cbdbfc',
             stroke: '#000', strokeThickness: 2
         }).setScrollFactor(0).setDepth(100);
+
+        // Hearts HUD
+        this._hearts = [];
+        for (let i = 0; i < this.player.maxHp; i++) {
+            const h = this.add.text(16 + i * 24, 56, '❤️', {
+                fontSize: '18px'
+            }).setScrollFactor(0).setDepth(100);
+            this._hearts.push(h);
+        }
 
         // Handle resize
         this._ww = ww; this._wh = wh;
@@ -171,6 +241,39 @@ export class World1_Saarbruecken extends BaseScene {
             if (this.dialogueActive) this._advanceDialogue();
             else this._tryTalk();
         }
+
+        // Attack
+        if (this.player.isAttack() && !this.dialogueActive) {
+            this.player.attack();
+        }
+
+        // Attack hitbox vs enemies/crates
+        if (this.player.attackHitbox) {
+            this.enemies.forEach(e => {
+                if (e.active && this.physics.overlap(this.player.attackHitbox, e)) {
+                    this._killEnemy(e);
+                }
+            });
+            this.crates.getChildren().forEach(c => {
+                if (c.active && this.physics.overlap(this.player.attackHitbox, c)) {
+                    this._destroyCrate(c);
+                }
+            });
+        }
+
+        // Enemy wander AI
+        this.enemies.forEach(e => {
+            if (!e.active) return;
+            e._wanderTimer -= this.game.loop.delta;
+            if (e._wanderTimer <= 0) {
+                e._wanderTimer = 1500 + Math.random() * 2000;
+                const dirs = [[1,0],[-1,0],[0,1],[0,-1],[0,0]];
+                const [dx, dy] = dirs[Math.floor(Math.random() * dirs.length)];
+                const spd = e.enemyCfg.speed;
+                e.setVelocity(dx * spd, dy * spd);
+                if (dx !== 0) e.setFlipX(dx < 0);
+            }
+        });
     }
 
     _tryTalk() {
@@ -223,5 +326,34 @@ export class World1_Saarbruecken extends BaseScene {
             this.hideMessage();
             this._currentNPC = null;
         }
+    }
+
+    _killEnemy(enemy) {
+        enemy.setVelocity(0);
+        enemy.play('bug_death');
+        enemy.on('animationcomplete', () => enemy.destroy());
+        const idx = this.enemies.indexOf(enemy);
+        if (idx >= 0) this.enemies.splice(idx, 1);
+    }
+
+    _destroyCrate(crate) {
+        // Particle-like burst
+        for (let i = 0; i < 4; i++) {
+            const p = this.add.rectangle(crate.x + Phaser.Math.Between(-10,10), crate.y + Phaser.Math.Between(-10,10), 8, 8, 0x8B4513).setDepth(15);
+            this.tweens.add({ targets: p, alpha: 0, y: p.y - 30, duration: 400, onComplete: () => p.destroy() });
+        }
+        crate.destroy();
+    }
+
+    _updateHearts() {
+        this._hearts.forEach((h, i) => {
+            h.setText(i < this.player.hp ? '❤️' : '🖤');
+        });
+    }
+
+    onPlayerDeath() {
+        this.player.sprite.setVelocity(0);
+        this.cameras.main.shake(300, 0.02);
+        this.time.delayedCall(1000, () => this.scene.restart());
     }
 }
