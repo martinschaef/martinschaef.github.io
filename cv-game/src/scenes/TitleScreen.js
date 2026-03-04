@@ -34,7 +34,7 @@ export class TitleScreen extends Phaser.Scene {
         this._aboutBox = null;
 
         // Figure out which scenes are registered
-        this._availableScenes = new Set(this.scene.manager.keys);
+        this._availableScenes = new Set(Object.keys(this.scene.manager.keys));
     }
 
     _start() {
