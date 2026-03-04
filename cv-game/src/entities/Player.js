@@ -147,10 +147,15 @@ export class Player {
         const right = this.cursors.right.isDown || this.wasd.right.isDown || this._touchDir === 'right';
 
         let vx = 0, vy = 0;
+        if (left) { vx = -SPEED; this.facing = 'left'; }
+        if (right) { vx = SPEED; this.facing = 'right'; }
         if (up) { vy = -SPEED; this.facing = 'up'; }
-        else if (down) { vy = SPEED; this.facing = 'down'; }
-        else if (left) { vx = -SPEED; this.facing = 'left'; }
-        else if (right) { vx = SPEED; this.facing = 'right'; }
+        if (down) { vy = SPEED; this.facing = 'down'; }
+
+        // Normalize diagonal speed
+        if (vx !== 0 && vy !== 0) {
+            vx *= 0.707; vy *= 0.707;
+        }
 
         this.sprite.setVelocity(vx, vy);
         this.sprite.setFlipX(this.facing === 'left');
