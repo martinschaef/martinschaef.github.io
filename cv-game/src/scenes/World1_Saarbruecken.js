@@ -34,10 +34,10 @@ export class World1_Saarbruecken extends BaseScene {
     }
 
     create() {
-        const S = 3;
+        const col = this.cache.json.get('world1_collision');
+        const S = col.display_scale || 3;
         const npcData = this.cache.json.get('npcData');
         const spriteData = this.cache.json.get('spriteData');
-        const col = this.cache.json.get('world1_collision');
         const ww = col.world_width * S, wh = col.world_height * S;
 
         // Background

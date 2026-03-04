@@ -11,8 +11,8 @@ export class World3_Macau extends BaseScene {
     }
 
     create() {
-        const S = 3;
         const col = this.cache.json.get('world3_collision');
+        const S = col.display_scale || 3;
         const ww = col.world_width * S, wh = col.world_height * S;
 
         this.add.image(0, 0, 'world3_bg').setOrigin(0).setScale(S).setDepth(0);

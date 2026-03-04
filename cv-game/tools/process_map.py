@@ -5,21 +5,40 @@ Map Processing Pipeline for Career Quest.
 Usage:
     python3 tools/process_map.py <input_image> <output_name> [--scale 0.5]
 
-Example:
-    python3 tools/process_map.py assets/saarbrücken-map.png world1 --scale 0.5
-
 Outputs:
-    assets/tilemaps/<output_name>_bg.png        — scaled background image
-    assets/tilemaps/<output_name>_collision.json — collision data (water, borders)
-    /tmp/<output_name>_collision_preview.png     — debug visualization
+    assets/tilemaps/<name>_bg.png        — scaled background (grid lines removed)
+    assets/tilemaps/<name>_collision.json — collision + tile_size + display_scale
+    /tmp/<name>_collision_preview.png     — debug visualization
 """
 
-import argparse, json, sys
+import argparse, json
 from pathlib import Path
 from PIL import Image
 import numpy as np
 
-def detect_water(rgb, block_size=32):
+TARGET_TILE_PX = 72  # desired on-screen tile size (consistent across all levels)
+
+def detect_tile_size(rgb):
+    """Detect grid/tile size by finding periodic row anomalies."""
+    img = rgb.astype(float)
+    h = img.shape[0]
+    scores = {}
+    for step in range(16, 129):
+        rows = list(range(step, h - 1, step))
+        if len(rows) < 3:
+            continue
+        total = sum(
+            np.median(np.abs(img[r] - (img[r-1] + img[r+1]) / 2))
+            for r in rows
+        )
+        scores[step] = total / len(rows)
+    if not scores:
+        return None
+    baseline = np.median(list(scores.values()))
+    best = max(scores, key=scores.get)
+    return best if scores[best] > baseline * 2 else None
+
+def detect_water(rgb):
     """Detect water pixels: blue channel dominant."""
     return (rgb[:,:,2] > rgb[:,:,0] + 15) & (rgb[:,:,2] > rgb[:,:,1]) & (rgb[:,:,2] > 80)
 
@@ -48,20 +67,37 @@ def process_map(input_path, output_name, scale=0.5):
     game_w, game_h = int(w * scale), int(h * scale)
     print(f'Input: {w}x{h} → Game world: {game_w}x{game_h} (scale {scale})')
 
-    # Save scaled background
     out_dir = Path('assets/tilemaps')
     out_dir.mkdir(parents=True, exist_ok=True)
 
     scaled = img.resize((game_w, game_h), Image.LANCZOS)
     bg_path = out_dir / f'{output_name}_bg.png'
+
+    # Detect tile size and compute display_scale
+    tile_size = detect_tile_size(rgb)
+    if tile_size:
+        scaled_tile = int(tile_size * scale)
+        display_scale = round(TARGET_TILE_PX / scaled_tile, 2)
+        print(f'Detected tile size: {tile_size}px (scaled: {scaled_tile}px) → display_scale={display_scale}')
+
+        # Remove grid lines by interpolating over them
+        sa = np.array(scaled).astype(float)
+        fixed = 0
+        for r in range(scaled_tile, sa.shape[0] - 1, scaled_tile):
+            sa[r] = (sa[r-1] + sa[r+1]) / 2
+            fixed += 1
+        scaled = Image.fromarray(sa.astype(np.uint8))
+        print(f'Removed {fixed} grid lines')
+    else:
+        scaled_tile = 16
+        display_scale = 3.0
+        print(f'No grid detected, using default display_scale={display_scale}')
+
     scaled.save(bg_path)
     print(f'Saved {bg_path}')
 
-    # Detect water collision
-    water_mask = detect_water(rgb)
-    water_rects = build_collision_rects(water_mask, 32, scale)
-
-    # Border collision
+    # Collision data
+    water_rects = build_collision_rects(detect_water(rgb), 32, scale)
     border = 8
     border_rects = [
         {'x': 0, 'y': 0, 'w': game_w, 'h': border},
@@ -70,12 +106,13 @@ def process_map(input_path, output_name, scale=0.5):
         {'x': game_w - border, 'y': 0, 'w': border, 'h': game_h},
     ]
 
-    # Save collision JSON
     collision_data = {
         'world_width': game_w,
         'world_height': game_h,
         'scale': scale,
         'block_size': int(32 * scale),
+        'tile_size': scaled_tile,
+        'display_scale': display_scale,
         'water_rects': water_rects,
         'border_rects': border_rects,
     }
@@ -84,7 +121,7 @@ def process_map(input_path, output_name, scale=0.5):
         json.dump(collision_data, f)
     print(f'Saved {col_path} ({len(water_rects)} water, {len(border_rects)} border)')
 
-    # Debug visualization
+    # Debug preview
     vis = np.array(scaled.convert('RGBA'))
     for rect in water_rects:
         x, y, rw, rh = rect['x'], rect['y'], rect['w'], rect['h']
