@@ -1,4 +1,36 @@
+import { AUDIO } from '../config/audio.js';
+
 export class BaseScene extends Phaser.Scene {
+
+    /** Call in preload() to load all SFX + specific music keys */
+    loadAudio(...musicKeys) {
+        for (const [key, path] of Object.entries(AUDIO)) {
+            if (key.startsWith('music') && !musicKeys.includes(key)) continue;
+            this.load.audio(key, path);
+        }
+        // Don't fail if files are missing
+        this.load.on('loaderror', (file) => {
+            console.warn('Audio not found (skipped):', file.key);
+        });
+    }
+
+    /** Play a sound effect (no-op if not loaded) */
+    sfx(key, config) {
+        if (this.cache.audio.exists(key)) this.sound.play(key, config);
+    }
+
+    /** Play looping music, stopping any previous track */
+    playMusic(key, volume = 0.3) {
+        if (this._music) this._music.stop();
+        if (!this.cache.audio.exists(key)) return;
+        this._music = this.sound.add(key, { loop: true, volume });
+        this._music.play();
+    }
+
+    stopMusic() {
+        if (this._music) { this._music.stop(); this._music = null; }
+    }
+
     showMessage(text, choices) {
         this._clearMessage();
         this._dialogueActive = true;
@@ -20,11 +52,15 @@ export class BaseScene extends Phaser.Scene {
         }).setScrollFactor(0).setDepth(101);
 
         let i = 0;
+        let blipCounter = 0;
         this._typeTimer = this.time.addEvent({
             delay: 30,
             repeat: text.length - 1,
             callback: () => {
-                if (this._msgText) this._msgText.text += text[i++];
+                if (this._msgText) this._msgText.text += text[i];
+                // Blip every 3rd character (not every char — too noisy)
+                if (++blipCounter % 3 === 0 && text[i] !== ' ') this.sfx('blip', { volume: 0.15 });
+                i++;
                 if (i >= text.length) {
                     this._textDone = true;
                     if (choices) this._showChoices();
@@ -58,6 +94,7 @@ export class BaseScene extends Phaser.Scene {
         if (!this._choices || !this._textDone) return;
         this._choiceIndex = (this._choiceIndex + dir + this._choices.length) % this._choices.length;
         this._updateChoiceHighlight();
+        this.sfx('select', { volume: 0.2 });
     }
 
     getSelectedChoice() {
@@ -68,6 +105,7 @@ export class BaseScene extends Phaser.Scene {
     hideMessage() {
         this._clearMessage();
         this._dialogueActive = false;
+        this.sfx('confirm', { volume: 0.25 });
     }
 
     _clearMessage() {
@@ -82,6 +120,8 @@ export class BaseScene extends Phaser.Scene {
     get dialogueActive() { return !!this._dialogueActive; }
 
     transitionTo(sceneKey) {
+        this.sfx('doorOpen', { volume: 0.3 });
+        this.stopMusic();
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start(sceneKey));
     }

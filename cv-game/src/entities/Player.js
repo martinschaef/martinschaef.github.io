@@ -199,6 +199,7 @@ export class Player {
 
         // Visual slash
         const slash = this.scene.add.rectangle(this.sprite.x + ox, this.sprite.y + oy, w, h, 0xf4e842, 0.6).setDepth(15);
+        this.scene.sfx('swing', { volume: 0.3 });
 
         this.scene.time.delayedCall(150, () => {
             slash.destroy();
@@ -212,6 +213,7 @@ export class Player {
         if (this.invincible || this.hp <= 0) return;
         this.hp -= amount;
         this.invincible = true;
+        this.scene.sfx('hurt', { volume: 0.4 });
 
         // Flash effect
         this.scene.tweens.add({

@@ -8,6 +8,7 @@ export class World3_Macau extends BaseScene {
         this.load.spritesheet('martin', 'assets/sprites/martin.png', { frameWidth: 104, frameHeight: 183 });
         this.load.image('world3_bg', 'assets/tilemaps/world3_bg.png');
         this.load.json('world3_collision', 'assets/tilemaps/world3_collision.json');
+        this.loadAudio('music3');
     }
 
     create() {
@@ -39,6 +40,7 @@ export class World3_Macau extends BaseScene {
         }).setScrollFactor(0).setDepth(100);
 
         this.cameras.main.fadeIn(500);
+        this.playMusic('music3');
     }
 
     update() { this.player.update(); }

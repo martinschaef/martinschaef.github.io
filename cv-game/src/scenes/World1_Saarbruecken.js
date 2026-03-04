@@ -31,6 +31,8 @@ export class World1_Saarbruecken extends BaseScene {
 
         this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 101, frameHeight: 94 });
         this.load.json('enemyData', 'data/enemies.json');
+
+        this.loadAudio('music1');
     }
 
     create() {
@@ -222,6 +224,8 @@ export class World1_Saarbruecken extends BaseScene {
             this.cameras.main.setSize(gameSize.width, gameSize.height);
             this.cameras.main.setBounds(0, 0, this._ww, this._wh);
         });
+
+        this.playMusic('music1');
     }
 
     update() {
@@ -331,12 +335,14 @@ export class World1_Saarbruecken extends BaseScene {
     _killEnemy(enemy) {
         enemy.setVelocity(0);
         enemy.play('bug_death');
-        enemy.on('animationcomplete', () => enemy.destroy());
+        this.sfx('hit');
+        enemy.on('animationcomplete', () => { this.sfx('enemyDeath'); enemy.destroy(); });
         const idx = this.enemies.indexOf(enemy);
         if (idx >= 0) this.enemies.splice(idx, 1);
     }
 
     _destroyCrate(crate) {
+        this.sfx('crateBreak');
         // Particle-like burst
         for (let i = 0; i < 4; i++) {
             const p = this.add.rectangle(crate.x + Phaser.Math.Between(-10,10), crate.y + Phaser.Math.Between(-10,10), 8, 8, 0x8B4513).setDepth(15);

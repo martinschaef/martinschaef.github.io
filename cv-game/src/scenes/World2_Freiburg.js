@@ -8,6 +8,7 @@ export class World2_Freiburg extends BaseScene {
         this.load.spritesheet('martin', 'assets/sprites/martin.png', { frameWidth: 104, frameHeight: 183 });
         this.load.image('world2_bg', 'assets/tilemaps/world2_bg.png');
         this.load.json('world2_collision', 'assets/tilemaps/world2_collision.json');
+        this.loadAudio('music2');
     }
 
     create() {
@@ -39,6 +40,7 @@ export class World2_Freiburg extends BaseScene {
         }).setScrollFactor(0).setDepth(100);
 
         this.cameras.main.fadeIn(500);
+        this.playMusic('music2');
     }
 
     update() { this.player.update(); }
