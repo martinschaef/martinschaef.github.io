@@ -194,6 +194,15 @@ export class BaseScene extends Phaser.Scene {
                     this.wanderingNPCs.push(sprite);
                 } else {
                     sprite = this.add.sprite(x, y, cfg.sprite, 0).setScale(sDef?.scale || 0.4).setDepth(5);
+                    // Idle animation using all frames
+                    const key = cfg.sprite;
+                    if (!this.anims.exists(key + '_idle')) {
+                        const totalFrames = this.textures.get(key).getFrameNames().length || this.textures.get(key).frameTotal - 1;
+                        if (totalFrames > 1) {
+                            this.anims.create({ key: key + '_idle', frames: this.anims.generateFrameNumbers(key, { start: 0, end: totalFrames - 1 }), frameRate: 3, repeat: -1 });
+                        }
+                    }
+                    if (this.anims.exists(key + '_idle')) sprite.play(key + '_idle');
                 }
             } else {
                 sprite = this.add.rectangle(x, y, 28, 28, 0xffff00).setDepth(5);
