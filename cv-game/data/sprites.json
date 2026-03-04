@@ -95,6 +95,24 @@
       "frameWidth": 71,
       "frameHeight": 188,
       "scale": 0.4
+    },
+    "lauren": {
+      "path": "assets/sprites/lauren.png",
+      "frameWidth": 103,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "willem": {
+      "path": "assets/sprites/willem.png",
+      "frameWidth": 116,
+      "frameHeight": 188,
+      "scale": 0.4,
+      "wander": true,
+      "speed": 30,
+      "animations": {
+        "idle":  { "start": 0, "count": 4, "rate": 4 },
+        "walk":  { "start": 8, "count": 8, "rate": 8 }
+      }
     }
   },
   "enemies": {

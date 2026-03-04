@@ -78,6 +78,7 @@ export class World1_Saarbruecken extends BaseScene {
         };
         const positions = col.npcs || Object.entries(defaultPositions).map(([id,p]) => ({id,...p}));
 
+        this.wanderingNPCs = [];
         positions.forEach(n => {
             const cfg = npcData[n.id];
             if (!cfg) return;
@@ -86,28 +87,54 @@ export class World1_Saarbruecken extends BaseScene {
             // Use sprite if loaded, otherwise colored rectangle
             let sprite;
             const sDef = spriteData.sprites[cfg.sprite];
+            const isWanderer = sDef?.wander;
+
             if (this.textures.exists(cfg.sprite)) {
-                sprite = this.add.sprite(x, y, cfg.sprite, 0).setScale(sDef?.scale || 0.1).setDepth(5);
+                if (isWanderer) {
+                    sprite = this.physics.add.sprite(x, y, cfg.sprite, 0).setScale(sDef.scale || 0.4).setDepth(5);
+                    sprite.body.setCollideWorldBounds(true);
+                    // Create wander animations
+                    const key = cfg.sprite;
+                    if (!this.anims.exists(key + '_idle')) {
+                        const a = sDef.animations;
+                        this.anims.create({ key: key + '_idle', frames: this.anims.generateFrameNumbers(key, { start: a.idle.start, end: a.idle.start + a.idle.count - 1 }), frameRate: a.idle.rate, repeat: -1 });
+                        this.anims.create({ key: key + '_walk', frames: this.anims.generateFrameNumbers(key, { start: a.walk.start, end: a.walk.start + a.walk.count - 1 }), frameRate: a.walk.rate, repeat: -1 });
+                    }
+                    sprite.play(key + '_idle');
+                    sprite._wanderTimer = 0;
+                    sprite._wanderSpeed = sDef.speed || 30;
+                    sprite._animKey = key;
+                    this.wanderingNPCs.push(sprite);
+                } else {
+                    sprite = this.add.sprite(x, y, cfg.sprite, 0).setScale(sDef?.scale || 0.1).setDepth(5);
+                }
             } else {
                 sprite = this.add.rectangle(x, y, 28, 28, 0xffff00).setDepth(5);
             }
 
             // Name label
-            this.add.text(x, y - sprite.displayHeight/2 - 10, n.id, {
+            const label = this.add.text(x, y - sprite.displayHeight/2 - 10, n.id, {
                 fontSize: '10px', fontFamily: 'monospace', color: '#fff',
                 stroke: '#000', strokeThickness: 2
             }).setOrigin(0.5).setDepth(5);
 
-            // Collision zone
-            const zone = this.add.zone(x, y, 28, 28);
-            this.physics.add.existing(zone, true);
-            this.npcBodies.add(zone);
-            this.npcList.push({ x, y, id: n.id, dialogue: cfg.dialogue });
+            // Collision zone (static for non-wanderers, track sprite for wanderers)
+            if (!isWanderer) {
+                const zone = this.add.zone(x, y, 28, 28);
+                this.physics.add.existing(zone, true);
+                this.npcBodies.add(zone);
+            }
+            this.npcList.push({ x, y, id: n.id, dialogue: cfg.dialogue, sprite, label, wander: isWanderer });
         });
 
         // Collisions
         this.physics.add.collider(this.player.sprite, this.walls);
         this.physics.add.collider(this.player.sprite, this.npcBodies);
+        // Wandering NPC collisions
+        this.wanderingNPCs.forEach(s => {
+            this.physics.add.collider(s, this.walls);
+            this.physics.add.collider(this.player.sprite, s);
+        });
 
         // Doors/exits (from editor)
         if (col.doors) {
@@ -278,6 +305,29 @@ export class World1_Saarbruecken extends BaseScene {
                 if (dx !== 0) e.setFlipX(dx < 0);
             }
         });
+
+        // Wandering NPC AI
+        this.wanderingNPCs.forEach(s => {
+            s._wanderTimer -= this.game.loop.delta;
+            if (s._wanderTimer <= 0) {
+                s._wanderTimer = 2000 + Math.random() * 3000;
+                const dirs = [[1,0],[-1,0],[0,1],[0,-1],[0,0]];
+                const [dx, dy] = dirs[Math.floor(Math.random() * dirs.length)];
+                const spd = s._wanderSpeed;
+                s.setVelocity(dx * spd, dy * spd);
+                if (dx !== 0) s.setFlipX(dx < 0);
+                s.play(dx || dy ? s._animKey + '_walk' : s._animKey + '_idle', true);
+            }
+        });
+
+        // Update wandering NPC positions in npcList + labels
+        for (const npc of this.npcList) {
+            if (npc.wander && npc.sprite) {
+                npc.x = npc.sprite.x;
+                npc.y = npc.sprite.y;
+                npc.label.setPosition(npc.x, npc.y - npc.sprite.displayHeight/2 - 10);
+            }
+        }
     }
 
     _tryTalk() {
