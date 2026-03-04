@@ -20,4 +20,6 @@ export const AUDIO = {
     music1:     'assets/audio/music_saarbruecken.mp3',
     music2:     'assets/audio/music_freiburg.mp3',
     music3:     'assets/audio/music_macau.mp3',
+    music4:     'assets/audio/music_sanfrancisco.mp3',
+    music5:     'assets/audio/music_nyc.mp3',
 };
