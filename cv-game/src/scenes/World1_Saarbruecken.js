@@ -253,6 +253,7 @@ export class World1_Saarbruecken extends BaseScene {
         });
 
         this.playMusic('music1');
+        this.createMuteButton();
     }
 
     update() {

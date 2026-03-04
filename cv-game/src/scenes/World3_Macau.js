@@ -41,6 +41,7 @@ export class World3_Macau extends BaseScene {
 
         this.cameras.main.fadeIn(500);
         this.playMusic('music3');
+        this.createMuteButton();
     }
 
     update() { this.player.update(); }

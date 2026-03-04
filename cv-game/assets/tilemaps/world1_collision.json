@@ -12240,8 +12240,65 @@
       "id": "wolfgang",
       "x": 503,
       "y": 287
+    },
+    {
+      "id": "podelski",
+      "x": 383,
+      "y": 666
+    },
+    {
+      "id": "evren",
+      "x": 854,
+      "y": 716
+    },
+    {
+      "id": "tobert",
+      "x": 980,
+      "y": 316
     }
   ],
   "tile_size": 22,
-  "display_scale": 3.27
+  "display_scale": 3.27,
+  "doors": [
+    {
+      "x": 405,
+      "y": 720,
+      "target": "World2_Freiburg",
+      "label": "Exit →"
+    }
+  ],
+  "enemies": [
+    {
+      "type": "bug",
+      "x": 76,
+      "y": 410
+    },
+    {
+      "type": "bug",
+      "x": 1176,
+      "y": 706
+    },
+    {
+      "type": "bug",
+      "x": 1049,
+      "y": 701
+    },
+    {
+      "type": "bug",
+      "x": 385,
+      "y": 79
+    },
+    {
+      "type": "bug",
+      "x": 229,
+      "y": 96
+    }
+  ],
+  "items": [
+    {
+      "id": "laptop",
+      "x": 1106,
+      "y": 715
+    }
+  ]
 }

@@ -8,14 +8,14 @@ export class BaseScene extends Phaser.Scene {
             if (key.startsWith('music') && !musicKeys.includes(key)) continue;
             this.load.audio(key, path);
         }
-        // Don't fail if files are missing
         this.load.on('loaderror', (file) => {
             console.warn('Audio not found (skipped):', file.key);
         });
     }
 
-    /** Play a sound effect (no-op if not loaded) */
+    /** Play a sound effect (no-op if not loaded or muted) */
     sfx(key, config) {
+        if (this.sound.mute) return;
         if (this.cache.audio.exists(key)) this.sound.play(key, config);
     }
 
@@ -29,6 +29,24 @@ export class BaseScene extends Phaser.Scene {
 
     stopMusic() {
         if (this._music) { this._music.stop(); this._music = null; }
+    }
+
+    /** Create mute toggle button (call in create()) */
+    createMuteButton() {
+        const cam = this.cameras.main;
+        const muted = this.sound.mute;
+        this._muteBtn = this.add.text(cam.width - 12, 12, muted ? '🔇' : '🔊', {
+            fontSize: '22px'
+        }).setOrigin(1, 0).setScrollFactor(0).setDepth(200).setInteractive({ useHandCursor: true });
+        this._muteBtn.on('pointerdown', () => this._toggleMute());
+
+        // M key to toggle
+        this.input.keyboard.on('keydown-M', () => this._toggleMute());
+    }
+
+    _toggleMute() {
+        this.sound.mute = !this.sound.mute;
+        if (this._muteBtn) this._muteBtn.setText(this.sound.mute ? '🔇' : '🔊');
     }
 
     showMessage(text, choices) {

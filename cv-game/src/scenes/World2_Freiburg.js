@@ -41,6 +41,7 @@ export class World2_Freiburg extends BaseScene {
 
         this.cameras.main.fadeIn(500);
         this.playMusic('music2');
+        this.createMuteButton();
     }
 
     update() { this.player.update(); }
