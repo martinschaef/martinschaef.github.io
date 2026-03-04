@@ -14,7 +14,7 @@
   #sidebar label { font-size:11px; color:#aaa; }
   #sidebar select { width:100%; padding:4px; font-family:monospace; background:#0f3460; color:#eee; border:1px solid #444; }
   #main { flex:1; overflow:auto; position:relative; }
-  canvas { display:block; image-rendering:pixelated; cursor:crosshair; }
+  canvas { display:block; image-rendering:pixelated; cursor:crosshair; transform-origin:0 0; }
   #status { position:fixed; bottom:0; left:220px; right:0; background:#16213e; padding:4px 10px; font-size:11px; color:#aaa; border-top:1px solid #333; }
   .char-list { font-size:11px; }
   .char-list div { padding:2px 4px; display:flex; justify-content:space-between; align-items:center; }
@@ -102,6 +102,7 @@ const status = document.getElementById('status');
 
 let mapName = 'world1', img, colData;
 let gridW, gridH, blockSize;
+let zoom = 1;
 let manualBlocked = new Set();
 let waterSet = new Set();
 let tool = 'block';
@@ -135,7 +136,10 @@ function loadMap() {
   img.src = '../assets/tilemaps/' + mapName + '_bg.png';
   img.onload = () => {
     fetch('../assets/tilemaps/' + mapName + '_collision.json')
-      .then(r => r.json()).then(data => { colData = data; init(); });
+      .then(r => r.ok ? r.json() : null).then(data => {
+        colData = data || { world_width: img.naturalWidth, world_height: img.naturalHeight, block_size: 16, water_rects: [], blocked_tiles: [] };
+        init();
+      });
   };
 }
 
@@ -161,8 +165,23 @@ function init() {
   items = colData.items || [];
 
   updateCharList();
+  fitZoom();
   draw();
   status.textContent = `Loaded ${mapName}: ${gridW}×${gridH} grid, block=${blockSize}px`;
+}
+
+function fitZoom() {
+  const main = document.getElementById('main');
+  zoom = Math.min(main.clientWidth / canvas.width, main.clientHeight / canvas.height, 1);
+  applyZoom();
+}
+
+function applyZoom() {
+  canvas.style.transform = `scale(${zoom})`;
+  canvas.style.width = canvas.width + 'px';
+  canvas.style.height = canvas.height + 'px';
+  const wrapper = document.getElementById('main');
+  wrapper.style.minWidth = (canvas.width * zoom) + 'px';
 }
 
 function draw() {
@@ -335,6 +354,14 @@ document.getElementById('fileInput').onchange = (e) => {
   reader.onload = (ev) => { colData = JSON.parse(ev.target.result); init(); };
   reader.readAsText(file);
 };
+
+// Zoom with scroll wheel
+document.getElementById('main').addEventListener('wheel', (e) => {
+  e.preventDefault();
+  zoom = Math.min(3, Math.max(0.1, zoom * (e.deltaY < 0 ? 1.15 : 0.87)));
+  applyZoom();
+  status.textContent = `Zoom: ${Math.round(zoom*100)}%`;
+}, { passive: false });
 
 loadMap();
 </script>
