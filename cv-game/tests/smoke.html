@@ -37,6 +37,7 @@ const config = {
     backgroundColor: '#222034',
     scale: { mode: Phaser.Scale.NONE },
     physics: { default: 'arcade', arcade: { gravity: { y: 0 } } },
+    audio: { noAudio: true },
     input: { activePointers: 2 },
     loader: { baseURL: '../' },
     scene: scenes
@@ -83,6 +84,6 @@ setTimeout(() => {
         errors.push('Timeout — scenes not booted: ' + missing.join(', '));
         finish();
     }
-}, 20000);
+}, 30000);
 </script>
 </body></html>

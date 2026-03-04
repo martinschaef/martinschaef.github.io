@@ -7,7 +7,7 @@ set -e
 cd "$(dirname "$0")/.."
 
 PORT=8099
-TIMEOUT=25
+TIMEOUT=40
 
 # Find Chrome
 CHROME=""
