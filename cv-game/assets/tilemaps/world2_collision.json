@@ -2646,13 +2646,18 @@
       "id": "byron",
       "x": 790,
       "y": 2305
+    },
+    {
+      "id": "stephan",
+      "x": 650,
+      "y": 466
     }
   ],
   "doors": [
     {
-      "x": 1771,
-      "y": 1363,
-      "target": "World2_Freiburg",
+      "x": 1757,
+      "y": 1373,
+      "target": "World3_Macau",
       "label": "Exit →"
     }
   ],
@@ -2698,11 +2703,5 @@
       "y": 201
     }
   ],
-  "items": [
-    {
-      "id": "passport",
-      "x": 1066,
-      "y": 1627
-    }
-  ]
+  "items": []
 }
