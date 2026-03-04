@@ -6837,10 +6837,12 @@
     {
       "x": 519,
       "y": 2194,
-      "target": "World2_Freiburg",
-      "label": "Exit →"
+      "target": "World5_NYC",
+      "label": "Exit \u2192"
     }
   ],
   "enemies": [],
-  "items": []
+  "items": [],
+  "display_scale": 1.2,
+  "tile_size": 60
 }

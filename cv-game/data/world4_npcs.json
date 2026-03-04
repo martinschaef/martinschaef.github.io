@@ -1,0 +1,10 @@
+{
+  "john": {
+    "sprite": "john",
+    "dialogue": [{ "text": "..." }]
+  },
+  "dejan": {
+    "sprite": "dejan",
+    "dialogue": [{ "text": "..." }]
+  }
+}
