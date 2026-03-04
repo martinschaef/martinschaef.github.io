@@ -337,12 +337,24 @@ export class BaseScene extends Phaser.Scene {
         // Build blocked set for walkability check
         const bs = col.block_size;
         const blocked = new Set();
-        (col.water_rects || []).forEach(r => blocked.add(Math.floor(r.x/bs) + ',' + Math.floor(r.y/bs)));
+        const blockRect = (r) => {
+            const x0 = Math.floor(r.x/bs), y0 = Math.floor(r.y/bs);
+            const x1 = Math.ceil((r.x+r.w)/bs), y1 = Math.ceil((r.y+r.h)/bs);
+            for (let ty = y0; ty < y1; ty++) for (let tx = x0; tx < x1; tx++) blocked.add(tx+','+ty);
+        };
+        (col.water_rects || []).forEach(blockRect);
+        (col.border_rects || []).forEach(blockRect);
         (col.blocked_tiles || []).forEach(([tx,ty]) => blocked.add(tx + ',' + ty));
         const gridW = Math.ceil(col.world_width / bs), gridH = Math.ceil(col.world_height / bs);
-        // Border tiles
         for (let x = 0; x < gridW; x++) { blocked.add(x+',0'); blocked.add(x+','+(gridH-1)); }
         for (let y = 0; y < gridH; y++) { blocked.add('0,'+y); blocked.add((gridW-1)+','+y); }
+        // Block tiles occupied by entities (NPCs, enemies, doors, items, player spawn)
+        const blockPoint = (px, py) => { blocked.add(Math.floor(px/bs)+','+Math.floor(py/bs)); };
+        (col.npcs || []).forEach(n => blockPoint(n.x, n.y));
+        (col.enemies || []).forEach(e => blockPoint(e.x, e.y));
+        (col.doors || []).forEach(d => blockPoint(d.x, d.y));
+        (col.items || []).forEach(it => blockPoint(it.x, it.y));
+        if (col.player_spawn) blockPoint(col.player_spawn.x, col.player_spawn.y);
 
         // Seeded random from world number for consistent placement
         let seed = worldNum * 9973;
