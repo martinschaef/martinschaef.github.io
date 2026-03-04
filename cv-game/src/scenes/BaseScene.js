@@ -56,6 +56,8 @@ export class BaseScene extends Phaser.Scene {
         this.load.json(`npcData_w${worldNum}`, `data/world${worldNum}_npcs.json`);
         this.load.json('itemData', 'data/items.json');
         this.load.spritesheet('items', 'assets/sprites/items.png', { frameWidth: 121, frameHeight: 100 });
+        this.load.image('door_closed', 'assets/sprites/door_closed.png');
+        this.load.image('door_open', 'assets/sprites/door_open.png');
     }
 
     // ── Level creation (call in create) ───────────────────
@@ -248,18 +250,27 @@ export class BaseScene extends Phaser.Scene {
     _setupDoors(col, S) {
         if (!col.doors) return;
         col.doors.forEach(d => {
-            const z = this.add.zone(d.x * S, d.y * S, (d.w || 48) * S, (d.h || 48) * S);
+            const x = d.x * S, y = d.y * S;
+            const z = this.add.zone(x, y, (d.w || 48) * S, (d.h || 48) * S);
             this.physics.add.existing(z, true);
-            // Glowing portal effect
-            const glow = this.add.rectangle(d.x * S, d.y * S, (d.w || 48) * S, (d.h || 48) * S, 0xf4e842, 0.2).setDepth(1);
+            // Door sprite
+            const doorSpr = this.textures.exists('door_closed')
+                ? this.add.image(x, y, 'door_closed').setDepth(2)
+                : null;
+            // Glow
+            const glow = this.add.rectangle(x, y, (d.w || 48) * S, (d.h || 48) * S, 0xf4e842, 0.2).setDepth(1);
             this.tweens.add({ targets: glow, alpha: 0.05, duration: 1200, yoyo: true, repeat: -1 });
-            this.add.text(d.x * S, d.y * S - 24, d.label || '🚪 Exit', {
+            this.add.text(x, y - 36, d.label || 'Exit', {
                 fontSize: '12px', fontFamily: 'monospace', color: '#f4e842',
                 stroke: '#000', strokeThickness: 3
             }).setOrigin(0.5).setDepth(5);
             this.physics.add.overlap(this.player.sprite, z, () => {
                 if (this._transitioning) return;
                 this._transitioning = true;
+                // Swap to open door sprite
+                if (doorSpr && this.textures.exists('door_open')) {
+                    doorSpr.setTexture('door_open');
+                }
                 this.transitionTo(d.target);
             });
         });
