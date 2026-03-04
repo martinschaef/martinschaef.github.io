@@ -29,6 +29,7 @@
     <option value="world2">world2</option>
     <option value="world3">world3</option>
     <option value="world4">world4</option>
+    <option value="world5">world5</option>
   </select></label>
   <button id="btnSave">💾 Save JSON</button>
   <button id="btnLoad">📂 Load JSON</button>
@@ -37,11 +38,21 @@
   <h3>🖌 Tools</h3>
   <button class="tool-btn active" data-tool="block">🟧 Block Tile</button>
   <button class="tool-btn" data-tool="erase">⬜ Erase Block</button>
+  <button class="tool-btn" data-tool="rectfill">🔲 Rect Fill (drag)</button>
+  <button class="tool-btn" data-tool="recterase">🔳 Rect Erase (drag)</button>
   <button class="tool-btn" data-tool="player">🧑 Place Player Spawn</button>
   <button class="tool-btn" data-tool="npc">👤 Place NPC</button>
   <button class="tool-btn" data-tool="door">🚪 Place Door/Exit</button>
   <button class="tool-btn" data-tool="enemy">🐛 Place Enemy</button>
   <button class="tool-btn" data-tool="item">⭐ Place Item</button>
+
+  <label>Brush Size:</label>
+  <select id="brushSize">
+    <option value="1">1×1</option>
+    <option value="3">3×3</option>
+    <option value="5">5×5</option>
+    <option value="7">7×7</option>
+  </select>
 
   <h3>🚪 Door Settings</h3>
   <label>Target Scene:</label>
@@ -276,6 +287,7 @@ window.removeItem = (i) => { items.splice(i,1); updateCharList(); draw(); };
 
 // Mouse interaction
 let painting = false;
+let rectStart = null; // for rect fill tool
 function getMapPos(e) {
   const rect = canvas.getBoundingClientRect();
   const scale = canvas.width / rect.width;
@@ -288,6 +300,7 @@ function getTile(e) {
 
 canvas.onmousedown = (e) => {
   if (tool === 'block' || tool === 'erase') { painting = true; paintTile(e); }
+  else if (tool === 'rectfill' || tool === 'recterase') { rectStart = getTile(e); }
   else if (tool === 'player') { playerSpawn = getMapPos(e); updateCharList(); draw(); }
   else if (tool === 'npc') {
     const id = document.getElementById('customNpc').value.trim() || document.getElementById('npcSelect').value;
@@ -318,18 +331,52 @@ canvas.onmousedown = (e) => {
 };
 canvas.onmousemove = (e) => {
   if (painting) paintTile(e);
+  // Rect preview
+  if (rectStart && (tool === 'rectfill' || tool === 'recterase')) {
+    draw();
+    const cur = getTile(e);
+    const x0 = Math.min(rectStart.tx, cur.tx), y0 = Math.min(rectStart.ty, cur.ty);
+    const x1 = Math.max(rectStart.tx, cur.tx), y1 = Math.max(rectStart.ty, cur.ty);
+    ctx.fillStyle = tool === 'rectfill' ? 'rgba(255,160,0,0.3)' : 'rgba(100,200,255,0.3)';
+    ctx.strokeStyle = tool === 'rectfill' ? '#ffa000' : '#66ccff';
+    ctx.lineWidth = 2;
+    const rx = x0*blockSize, ry = y0*blockSize, rw = (x1-x0+1)*blockSize, rh = (y1-y0+1)*blockSize;
+    ctx.fillRect(rx, ry, rw, rh);
+    ctx.strokeRect(rx, ry, rw, rh);
+    status.textContent = `Rect: ${x1-x0+1}×${y1-y0+1} tiles | Tile: ${cur.tx},${cur.ty}`;
+    return;
+  }
   const p = getMapPos(e);
   const t = getTile(e);
   status.textContent = `Tile: ${t.tx},${t.ty} | Pixel: ${p.x},${p.y} | Tool: ${tool}`;
 };
-canvas.onmouseup = () => painting = false;
-canvas.onmouseleave = () => painting = false;
+canvas.onmouseup = (e) => {
+  painting = false;
+  if (rectStart && (tool === 'rectfill' || tool === 'recterase')) {
+    const cur = getTile(e);
+    const x0 = Math.min(rectStart.tx, cur.tx), y0 = Math.min(rectStart.ty, cur.ty);
+    const x1 = Math.max(rectStart.tx, cur.tx), y1 = Math.max(rectStart.ty, cur.ty);
+    for (let ty = y0; ty <= y1; ty++) for (let tx = x0; tx <= x1; tx++) {
+      if (tx>=0 && ty>=0 && tx<gridW && ty<gridH) {
+        const key = tx+','+ty;
+        if (tool === 'rectfill') manualBlocked.add(key); else manualBlocked.delete(key);
+      }
+    }
+    rectStart = null;
+    draw();
+  }
+};
+canvas.onmouseleave = () => { painting = false; rectStart = null; };
 
 function paintTile(e) {
   const {tx,ty} = getTile(e);
-  if (tx<0||ty<0||tx>=gridW||ty>=gridH) return;
-  const key = tx+','+ty;
-  if (tool==='block') manualBlocked.add(key); else manualBlocked.delete(key);
+  const r = Math.floor((parseInt(document.getElementById('brushSize').value) || 1) / 2);
+  for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) {
+    const bx = tx+dx, by = ty+dy;
+    if (bx<0||by<0||bx>=gridW||by>=gridH) continue;
+    const key = bx+','+by;
+    if (tool==='block') manualBlocked.add(key); else manualBlocked.delete(key);
+  }
   draw();
 }
 
