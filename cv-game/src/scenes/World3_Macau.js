@@ -26,6 +26,13 @@ export class World3_Macau extends BaseScene {
         };
         col.water_rects.forEach(addRect);
         col.border_rects.forEach(addRect);
+        if (col.blocked_tiles) {
+            const bs = col.block_size * S;
+            col.blocked_tiles.forEach(([tx, ty]) => {
+                const z = this.add.zone(tx*bs + bs/2, ty*bs + bs/2, bs, bs);
+                this.physics.add.existing(z, true); this.walls.add(z);
+            });
+        }
 
         const sp = col.player_spawn || { x: 350, y: 400 };
         this.player = new Player(this, sp.x * S, sp.y * S);
