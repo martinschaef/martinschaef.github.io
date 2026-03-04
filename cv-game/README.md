@@ -10,6 +10,9 @@ A browser-based Phaser 3 RPG that serves as a playable CV for Martin Schaef. The
 cd cv-game
 python3 -m http.server 8080
 # open http://localhost:8080
+
+# Kill & restart if already running:
+lsof -ti:8080 | xargs kill; python3 -m http.server 8080
 ```
 
 No build step. Phaser 3.60 loads from CDN. Everything is vanilla ES6 modules.
