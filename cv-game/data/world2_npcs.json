@@ -3,6 +3,10 @@
     "sprite": "podelski_dog",
     "dialogue": [{ "text": "..." }]
   },
+  "podelski_dog": {
+    "sprite": "podelski_dog",
+    "dialogue": [{ "text": "..." }]
+  },
   "byron": {
     "sprite": "byron",
     "dialogue": [{ "text": "..." }]

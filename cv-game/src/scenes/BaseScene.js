@@ -106,16 +106,8 @@ export class BaseScene extends Phaser.Scene {
         // Items
         this._setupItems(col, S);
 
-        // Crates near first door
+        // Crates (from collision data, or none)
         this.crates = this.physics.add.staticGroup();
-        if (col.doors && col.doors.length > 0) {
-            const door = col.doors[0];
-            const dx = door.x * S, dy = door.y * S;
-            for (let i = -1; i <= 1; i++) {
-                const c = this.add.rectangle(dx + i * 50, dy + 60, 40, 40, 0x8B4513).setDepth(5).setStrokeStyle(2, 0x5C3317);
-                this.physics.add.existing(c, true); this.crates.add(c);
-            }
-        }
         this.physics.add.collider(this.player.sprite, this.crates);
 
         // Combat overlaps
