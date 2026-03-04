@@ -25,41 +25,117 @@ cv-game/
 ├── src/
 │   ├── main.js                 # Game config, scene registration
 │   ├── config/
-│   │   └── levels.js           # Level registry (add new levels here)
+│   │   ├── levels.js           # Level registry (add new levels here)
+│   │   └── audio.js            # Audio registry (SFX + music key→path map)
 │   ├── scenes/
-│   │   ├── BaseScene.js        # Shared: dialogue box, typewriter, choices, transitions
+│   │   ├── BaseScene.js        # Shared level logic (see below)
 │   │   ├── TitleScreen.js      # Main menu + level select
-│   │   ├── World1_Saarbruecken.js  # Tutorial level (NPCs, combat, crates)
-│   │   ├── World2_Freiburg.js      # University (stub)
-│   │   └── World3_Macau.js         # Far East (stub)
+│   │   ├── World1_Saarbruecken.js  # Tutorial level
+│   │   ├── World2_Freiburg.js      # University level
+│   │   └── World3_Macau.js         # Far East level
 │   └── entities/
 │       └── Player.js           # Movement, attack, health, mobile controls
 ├── data/
 │   ├── sprites.json            # Sprite registry (all NPCs, enemies, items)
 │   ├── world1_npcs.json        # World 1 NPC dialogue trees
 │   ├── world2_npcs.json        # World 2 NPC dialogue trees
+│   ├── world3_npcs.json        # World 3 NPC dialogue trees
 │   ├── enemies.json            # Enemy stats (hp, damage, speed, behavior)
 │   └── items.json              # Quest items (name, description, frame index)
 ├── assets/
 │   ├── sprites/                # Game-ready PNGs (spritesheets)
-│   │   └── sheets/             # Source sheets (gitignored, not needed at runtime)
-│   └── tilemaps/               # Per-world: *_bg.png + *_collision.json
+│   │   └── sheets/             # Source sheets (not needed at runtime)
+│   ├── tilemaps/               # Per-world: *_bg.png + *_collision.json
+│   └── audio/                  # SFX (.mp3) + music (music_*.mp3)
 ├── tools/
-│   ├── collision_editor.html   # Visual level editor
+│   ├── collision_editor.html   # Visual level editor (zoom, all maps)
 │   ├── process_map.py          # Map → background + collision JSON
 │   └── convert_sheet.py        # Raw spritesheet → game-ready PNG
 ├── tests/
 │   ├── smoke.html              # Headless boot test for all scenes
 │   ├── run.sh                  # Run smoke tests via headless Chrome
 │   └── pre-commit              # Git hook (syntax + JSON + smoke test)
-└── docs/                       # Planning & tracking (ROADMAP, PROGRESS, etc.)
+└── docs/                       # Planning & tracking
+```
+
+## BaseScene — Shared Level Logic
+
+All world scenes extend `BaseScene`, which provides:
+
+- **`loadLevelAssets(worldNum)`** — preloads bg, collision JSON, sprites.json, enemies.json, NPC data
+- **`loadNPCSprites([ids])`** — preloads NPC spritesheets + bug enemy sheet
+- **`loadAudio(...musicKeys)`** — preloads all SFX + specified music tracks
+- **`createLevel(worldNum, title, musicKey)`** — sets up everything:
+  - Map background + collision walls (water, borders, blocked tiles)
+  - Player spawn + physics
+  - NPCs with sprites, labels, collision zones (static or wandering)
+  - Enemies with wander AI + combat overlaps
+  - Doors with scene transitions
+  - Crates (destructible)
+  - Hearts HUD + controls HUD
+  - Camera follow + resize handling
+  - Music + mute button
+- **`updateLevel()`** — runs every frame:
+  - Player movement + input
+  - Dialogue navigation (↑↓ choices, E/Space advance)
+  - Attack hitbox vs enemies/crates
+  - Enemy wander AI
+  - Wandering NPC AI + label tracking
+
+A minimal world scene looks like:
+
+```javascript
+import { BaseScene } from './BaseScene.js';
+
+export class World4_SanFrancisco extends BaseScene {
+    constructor() { super('World4_SanFrancisco'); }
+
+    preload() {
+        this.loadLevelAssets(4);
+        this.loadNPCSprites(['lauren', 'byron']);
+        this.loadAudio('music4');
+    }
+
+    create() {
+        this.createLevel(4, 'San Francisco — The Research Lab', 'music4');
+    }
+
+    update() {
+        this.updateLevel();
+    }
+}
+```
+
+## Adding a New Level
+
+1. Create the map image, run `python3 tools/process_map.py` to get `*_bg.png` + `*_collision.json`
+2. Open the collision editor, place NPCs/enemies/doors/items, save the JSON
+3. Create `data/worldN_npcs.json` with NPC dialogue trees
+4. Create `src/scenes/WorldN_Name.js` (extend BaseScene, ~15 lines)
+5. Add entry to `src/config/levels.js`
+6. Import and register in `src/main.js`
+
+## Wandering NPCs
+
+NPCs with `"wander": true` in `sprites.json` get physics sprites and walk around randomly. They need `animations` (idle + walk frame ranges) and `speed` defined in their sprite entry. Example:
+
+```json
+"willem": {
+  "path": "assets/sprites/willem.png",
+  "frameWidth": 116, "frameHeight": 188, "scale": 0.4,
+  "wander": true, "speed": 30,
+  "animations": {
+    "idle": { "start": 0, "count": 4, "rate": 4 },
+    "walk": { "start": 8, "count": 8, "rate": 8 }
+  }
+}
 ```
 
 ## Key Config Files
 
 ### Dialogue (`data/world*_npcs.json`)
 
-Each level has its own NPC config. Dialogue uses Zelda-style branching trees:
+Zelda-style branching dialogue trees:
 
 ```json
 {
@@ -79,52 +155,40 @@ Each level has its own NPC config. Dialogue uses Zelda-style branching trees:
 
 - Nodes without `choices` auto-advance to the next node
 - Nodes with an `id` are branch targets (skipped during auto-advance)
-- `"gives": "item_id"` on a node hands the player a quest item (planned)
 
-### Sprites (`data/sprites.json`)
+### Collision JSON (`assets/tilemaps/*_collision.json`)
 
-Central registry mapping sprite keys to PNG paths, frame dimensions, and display scale. Referenced by NPC configs via the `"sprite"` field.
+Generated by `process_map.py`, edited in the collision editor:
 
-### Enemies (`data/enemies.json`)
-
-Stats per enemy type: `hp`, `damage`, `speed`, `behavior` (wander), animation frame ranges.
-
-### Items (`data/items.json`)
-
-Quest items with `name`, `description`, `frame` index (into `items.png`), `type`, and `stages` (which worlds they appear in).
-
-### Levels (`src/config/levels.js`)
-
-Array of `{ key, name, subtitle }` objects. The title screen level select is built from this. To add a new level:
-
-1. Add entry to `levels.js`
-2. Create the scene file in `src/scenes/`
-3. Import and register it in `src/main.js`
+```json
+{
+  "world_width": 1792, "world_height": 2400,
+  "block_size": 32, "display_scale": 1.2,
+  "water_rects": [...], "border_rects": [...],
+  "blocked_tiles": [[tx,ty], ...],
+  "player_spawn": {"x": 206, "y": 568},
+  "npcs": [{"id": "evren", "x": 824, "y": 1200}],
+  "doors": [{"x": 900, "y": 100, "target": "World3_Macau", "label": "Exit →"}],
+  "enemies": [{"type": "bug", "x": 500, "y": 600}],
+  "items": [{"id": "diploma", "x": 300, "y": 400}]
+}
+```
 
 ## Tools
 
 ### Level Editor
 
 ```bash
-# Start the server, then open in browser:
 open http://localhost:8080/tools/collision_editor.html
 ```
 
-Paint walkability, place player spawn, NPCs, doors, enemies, and items. Save downloads a `*_collision.json` — move it to `assets/tilemaps/`.
-
-Tools in the sidebar: Block Tile, Erase, Player Spawn, NPC, Door, Enemy, Item. Each entity type has a delete button in the "Placed Characters" list.
+Supports all maps (world1–4). Scroll wheel to zoom in/out, default zoomed to fit. Paint blocked tiles, place NPCs/doors/enemies/items. Save downloads JSON.
 
 ### Map Processing
 
 ```bash
 python3 tools/process_map.py <input_image> <output_name> [--scale 0.5]
-# Example:
-python3 tools/process_map.py assets/freiburg-map.png world2 --scale 0.5
 ```
-
-Outputs `assets/tilemaps/<name>_bg.png` and `<name>_collision.json`. Auto-detects tile grid size, removes grid lines, computes `display_scale` for consistent tile rendering across levels.
-
-The `display_scale` field in the collision JSON controls how large the map renders in-game. It's computed so that one source tile = 72px on screen (roughly player height). Override it manually if needed.
 
 ### Sprite Sheet Processing
 
@@ -132,37 +196,23 @@ The `display_scale` field in the collision JSON controls how large the map rende
 python3 tools/convert_sheet.py assets/sprites/sheets/some_sheet.png
 ```
 
-Removes checkerboard backgrounds, extracts frames, bottom-aligns them, and outputs a uniform grid PNG to `assets/sprites/`. See `.kiro/skills/SHEET_CONVERT.md` for details.
-
 ## Testing
 
 ```bash
-# Run smoke tests (boots game in headless Chrome, cycles all scenes)
 ./tests/run.sh
-
-# Runs automatically on every git commit (pre-commit hook)
-# To reinstall the hook:
-cp tests/pre-commit ../../.git/hooks/pre-commit && chmod +x ../../.git/hooks/pre-commit
+# Also runs automatically on every git commit (pre-commit hook)
 ```
-
-The smoke test verifies:
-- All ES6 module imports resolve
-- Phaser game boots
-- Every registered scene completes `preload()` + `create()` without errors
 
 ## Controls
 
 | Action | Desktop | Mobile |
 |--------|---------|--------|
-| Move | WASD / Arrow keys | Virtual joystick (left side) |
-| Talk / Advance dialogue | E / Space | A button (right side) |
-| Attack | Z | Z button (right side) |
-| Choose dialogue option | ↑ / ↓ | ↑ / ↓ |
+| Move | WASD / Arrow keys | Virtual joystick (left) |
+| Talk / Advance | E / Space | A button (right) |
+| Attack | Z | Z button (right) |
+| Choose option | ↑ / ↓ | ↑ / ↓ |
+| Mute/unmute | M | 🔊 button (top-right) |
 
-## Architecture Notes
+## Audio
 
-- **Physics:** Static collision bodies use `Zone` + `physics.add.existing(zone, true)`. Never use `Rectangle.refreshBody()`.
-- **Map rendering:** Background images loaded at native size, displayed with `setScale(display_scale)`. All collision rects and positions from JSON are multiplied by the same scale in scene code.
-- **Responsive:** `Phaser.Scale.RESIZE` mode. All UI positioned relative to `cameras.main.width/height`. Touch controls reposition on resize.
-- **Player sprite:** `martin.png` — 104×183 frames, 8 cols × 4 rows. Scale 0.4. Body 60×30 offset 22,148.
-- **NPC rendering:** Scene reads `npcData[id].sprite` to get the sprite key, looks up `spriteData.sprites[key].scale` for display scale. Falls back to a yellow rectangle if the texture is missing.
+10 SFX (blip, confirm, select, swing, hit, hurt, enemy_death, crate_break, pickup, door_open) + per-level music slots. Missing audio files are silently skipped. Mute persists across scene transitions.

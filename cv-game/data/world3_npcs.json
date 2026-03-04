@@ -1,0 +1,14 @@
+{
+  "zhiming": {
+    "sprite": "zhiming",
+    "dialogue": [{ "text": "..." }]
+  },
+  "stephan": {
+    "sprite": "stephan",
+    "dialogue": [{ "text": "..." }]
+  },
+  "willem": {
+    "sprite": "willem",
+    "dialogue": [{ "text": "..." }]
+  }
+}
