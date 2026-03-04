@@ -114,21 +114,34 @@ export class TitleScreen extends Phaser.Scene {
     }
 
     _showAbout() {
-        if (this._aboutBox) { this._aboutBox.destroy(); this._aboutText.destroy(); this._aboutBox = null; return; }
+        if (this._aboutBox) { this._closeAbout(); return; }
         this._closeLevelSelect();
         const w = this.cameras.main.width, h = this.cameras.main.height;
+        const boxW = Math.min(620, w - 40), boxH = 280;
 
-        this._aboutBox = this.add.rectangle(w/2, h/2, Math.min(600, w-40), 200, 0x000000, 0.9).setStrokeStyle(2, 0xf4e842);
+        this._aboutBox = this.add.rectangle(w/2, h/2, boxW, boxH, 0x000000, 0.92)
+            .setStrokeStyle(2, 0xf4e842).setDepth(50);
         this._aboutText = this.add.text(w/2, h/2,
-            'Career Quest is a playable CV for Martin Schaef.\n\n' +
-            'Navigate through worlds representing career chapters:\n' +
-            'Saarbrücken → Freiburg → Macau → San Francisco → NYC\n\n' +
+            'Career Quest is a stylized walkthrough of Martin Schaef\'s CV.\n' +
+            'Explore 5 worlds representing career chapters, talk to NPCs,\n' +
+            'collect publications, and fight bugs along the way.\n\n' +
+            '── Controls ──\n' +
+            'Move:  Arrow Keys / WASD\n' +
+            'Talk:  SPACE / E  (advance dialogue)\n' +
+            'Attack:  Z / Left Click\n' +
+            'Mute:  M\n\n' +
             'Tap ABOUT again or click anywhere to close.',
-            { fontSize: '13px', fontFamily: 'monospace', color: '#cbdbfc', align: 'center', wordWrap: { width: Math.min(560, w-80) } }
-        ).setOrigin(0.5);
+            { fontSize: '12px', fontFamily: 'monospace', color: '#cbdbfc', align: 'center',
+              lineSpacing: 4, wordWrap: { width: boxW - 40 } }
+        ).setOrigin(0.5).setDepth(51);
 
-        this.input.once('pointerdown', () => {
-            if (this._aboutBox) { this._aboutBox.destroy(); this._aboutText.destroy(); this._aboutBox = null; }
+        this.time.delayedCall(200, () => {
+            this.input.once('pointerdown', () => this._closeAbout());
         });
+    }
+
+    _closeAbout() {
+        if (!this._aboutBox) return;
+        this._aboutBox.destroy(); this._aboutText.destroy(); this._aboutBox = null;
     }
 }
