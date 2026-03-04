@@ -1,4 +1,5 @@
 import { AUDIO } from '../config/audio.js';
+import { LEVELS } from '../config/levels.js';
 import { Player } from '../entities/Player.js';
 
 export class BaseScene extends Phaser.Scene {
@@ -55,6 +56,7 @@ export class BaseScene extends Phaser.Scene {
         this.load.json('enemyData', 'data/enemies.json');
         this.load.json(`npcData_w${worldNum}`, `data/world${worldNum}_npcs.json`);
         this.load.json('itemData', 'data/items.json');
+        this.load.json('publications', '../publications.json');
         this.load.spritesheet('items', 'assets/sprites/items.png', { frameWidth: 121, frameHeight: 100 });
         this.load.image('door_closed', 'assets/sprites/door_closed.png');
         this.load.image('door_open', 'assets/sprites/door_open.png');
@@ -107,6 +109,9 @@ export class BaseScene extends Phaser.Scene {
 
         // Items
         this._setupItems(col, S);
+
+        // Auto-spawn publication papers
+        this._setupPapers(worldNum, col, S);
 
         // Crates (from collision data, or none)
         this.crates = this.physics.add.staticGroup();
@@ -318,6 +323,83 @@ export class BaseScene extends Phaser.Scene {
                 stroke: '#000', strokeThickness: 2
             }).setOrigin(0.5).setDepth(5);
             this.itemSprites.push(spr);
+        });
+    }
+
+    _setupPapers(worldNum, col, S) {
+        const pubs = this.cache.json.get('publications') || [];
+        const level = LEVELS.find(l => l.key.includes(`World${worldNum}`));
+        if (!level?.years) return;
+        const [yStart, yEnd] = level.years;
+        const papers = pubs.filter(p => p.year >= yStart && p.year < yEnd);
+        if (!papers.length) return;
+
+        // Build blocked set for walkability check
+        const bs = col.block_size;
+        const blocked = new Set();
+        (col.water_rects || []).forEach(r => blocked.add(Math.floor(r.x/bs) + ',' + Math.floor(r.y/bs)));
+        (col.blocked_tiles || []).forEach(([tx,ty]) => blocked.add(tx + ',' + ty));
+        const gridW = Math.ceil(col.world_width / bs), gridH = Math.ceil(col.world_height / bs);
+        // Border tiles
+        for (let x = 0; x < gridW; x++) { blocked.add(x+',0'); blocked.add(x+','+(gridH-1)); }
+        for (let y = 0; y < gridH; y++) { blocked.add('0,'+y); blocked.add((gridW-1)+','+y); }
+
+        // Seeded random from world number for consistent placement
+        let seed = worldNum * 9973;
+        const rand = () => { seed = (seed * 16807 + 0) % 2147483647; return seed / 2147483647; };
+
+        const placed = [];
+        const PAPER_FRAME = 1; // accepted_paper frame in items.png
+
+        const snark = [
+            "Another one for the CV!",
+            "Reviewer #2 hated this one.",
+            "Surprisingly, no bugs were found writing this.",
+            "Fueled entirely by coffee.",
+            "The deadline was yesterday.",
+            "This one almost didn't make it.",
+            "Peer review is just organized suffering.",
+            "Written between midnight and regret.",
+            "The abstract was the hardest part.",
+            "At least someone cited it... right?",
+            "LaTeX crashed twice during submission.",
+            "The experiments worked on the first try. Just kidding.",
+            "Camera-ready was submitted 3 minutes before the deadline.",
+            "This paper exists because of a whiteboard argument.",
+            "Proof by intimidation.",
+            "The related work section took longer than the research.",
+        ];
+
+        papers.forEach((paper, i) => {
+            // Find random walkable position
+            let x, y, tx, ty, attempts = 0;
+            do {
+                tx = 2 + Math.floor(rand() * (gridW - 4));
+                ty = 2 + Math.floor(rand() * (gridH - 4));
+                attempts++;
+            } while (attempts < 200 && (blocked.has(tx+','+ty) || placed.some(p => Math.abs(p[0]-tx) + Math.abs(p[1]-ty) < 3)));
+            if (attempts >= 200) return;
+            placed.push([tx, ty]);
+
+            x = (tx * bs + bs/2) * S;
+            y = (ty * bs + bs/2) * S;
+
+            const spr = this.add.sprite(x, y, 'items', PAPER_FRAME).setScale(0.4).setDepth(5);
+            this.tweens.add({ targets: spr, y: y - 6, duration: 800 + i * 50, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+
+            // Subtle glow
+            const glow = this.add.circle(x, y, 14, 0x42f4a6, 0.15).setDepth(4);
+            this.tweens.add({ targets: glow, alpha: 0.05, duration: 1000, yoyo: true, repeat: -1 });
+
+            const z = this.add.zone(x, y, 32, 32);
+            this.physics.add.existing(z, true);
+            this.physics.add.overlap(this.player.sprite, z, () => {
+                if (!spr.active) return;
+                this.sfx('pickup', { volume: 0.3 });
+                spr.destroy(); glow.destroy(); z.destroy();
+                const comment = snark[Math.floor(rand() * snark.length)];
+                this.showMessage(`📄 "${paper.title}" (${paper.year})\n\n${comment}`);
+            });
         });
     }
 
