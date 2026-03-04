@@ -516,7 +516,22 @@ export class BaseScene extends Phaser.Scene {
     onPlayerDeath() {
         this.player.sprite.setVelocity(0);
         this.cameras.main.shake(300, 0.02);
-        this.time.delayedCall(1000, () => this.scene.restart());
+        // Game Over overlay
+        this.time.delayedCall(600, () => {
+            const cam = this.cameras.main;
+            const bg = this.add.rectangle(cam.width/2, cam.height/2, cam.width, cam.height, 0x000000, 0)
+                .setScrollFactor(0).setDepth(300);
+            const txt = this.add.text(cam.width/2, cam.height/2, 'GAME OVER', {
+                fontSize: '48px', fontFamily: 'monospace', color: '#e94560',
+                stroke: '#000', strokeThickness: 6
+            }).setOrigin(0.5).setScrollFactor(0).setDepth(301).setAlpha(0);
+            this.tweens.add({ targets: bg, alpha: 0.7, duration: 800 });
+            this.tweens.add({ targets: txt, alpha: 1, duration: 800 });
+            this.time.delayedCall(2500, () => {
+                this.stopMusic();
+                this.scene.start('TitleScreen');
+            });
+        });
     }
 
     transitionTo(sceneKey) {
