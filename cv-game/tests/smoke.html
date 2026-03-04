@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>RUNNING</title></head>
+<body>
+<pre id="log"></pre>
+<script>
+const log = document.getElementById('log');
+const errors = [];
+
+function out(msg) { log.textContent += msg + '\n'; }
+window.onerror = (m, u, l) => { errors.push(`${m} at ${u}:${l}`); };
+window.addEventListener('unhandledrejection', e => { errors.push('Rejection: ' + e.reason); });
+
+function finish() {
+    if (document.title !== 'RUNNING') return;
+    if (errors.length) errors.forEach(e => out('✗ ' + e));
+    const pass = errors.length === 0;
+    out(pass ? '\nRESULT: PASS' : '\nRESULT: FAIL');
+    document.title = pass ? 'PASS' : 'FAIL';
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+<script type="module">
+import { TitleScreen } from '../src/scenes/TitleScreen.js';
+import { World1_Saarbruecken } from '../src/scenes/World1_Saarbruecken.js';
+import { World2_Freiburg } from '../src/scenes/World2_Freiburg.js';
+import { World3_Macau } from '../src/scenes/World3_Macau.js';
+
+out('✓ All module imports OK');
+
+const scenes = [TitleScreen, World1_Saarbruecken, World2_Freiburg, World3_Macau];
+const toTest = ['TitleScreen', 'World1_Saarbruecken', 'World2_Freiburg', 'World3_Macau'];
+const tested = new Set();
+
+const config = {
+    type: Phaser.AUTO,
+    pixelArt: true, width: 800, height: 600,
+    backgroundColor: '#222034',
+    scale: { mode: Phaser.Scale.NONE },
+    physics: { default: 'arcade', arcade: { gravity: { y: 0 } } },
+    input: { activePointers: 2 },
+    loader: { baseURL: '../' },
+    scene: scenes
+};
+
+try {
+    const game = new Phaser.Game(config);
+    out('✓ Phaser game created');
+
+    // Poll for scene states
+    let idx = 0;
+    function check() {
+        const key = toTest[idx];
+        const scene = game.scene.getScene(key);
+
+        // Check if current scene has finished create (status >= RUNNING)
+        if (scene && scene.scene.isActive()) {
+            if (!tested.has(key)) {
+                tested.add(key);
+                out('✓ Scene OK: ' + key);
+                idx++;
+                if (idx < toTest.length) {
+                    // Start next scene
+                    game.scene.start(toTest[idx]);
+                } else {
+                    finish();
+                    return;
+                }
+            }
+        }
+        if (document.title === 'RUNNING') setTimeout(check, 300);
+    }
+    // Give first scene time to preload + create
+    setTimeout(check, 1500);
+
+} catch(e) {
+    errors.push('Game creation failed: ' + e.message);
+    finish();
+}
+
+setTimeout(() => {
+    if (document.title === 'RUNNING') {
+        const missing = toTest.filter(k => !tested.has(k));
+        errors.push('Timeout — scenes not booted: ' + missing.join(', '));
+        finish();
+    }
+}, 20000);
+</script>
+</body></html>

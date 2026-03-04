@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Pre-commit hook: syntax check + smoke test
+# Install: cp cv-game/tests/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+echo "🔍 Pre-commit checks..."
+
+# Syntax check all JS files
+for f in cv-game/src/main.js cv-game/src/scenes/*.js cv-game/src/entities/*.js cv-game/src/config/*.js; do
+  [ -f "$f" ] && node --check "$f" || { echo "❌ Syntax error in $f"; exit 1; }
+done
+echo "✓ JS syntax OK"
+
+# JSON validation
+python3 -c "
+import json, glob, sys
+for f in glob.glob('cv-game/data/*.json'):
+    try: json.load(open(f))
+    except Exception as e: print(f'❌ {f}: {e}'); sys.exit(1)
+print('✓ JSON valid')
+"
+if [ $? -ne 0 ]; then exit 1; fi
+
+# Smoke test
+cv-game/tests/run.sh
