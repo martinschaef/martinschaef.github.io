@@ -50,6 +50,12 @@
     },
     "podelski": {
       "path": "assets/sprites/podelski.png",
+      "frameWidth": 76,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "podelski_dog": {
+      "path": "assets/sprites/podelski_dog.png",
       "frameWidth": 145,
       "frameHeight": 188,
       "scale": 0.4

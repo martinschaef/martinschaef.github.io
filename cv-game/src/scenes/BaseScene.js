@@ -500,7 +500,7 @@ export class BaseScene extends Phaser.Scene {
         const knownSprites = {
             doris: { w: 76 }, father: { w: 76 }, wolfgang: { w: 177 }, monika: { w: 75 },
             christine: { w: 77 }, valentin: { w: 69 }, tobert: { w: 93 }, ben: { w: 81 },
-            podelski: { w: 145 }, byron: { w: 60 }, byron2: { w: 57 }, dejan: { w: 80 },
+            podelski: { w: 76 }, podelski_dog: { w: 145 }, byron: { w: 60 }, byron2: { w: 57 }, dejan: { w: 80 },
             evren: { w: 115 }, john: { w: 72 }, stephan: { w: 82 }, zhiming: { w: 71 },
             lauren: { w: 103 }, willem: { w: 116 }
         };
