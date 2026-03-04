@@ -54,6 +54,8 @@ export class BaseScene extends Phaser.Scene {
         this.load.json('spriteData', 'data/sprites.json');
         this.load.json('enemyData', 'data/enemies.json');
         this.load.json(`npcData_w${worldNum}`, `data/world${worldNum}_npcs.json`);
+        this.load.json('itemData', 'data/items.json');
+        this.load.spritesheet('items', 'assets/sprites/items.png', { frameWidth: 121, frameHeight: 100 });
     }
 
     // ── Level creation (call in create) ───────────────────
@@ -100,6 +102,9 @@ export class BaseScene extends Phaser.Scene {
 
         // Doors
         this._setupDoors(col, S);
+
+        // Items
+        this._setupItems(col, S);
 
         // Crates near first door
         this.crates = this.physics.add.staticGroup();
@@ -253,16 +258,54 @@ export class BaseScene extends Phaser.Scene {
         col.doors.forEach(d => {
             const z = this.add.zone(d.x * S, d.y * S, (d.w || 48) * S, (d.h || 48) * S);
             this.physics.add.existing(z, true);
-            this.add.rectangle(d.x * S, d.y * S, (d.w || 48) * S, (d.h || 48) * S, 0xf4e842, 0.15).setDepth(1);
-            this.add.text(d.x * S, d.y * S - 20 * S, d.label || '🚪', {
+            // Glowing portal effect
+            const glow = this.add.rectangle(d.x * S, d.y * S, (d.w || 48) * S, (d.h || 48) * S, 0xf4e842, 0.2).setDepth(1);
+            this.tweens.add({ targets: glow, alpha: 0.05, duration: 1200, yoyo: true, repeat: -1 });
+            this.add.text(d.x * S, d.y * S - 24, d.label || '🚪 Exit', {
                 fontSize: '12px', fontFamily: 'monospace', color: '#f4e842',
-                stroke: '#000', strokeThickness: 2
+                stroke: '#000', strokeThickness: 3
             }).setOrigin(0.5).setDepth(5);
             this.physics.add.overlap(this.player.sprite, z, () => {
                 if (this._transitioning) return;
                 this._transitioning = true;
                 this.transitionTo(d.target);
             });
+        });
+    }
+
+    _setupItems(col, S) {
+        this.itemSprites = [];
+        if (!col.items || !col.items.length) return;
+        const itemData = this.cache.json.get('itemData') || {};
+        const spriteData = this.cache.json.get('spriteData');
+        const itemFrames = spriteData?.items?.frames || {};
+
+        col.items.forEach(it => {
+            const frame = itemFrames[it.id];
+            if (frame === undefined) return;
+            const x = it.x * S, y = it.y * S;
+            const spr = this.add.sprite(x, y, 'items', frame).setScale(spriteData.items.scale || 0.5).setDepth(5);
+            // Floating bob animation
+            this.tweens.add({ targets: spr, y: y - 6, duration: 800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+            // Pickup zone
+            const z = this.add.zone(x, y, 32, 32);
+            this.physics.add.existing(z, true);
+            this.physics.add.overlap(this.player.sprite, z, () => {
+                if (spr.active) {
+                    this.sfx('pickup', { volume: 0.3 });
+                    spr.destroy();
+                    z.destroy();
+                    const idx = this.itemSprites.indexOf(spr);
+                    if (idx >= 0) this.itemSprites.splice(idx, 1);
+                }
+            });
+            // Label
+            const name = itemData[it.id]?.name || it.id;
+            this.add.text(x, y - 28, name, {
+                fontSize: '9px', fontFamily: 'monospace', color: '#42f4a6',
+                stroke: '#000', strokeThickness: 2
+            }).setOrigin(0.5).setDepth(5);
+            this.itemSprites.push(spr);
         });
     }
 
