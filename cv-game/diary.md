@@ -346,3 +346,27 @@ Built with [Kiro](https://kiro.dev)
 **Key decisions:** Bottom-center anchor chosen over top-center because RPG characters should have stable feet. Script is reusable for future sprites.
 
 ---
+
+## 2026-03-07 00:38 — Martin Action Sprites
+
+**Prompt:** Process martin_action_sheet.png and make all animations available in the game
+
+**What changed:**
+- Processed `assets/sprites/sheets/martin_action_sheet.png` (2760×1504, checkerboard BG):
+  - Detected 3 content rows, split row 0 at vertical gap into 4 animation groups
+  - Removed checkerboard background (dual-color flood fill, tolerance 35)
+  - Extracted frames, scaled to 183px height (matching martin.png), bottom-center anchored
+- Created 4 spritesheets:
+  - `martin_attack.png`: 5 frames, 234×183 — keyboard swing
+  - `martin_hit.png`: 6 frames, 330×183 — getting hit
+  - `martin_powerup.png`: 9 frames, 186×183 — power-up charge
+  - `martin_blast.png`: 10 frames, 320×183 — energy blast
+- All 4 preloaded in `BaseScene.loadLevelAssets()`
+- Animations registered in `Player._createAnims()`
+- Attack now plays `martin_attack` overlay sprite instead of yellow rectangle slash
+- Taking damage now plays `martin_hit` overlay sprite
+- Powerup and blast animations registered but not yet triggered by gameplay
+
+**Key decisions:** Action sprites use overlay sprites (created/destroyed per use) since their frame dimensions differ from the walk/idle sheet. Base sprite hidden during overlay playback.
+
+---

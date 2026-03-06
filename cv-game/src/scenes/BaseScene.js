@@ -39,6 +39,18 @@ export class BaseScene extends Phaser.Scene {
         }).setOrigin(1, 0).setScrollFactor(0).setDepth(200).setInteractive({ useHandCursor: true });
         this._muteBtn.on('pointerdown', () => this._toggleMute());
         this.input.keyboard.on('keydown-M', () => this._toggleMute());
+
+        // Back to menu button
+        this.add.text(12, 12, '← Menu', {
+            fontSize: '13px', fontFamily: 'monospace', color: '#aaa',
+            stroke: '#000', strokeThickness: 3
+        }).setScrollFactor(0).setDepth(200).setInteractive({ useHandCursor: true })
+          .on('pointerover', function() { this.setColor('#f4e842'); })
+          .on('pointerout', function() { this.setColor('#aaa'); })
+          .on('pointerdown', () => {
+              this.sound.stopAll();
+              this.scene.start('TitleScreen');
+          });
     }
 
     _toggleMute() {
