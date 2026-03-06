@@ -330,3 +330,19 @@ Built with [Kiro](https://kiro.dev)
 **Key decisions:** Only log interactions that result in code/file changes. Combine related messages into single entries.
 
 ---
+
+## 2026-03-06 17:41 — Normalize NPC Sprites
+
+**Prompt:** NPC sprites have strange size changes and inconsistent offsets between frames
+
+**What changed:**
+- Created `tools/normalize_sprites.py` — analyzes and fixes all NPC spritesheets
+- Fixed two classes of bugs across 13 sprites:
+  - **Width alignment**: 8 sprites had total width not divisible by frameWidth (Phaser silently dropped partial frames) — ben, byron, byron2, doris, john, tobert, willem, zhiming
+  - **Frame jitter**: 4 sprites had content at different vertical positions per frame (father: 60px variation!, willem: 34px, dejan: 7px, stephan: 5px) — all now bottom-center anchored so feet stay locked
+- Backups saved as `*_prenorm.png` for rollback
+- No frameWidth changes needed — no code updates required
+
+**Key decisions:** Bottom-center anchor chosen over top-center because RPG characters should have stable feet. Script is reusable for future sprites.
+
+---

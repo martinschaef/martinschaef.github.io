@@ -66,6 +66,22 @@ export class Player {
                 repeat: -1
             });
         }
+        // Action animations (single-row sheets)
+        const actions = {
+            martin_attack: { frames: 5, rate: 12 },
+            martin_hit:    { frames: 6, rate: 10 },
+            martin_powerup:{ frames: 9, rate: 8 },
+            martin_blast:  { frames: 10, rate: 10 },
+        };
+        for (const [key, cfg] of Object.entries(actions)) {
+            if (this.scene.anims.exists(key)) continue;
+            this.scene.anims.create({
+                key,
+                frames: this.scene.anims.generateFrameNumbers(key, { start: 0, end: cfg.frames - 1 }),
+                frameRate: cfg.rate,
+                repeat: 0
+            });
+        }
     }
 
     _createTouchControls() {
@@ -202,12 +218,17 @@ export class Player {
         hb.body.setAllowGravity(false);
         this.attackHitbox = hb;
 
-        // Visual slash
-        const slash = this.scene.add.rectangle(this.sprite.x + ox, this.sprite.y + oy, w, h, 0xf4e842, 0.6).setDepth(15);
+        // Attack animation overlay (different frame size than walk)
+        const atkSprite = this.scene.add.sprite(this.sprite.x, this.sprite.y, 'martin_attack', 0)
+            .setScale(SCALE).setDepth(11).setFlipX(this.facing === 'left');
+        atkSprite.play('martin_attack');
+        this.sprite.setAlpha(0); // hide base sprite during attack
+
         this.scene.sfx('swing', { volume: 0.3 });
 
-        this.scene.time.delayedCall(150, () => {
-            slash.destroy();
+        atkSprite.once('animationcomplete', () => {
+            atkSprite.destroy();
+            this.sprite.setAlpha(1);
             hb.destroy();
             this.attackHitbox = null;
             this.attacking = false;
@@ -219,6 +240,16 @@ export class Player {
         this.hp -= amount;
         this.invincible = true;
         this.scene.sfx('hurt', { volume: 0.4 });
+
+        // Hit animation overlay
+        const hitSprite = this.scene.add.sprite(this.sprite.x, this.sprite.y, 'martin_hit', 0)
+            .setScale(SCALE).setDepth(11).setFlipX(this.facing === 'left');
+        hitSprite.play('martin_hit');
+        this.sprite.setAlpha(0);
+        hitSprite.once('animationcomplete', () => {
+            hitSprite.destroy();
+            this.sprite.setAlpha(1);
+        });
 
         // Flash effect
         this.scene.tweens.add({

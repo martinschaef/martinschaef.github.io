@@ -5,3 +5,4 @@ assets/saarbrücken-map.png
 # Debug/temp
 /tmp/
 *.pyc
+.DS_Store
