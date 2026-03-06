@@ -3,16 +3,16 @@ Built with [Kiro](https://kiro.dev)
 
 ---
 
-## 2026-03-01 — Project Bootstrap & World 1
+## 2026-03-02 14:27 — Project Bootstrap & World 1
 
-**Prompt:** Set up the project and build the first playable level
+**Prompt:** Create a browser-based Phaser 3 RPG that serves as a playable CV
 
 **What changed:**
 - Created project scaffolding: `index.html`, `src/main.js`, folder structure
 - Built `TitleScreen.js` with START GAME, ABOUT, ENTER shortcut, fade transitions
 - Built `BaseScene.js` with SNES-style dialogue box and typewriter effect
 - Built `Player.js` with 4-way movement (WASD + Arrows), action key (E/Space)
-- Processed `martin.png` spritesheet — removed checkerboard BG, extracted 4 animation rows (idle, walk_down, walk_side, walk_up)
+- Processed `martin.png` spritesheet — removed checkerboard BG, extracted 4 animation rows
 - Built `tools/process_map.py` for map processing (scale, auto-detect water collision)
 - Created World 1 (Saarbrücken) with scrolling map, 9 NPCs, water/border collision
 
@@ -20,53 +20,313 @@ Built with [Kiro](https://kiro.dev)
 
 ---
 
-## 2026-03-02 — Worlds 2–4, Combat, Audio, BaseScene Refactor
+## 2026-03-02 22:35 — NPC Sprites & Dialogue Trees
 
-**Prompt:** Build out remaining worlds, add combat, music, and shared scene logic
+**Prompt:** Add NPC character sprites, branching dialogue, doors, and mobile controls
 
 **What changed:**
-- Refactored all shared level logic into `BaseScene.js` (~530 lines) — each world scene is now ~15 lines
-- Created Worlds 2 (Freiburg), 3 (Macau), 4 (San Francisco) with NPCs, enemies, doors
-- Added combat system: keyboard swing attack, enemy HP, damage, knockback
-- Added items system: floating sprites with bob animation, pickup on overlap
-- Added doors: closed/open sprites, pulsing glow, scene transitions
-- Processed background music for all 5 worlds (silence trimmed, mono 44.1kHz, ~30s loops)
-- Added mute button (🔊/🔇) + M key shortcut
-- Added diagonal movement (normalized by ×0.707)
-- Added game over screen (camera shake → black overlay → red text → return to title)
-- Added wandering NPCs (Willem in World 3) with physics sprites and walk animations
-- Added NPC idle animations (all static NPCs cycle through frames at 3fps)
-- Built collision editor with zoom, all maps in dropdown
+- Processed NPC spritesheets (doris, father, wolfgang, monika, christine, valentin, tobert, ben) via `tools/convert_sheet.py`
+- Implemented Zelda-style dialogue trees with choices and branching in `data/world1_npcs.json`
+- Added door system for scene transitions
+- Added mobile touch controls (virtual d-pad)
 
-**Key decisions:** One NPC config file per level. Wandering NPCs configured via `sprites.json` with `wander: true`. Seeded RNG not used yet.
+**Key decisions:** One NPC config file per level. Dialogue is data-driven JSON with choice nodes.
 
 ---
 
-## 2026-03-04 — Publication Papers, Title Screen, Collision Editor
+## 2026-03-03 17:14 — Sprites, Enemies, Items & Level Editor
 
-**Prompt:** Auto-spawn publication papers across worlds, update title screen, improve collision editor
+**Prompt:** Add enemy combat, item pickups, and a collision editor tool
 
 **What changed:**
-- `publications.json` loaded at runtime, filtered by world year ranges (W1: 1982-2006, W2: 2006-2010, W3: 2010-2013, W4: 2013-2017, W5: 2017+)
-- Papers spawn at random walkable positions using seeded RNG for consistency
-- Pickup shows paper title + snarky comment ("Reviewer #2 hated this one.")
-- Paper placement now properly blocks water rects (all tiles, not just top-left), border rects, NPCs, enemies, doors, items, player spawn
-- Updated title screen ABOUT box: explains controls (Move, Talk, Attack, Mute) and describes game as "a stylized walkthrough of Martin Schaef's CV"
-- Added collision editor tools: brush sizes (1×1 to 7×7), rect fill/erase (click-drag), world5 in dropdown
+- Created `data/enemies.json` and `data/items.json` registries
+- Built `tools/collision_editor.html` — visual editor for placing walls, NPCs, doors, enemies, items
+- Added items spritesheet (`assets/sprites/items.png`)
+- Added enemy sprites (bug enemy)
 
-**Key decisions:** Year ranges in `src/config/levels.js`. Seeded RNG (worldNum × 9973) ensures papers appear in same spots each playthrough. 51 papers total across 4 worlds.
+**Key decisions:** Collision editor is a standalone HTML tool, not part of the game itself.
 
 ---
 
-## 2026-03-06 — Development Diary Setup
+## 2026-03-03 17:55 — Level Select, Combat System, Worlds 2–3
 
-**Prompt:** Add agent configuration to keep a running diary of all interactions in `./diary.md`
+**Prompt:** Add level select menu, keyboard swing combat, and two more worlds
 
 **What changed:**
-- Created `.kiro/skills/DIARY.md` — skill that instructs agent to append entries after each interaction
-- Updated `.kiro/agents/career-quest.json` to include the DIARY skill
-- Created `diary.md` with header and backfilled entries for all previous sessions
+- Added level select panel to title screen with per-level availability check
+- Implemented keyboard swing attack (Z / Left Click) with hitbox, damage, knockback
+- Created World 2 (Freiburg) and World 3 (Macau) scene files
+- Added podelski, byron, evren, stephan, zhiming NPC sprites
 
-**Key decisions:** Diary entries only logged for interactions that result in code/file changes. Multiple related messages combined into single entries.
+**Key decisions:** Combat uses a simple hitbox in front of the player. Enemies take damage and flash red.
+
+---
+
+## 2026-03-04 07:17 — Smoke Tests
+
+**Prompt:** Add automated testing to catch scene boot failures
+
+**What changed:**
+- Created `tests/smoke.html` — headless Chrome boot check for all scenes (TitleScreen + World1-4)
+- Created `tests/run.sh` with `node --check` syntax validation + headless Chrome scene test
+- Added `audio: { noAudio: true }` to test config to prevent headless audio timeout
+- Set up pre-commit hook running tests before every push
+
+**Key decisions:** Tests use inline `<script>` (not ES6 modules) because `--virtual-time-budget` doesn't work with modules.
+
+---
+
+## 2026-03-04 09:28 — Audio System & Sound Effects
+
+**Prompt:** Add background music and sound effects
+
+**What changed:**
+- Created `src/config/audio.js` — audio registry (11 SFX + 5 music slots)
+- Added 10 CC0/Kenney sound effects (pickup, hit, door, swing, etc.)
+- Added World 1 background music (`music_saarbruecken.mp3`)
+- Wrote `docs/WORLD5_MAP_BRIEF.md` — detailed map creation brief for NYC level
+
+**Key decisions:** SFX gracefully skip if files are missing. Music loops with Phaser's built-in looping.
+
+---
+
+## 2026-03-04 15:24 — README & Consistent Tile Scaling
+
+**Prompt:** Document the architecture and fix tile rendering across levels
+
+**What changed:**
+- Rewrote `README.md` documenting BaseScene API, adding new levels guide, collision JSON format, controls
+- Added `display_scale` to collision JSON for consistent tile rendering across levels
+- Removed grid lines from map rendering
+
+**Key decisions:** `display_scale` in collision JSON controls how the map image scales to world coordinates.
+
+---
+
+## 2026-03-04 15:44 — Wandering NPCs (Lauren & Willem)
+
+**Prompt:** Add NPCs that wander around the map instead of standing still
+
+**What changed:**
+- Added `lauren.png` (103×188, 4 frames, static) and `willem.png` (116×188, 30 frames, wandering)
+- Implemented wandering NPC system: physics sprites, idle/walk animations, random wander AI
+- Willem added to World 3 as first wandering NPC
+- Updated `data/sprites.json` with `wander: true`, speed, animation config
+
+**Key decisions:** Wandering NPCs use physics sprites (not static) with configurable speed and animation frames.
+
+---
+
+## 2026-03-04 15:55 — Mute Button
+
+**Prompt:** Add a way to mute the game
+
+**What changed:**
+- Added 🔊/🔇 toggle button in top-right corner of every level
+- M key shortcut for mute
+- Uses Phaser's `sound.mute` which persists across scene transitions
+
+**Key decisions:** None — straightforward feature.
+
+---
+
+## 2026-03-04 16:01 — Collision Editor Improvements
+
+**Prompt:** Make the collision editor work better with all maps
+
+**What changed:**
+- Added world2–4 to map selector dropdown
+- Added scroll wheel zoom (0.1x–3x), default fits map in viewport
+- Added graceful fallback when no collision JSON exists
+
+**Key decisions:** None.
+
+---
+
+## 2026-03-04 17:27 — BaseScene Refactor
+
+**Prompt:** The world scenes have too much duplicated code — consolidate it
+
+**What changed:**
+- Moved ALL shared level logic into `BaseScene.js` (~530 lines)
+- `loadLevelAssets()`, `loadNPCSprites()`, `createLevel()`, `updateLevel()` — four methods handle everything
+- Each world scene slimmed to ~15 lines (just preload/create/update calling BaseScene)
+- Added `knownSprites` map in BaseScene for NPC frameWidth lookup
+
+**Key decisions:** This was the biggest refactor. All new features now go into BaseScene, world scenes are just config.
+
+---
+
+## 2026-03-04 18:35 — Background Music for All Worlds
+
+**Prompt:** Add music to every level
+
+**What changed:**
+- Processed music for all 5 worlds with ffmpeg (silence trimmed, mono 44.1kHz 128kbps, ~30s loops)
+- `music_saarbruecken.mp3`, `music_freiburg.mp3`, `music_macau.mp3`, `music_sanfrancisco.mp3`, `music_nyc.mp3`
+- Reprocessed World 2 music for cleaner loop
+
+**Key decisions:** All music trimmed with `silenceremove` ffmpeg filter for seamless looping.
+
+---
+
+## 2026-03-04 18:58 — Podelski Dog Sprite
+
+**Prompt:** Podelski should have his dog in World 2
+
+**What changed:**
+- Extracted `podelski_dog.png` (145×188, 1 frame) from podelski_sheet frame 2
+- Restored `podelski.png` to 76×188 (without dog) for World 1
+- Fixed NPC ID mismatch: collision map had `podelski_dog` but NPC JSON only had `podelski`
+
+**Key decisions:** Separate sprites for with/without dog. Both IDs in NPC JSON.
+
+---
+
+## 2026-03-04 19:28 — Diagonal Movement
+
+**Prompt:** Let the player move diagonally
+
+**What changed:**
+- Player can hold two direction keys simultaneously
+- Diagonal speed normalized by ×0.707 (1/√2)
+- Facing priority: vertical checked last so it takes precedence
+
+**Key decisions:** None — standard diagonal normalization.
+
+---
+
+## 2026-03-04 19:44 — Items & Doors Polish
+
+**Prompt:** Items should float and doors should look better
+
+**What changed:**
+- Items render from collision JSON with correct spritesheet frame, float with bob animation (Sine.easeInOut tween)
+- Pickup on overlap with SFX, label showing item name
+- Doors show `door_closed.png` + pulsing yellow glow, swap to `door_open.png` on enter
+- Removed hardcoded crates that were spawning on top of every door
+
+**Key decisions:** Door sprites processed from source sheets (`door_closed.png` 46×60, `door_open.png` 110×60).
+
+---
+
+## 2026-03-04 20:02 — Game Over Screen
+
+**Prompt:** What happens when the player dies?
+
+**What changed:**
+- When HP hits 0: player stops → camera shakes 300ms → 600ms delay → black overlay fades in (0.7 alpha) → red "GAME OVER" text fades in → 2.5s delay → music stops → return to TitleScreen
+
+**Key decisions:** Cinematic feel with sequential tweens rather than instant restart.
+
+---
+
+## 2026-03-04 20:23 — World 4 (San Francisco)
+
+**Prompt:** Create the San Francisco level
+
+**What changed:**
+- Created `World4_SanFrancisco.js` (~15 lines using BaseScene)
+- Added to `src/main.js` scene list and `src/config/levels.js`
+- Fixed `dejan.png` — reprocessed to exact 640×188 (80px × 8 frames) to fix Phaser spritesheet failure
+- Added john and dejan NPCs, 1 door
+- Updated smoke tests to include World4
+
+**Key decisions:** dejan.png was 644px wide causing silent Phaser failure. Width must be exact multiple of frameWidth.
+
+---
+
+## 2026-03-04 20:48 — Door Sprites
+
+**Prompt:** Doors should have actual sprites instead of just colored rectangles
+
+**What changed:**
+- Processed `door_closed.png` and `door_open.png` from source sheets
+- Doors show closed sprite + pulsing glow, swap to open on player overlap before scene transition
+- Graceful fallback if sprites missing
+
+**Key decisions:** None.
+
+---
+
+## 2026-03-04 20:50 — NPC Idle Animations
+
+**Prompt:** Static NPCs look lifeless just standing there
+
+**What changed:**
+- All static NPCs now cycle through their spritesheet frames at 3fps
+- Frame count auto-detected from texture
+- Wandering NPCs excluded (they already have walk/idle anims)
+
+**Key decisions:** 3fps chosen to feel like subtle breathing/fidgeting, not frantic.
+
+---
+
+## 2026-03-04 21:01 — Publication Papers
+
+**Prompt:** Scatter my publications across the worlds as collectible items
+
+**What changed:**
+- `publications.json` loaded at runtime, filtered by world year ranges
+- Papers spawn at random walkable positions using seeded RNG (worldNum × 9973)
+- Pickup shows paper title + year + snarky comment (16 different quips)
+- Green glow + floating bob animation on each paper
+- 51 papers total: W2=1, W3=10, W4=23, W5=17
+
+**Key decisions:** Seeded RNG ensures consistent placement. Year ranges in `levels.js`. Papers auto-update when `publications.json` changes.
+
+---
+
+## 2026-03-04 21:08 — Paper Placement Collision Fix
+
+**Prompt:** Make sure papers can't spawn on blocked or occupied tiles
+
+**What changed:**
+- Fixed water_rects blocking (was only blocking top-left tile, now blocks all covered tiles)
+- Added border_rects to blocked set
+- Added NPC, enemy, door, item, and player spawn positions to blocked set
+
+**Key decisions:** None — bug fix.
+
+---
+
+## 2026-03-04 21:09 — Title Screen Update
+
+**Prompt:** The start screen should explain controls and that this is a CV walkthrough
+
+**What changed:**
+- Updated ABOUT box: "a stylized walkthrough of Martin Schaef's CV"
+- Added full controls section: Move (Arrow/WASD), Talk (Space/E), Attack (Z/Click), Mute (M)
+- Larger box (280px) with better line spacing
+- Fixed dismiss bug (200ms delay before registering close click)
+
+**Key decisions:** None.
+
+---
+
+## 2026-03-04 21:21 — Collision Editor: Brush & Rect Fill
+
+**Prompt:** Add bigger brush and shape fill tools to the collision editor
+
+**What changed:**
+- Added brush size selector (1×1, 3×3, 5×5, 7×7) for block/erase tools
+- Added rect fill tool (click-drag to fill rectangle of blocked tiles, live preview)
+- Added rect erase tool (same but clears)
+- Added world5 to map dropdown
+
+**Key decisions:** Rect fill is more useful than flood fill for marking rectangular building footprints.
+
+---
+
+## 2026-03-06 14:44 — Development Diary Setup
+
+**Prompt:** Add agent config to keep a running diary of all interactions
+
+**What changed:**
+- Created `.kiro/skills/DIARY.md` — skill instructing agent to append diary entries
+- Updated `.kiro/agents/career-quest.json` to include DIARY skill
+- Created `diary.md` with backfilled entries
+
+**Key decisions:** Only log interactions that result in code/file changes. Combine related messages into single entries.
 
 ---
