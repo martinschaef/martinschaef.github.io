@@ -50,13 +50,6 @@ export class CreditsScreen extends Phaser.Scene {
             const y = startY + row * cellH;
 
             const sprite = this.add.sprite(x, y, key, 0).setScale(0.4);
-            // idle anim
-            const animKey = key + '_credits_idle';
-            const total = this.textures.get(key).frameTotal - 1;
-            if (total > 1 && !this.anims.exists(animKey)) {
-                this.anims.create({ key: animKey, frames: this.anims.generateFrameNumbers(key, { start: 0, end: total - 1 }), frameRate: 3, repeat: -1 });
-            }
-            if (this.anims.exists(animKey)) sprite.play(animKey);
 
             this.add.text(x, y + sprite.displayHeight / 2 + 8, s.name, {
                 fontSize: '12px', fontFamily: 'monospace', color: '#cbdbfc',

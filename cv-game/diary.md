@@ -481,3 +481,15 @@ Built with [Kiro](https://kiro.dev)
 - Attack sprite sheets from today's work remain on disk but are not loaded
 
 ---
+
+## 2026-03-07 18:13 — Credits Screen
+
+**Prompt:** Create a credits screen reachable from main menu showing idle sprites of all NPCs with names
+
+**What changed:**
+- New `src/scenes/CreditsScreen.js` — loads all 19 NPC spritesheets, displays them in a 3-column grid with idle animations and display names
+- `TitleScreen.js` — added CREDITS button (repositioned existing buttons to fit)
+- `main.js` — registered CreditsScreen in scene list
+- `tests/smoke.html` — added CreditsScreen to import and test lists
+
+---
