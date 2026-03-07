@@ -61,8 +61,8 @@ export class BaseScene extends Phaser.Scene {
     // ── Level asset loading (call in preload) ─────────────
 
     loadLevelAssets(worldNum) {
-        this.load.spritesheet('martin', 'assets/sprites/martin.png', { frameWidth: 104, frameHeight: 183 });
-        this.load.spritesheet('martin_attack', 'assets/sprites/martin_attack.png', { frameWidth: 220, frameHeight: 183 });
+        this.load.spritesheet('martin', 'assets/sprites/martin.png', { frameWidth: 100, frameHeight: 183 });
+        this.load.spritesheet('martin_attack', 'assets/sprites/martin_attack.png', { frameWidth: 174, frameHeight: 183 });
         this.load.spritesheet('martin_hit', 'assets/sprites/martin_hit.png', { frameWidth: 158, frameHeight: 183 });
         this.load.spritesheet('martin_powerup', 'assets/sprites/martin_powerup.png', { frameWidth: 160, frameHeight: 183 });
         this.load.spritesheet('martin_blast', 'assets/sprites/martin_blast.png', { frameWidth: 320, frameHeight: 183 });

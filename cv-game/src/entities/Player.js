@@ -1,18 +1,18 @@
 const SPEED = 160;
 const SCALE = 0.4;
 
-// martin.png: 104x183 frames, 8 cols x 4 rows
+// martin.png: 100x183 frames, 4 cols x 4 rows
 // Row 0: idle per direction — 0:down, 1:right, 2:up, 3:left
-// Row 1: walk_down (7 frames: 8-14)
-// Row 2: walk_right (8 frames: 16-23) — flip for left
-// Row 3: walk_up (6 frames: 24-29)
+// Row 1: walk_down (4 frames: 4-7)
+// Row 2: walk_right (4 frames: 8-11) — flip for left
+// Row 3: walk_up (4 frames: 12-15)
 const IDLE = { down: 0, left: 3, up: 2, right: 1 };
 
 const WALK = {
-    down:  { frames: [8, 9, 10, 11, 12, 13, 14], rate: 8 },
-    left:  { frames: [16, 17, 18, 19, 20, 21, 22, 23], rate: 8 },
-    right: { frames: [16, 17, 18, 19, 20, 21, 22, 23], rate: 8 },
-    up:    { frames: [24, 25, 26, 27, 28, 29], rate: 8 },
+    down:  { frames: [4, 5, 6, 7], rate: 8 },
+    left:  { frames: [8, 9, 10, 11], rate: 8 },
+    right: { frames: [8, 9, 10, 11], rate: 8 },
+    up:    { frames: [12, 13, 14, 15], rate: 8 },
 };
 
 export class Player {
@@ -68,7 +68,7 @@ export class Player {
         }
         // Action animations (single-row sheets)
         const actions = {
-            martin_attack: { frames: 6, rate: 12 },
+            martin_attack: { frames: 3, rate: 12 },
             martin_hit:    { frames: 3, rate: 10 },
             martin_powerup:{ frames: 5, rate: 8 },
             martin_blast:  { frames: 10, rate: 10 },
