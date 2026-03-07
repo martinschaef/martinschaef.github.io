@@ -39,18 +39,6 @@ export class BaseScene extends Phaser.Scene {
         }).setOrigin(1, 0).setScrollFactor(0).setDepth(200).setInteractive({ useHandCursor: true });
         this._muteBtn.on('pointerdown', () => this._toggleMute());
         this.input.keyboard.on('keydown-M', () => this._toggleMute());
-
-        // Back to menu button
-        this.add.text(12, 12, '← Menu', {
-            fontSize: '13px', fontFamily: 'monospace', color: '#aaa',
-            stroke: '#000', strokeThickness: 3
-        }).setScrollFactor(0).setDepth(200).setInteractive({ useHandCursor: true })
-          .on('pointerover', function() { this.setColor('#f4e842'); })
-          .on('pointerout', function() { this.setColor('#aaa'); })
-          .on('pointerdown', () => {
-              this.sound.stopAll();
-              this.scene.start('TitleScreen');
-          });
     }
 
     _toggleMute() {
@@ -61,11 +49,7 @@ export class BaseScene extends Phaser.Scene {
     // ── Level asset loading (call in preload) ─────────────
 
     loadLevelAssets(worldNum) {
-        this.load.spritesheet('martin', 'assets/sprites/martin.png?v=4', { frameWidth: 86, frameHeight: 183 });
-        this.load.spritesheet('martin_attack', 'assets/sprites/martin_attack.png?v=4', { frameWidth: 128, frameHeight: 183 });
-        this.load.spritesheet('martin_hit', 'assets/sprites/martin_hit.png', { frameWidth: 158, frameHeight: 183 });
-        this.load.spritesheet('martin_powerup', 'assets/sprites/martin_powerup.png?v=4', { frameWidth: 176, frameHeight: 183 });
-        this.load.spritesheet('martin_blast', 'assets/sprites/martin_blast.png', { frameWidth: 320, frameHeight: 183 });
+        this.load.spritesheet('martin', 'assets/sprites/martin.png', { frameWidth: 104, frameHeight: 183 });
         this.load.image(`world${worldNum}_bg`, `assets/tilemaps/world${worldNum}_bg.png`);
         this.load.json(`world${worldNum}_collision`, `assets/tilemaps/world${worldNum}_collision.json`);
         this.load.json('spriteData', 'data/sprites.json');

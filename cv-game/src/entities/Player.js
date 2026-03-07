@@ -1,18 +1,18 @@
 const SPEED = 160;
 const SCALE = 0.4;
 
-// martin.png: 86x183 frames, 7 cols x 3 rows
+// martin.png: 104x183 frames, 8 cols x 4 rows
 // Row 0: idle per direction — 0:down, 1:right, 2:up, 3:left
-// Row 1: walk_down (7 frames: 7-13)
-// Row 2: walk_up (5 frames: 14-18)
-// No walk_side — reuse walk_down for left/right
+// Row 1: walk_down (7 frames: 8-14)
+// Row 2: walk_right (8 frames: 16-23) — flip for left
+// Row 3: walk_up (6 frames: 24-29)
 const IDLE = { down: 0, left: 3, up: 2, right: 1 };
 
 const WALK = {
-    down:  { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
-    left:  { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
-    right: { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
-    up:    { frames: [14, 15, 16, 17, 18], rate: 8 },
+    down:  { frames: [8, 9, 10, 11, 12, 13, 14], rate: 8 },
+    left:  { frames: [16, 17, 18, 19, 20, 21, 22, 23], rate: 8 },
+    right: { frames: [16, 17, 18, 19, 20, 21, 22, 23], rate: 8 },
+    up:    { frames: [24, 25, 26, 27, 28, 29], rate: 8 },
 };
 
 export class Player {
@@ -64,22 +64,6 @@ export class Player {
                 frames: cfg.frames.map(f => ({ key: 'martin', frame: f })),
                 frameRate: cfg.rate,
                 repeat: -1
-            });
-        }
-        // Action animations (single-row sheets)
-        const actions = {
-            martin_attack: { frames: 5, rate: 12 },
-            martin_hit:    { frames: 3, rate: 10 },
-            martin_powerup:{ frames: 5, rate: 8 },
-            martin_blast:  { frames: 10, rate: 10 },
-        };
-        for (const [key, cfg] of Object.entries(actions)) {
-            if (this.scene.anims.exists(key)) continue;
-            this.scene.anims.create({
-                key,
-                frames: this.scene.anims.generateFrameNumbers(key, { start: 0, end: cfg.frames - 1 }),
-                frameRate: cfg.rate,
-                repeat: 0
             });
         }
     }
@@ -218,17 +202,12 @@ export class Player {
         hb.body.setAllowGravity(false);
         this.attackHitbox = hb;
 
-        // Attack animation overlay (different frame size than walk)
-        const atkSprite = this.scene.add.sprite(this.sprite.x, this.sprite.y, 'martin_attack', 0)
-            .setScale(SCALE).setDepth(11).setFlipX(this.facing === 'left');
-        atkSprite.play('martin_attack');
-        this.sprite.setAlpha(0); // hide base sprite during attack
-
+        // Visual slash
+        const slash = this.scene.add.rectangle(this.sprite.x + ox, this.sprite.y + oy, w, h, 0xf4e842, 0.6).setDepth(15);
         this.scene.sfx('swing', { volume: 0.3 });
 
-        atkSprite.once('animationcomplete', () => {
-            atkSprite.destroy();
-            this.sprite.setAlpha(1);
+        this.scene.time.delayedCall(150, () => {
+            slash.destroy();
             hb.destroy();
             this.attackHitbox = null;
             this.attacking = false;
@@ -240,16 +219,6 @@ export class Player {
         this.hp -= amount;
         this.invincible = true;
         this.scene.sfx('hurt', { volume: 0.4 });
-
-        // Hit animation overlay
-        const hitSprite = this.scene.add.sprite(this.sprite.x, this.sprite.y, 'martin_hit', 0)
-            .setScale(SCALE).setDepth(11).setFlipX(this.facing === 'left');
-        hitSprite.play('martin_hit');
-        this.sprite.setAlpha(0);
-        hitSprite.once('animationcomplete', () => {
-            hitSprite.destroy();
-            this.sprite.setAlpha(1);
-        });
 
         // Flash effect
         this.scene.tweens.add({

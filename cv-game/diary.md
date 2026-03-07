@@ -446,3 +446,26 @@ Built with [Kiro](https://kiro.dev)
 **Key decisions:** Used saturation-based BG detection (sat < 0.10) combined with checkerboard color matching — more robust than either alone. Split animations within rows by frame height (walk frames ~250px, strike frames ~155px). Idle reordered from sheet order (S,W,N,E) to game order (S,E,N,W).
 
 ---
+
+## 2026-03-07 14:02 — Fix Sprite Transparency Bug
+
+**Prompt:** Player sprite shows parts of two rows and transparency is messed up
+
+**What changed:**
+- Diagnosed root cause: the `sat < 0.10` low-saturation filter was removing grey character pixels (pants, shoes, shadows, glasses frames) because they matched the grey checkerboard background's saturation profile
+- Replaced BG removal with **edge-seeded flood fill**: only checker-matching pixels reachable from image borders and row boundaries are removed. Interior grey pixels (character clothing) are protected.
+- Raised checker tolerance from 22 to 30 (safe with flood fill since it can't reach character interiors)
+- Added character-size filter (80-160px width) to exclude text labels from frame extraction
+- Rebuilt all spritesheets:
+  - `martin.png`: 7×3 grid, fw=86 (idle 4f, walk_down 7f, walk_up 5f)
+  - `martin_attack.png`: 5f, fw=128
+  - `martin_attack_north.png`: 7f, fw=144
+  - `martin_attack_west.png`: 8f, fw=122
+  - `martin_powerup.png`: 6f, fw=176
+- QA: <2% grey pixel leakage across all sheets
+
+**Root cause:** Using color saturation as a proxy for "is background" fails when the character has grey/desaturated elements. The correct approach is spatial: BG is what's reachable from the edges, not what looks grey.
+
+**Prevention:** Always use flood-fill from edges for BG removal on AI-generated sprite sheets. Never use saturation or color-only filters — characters can have any color including greys that match the BG.
+
+---
