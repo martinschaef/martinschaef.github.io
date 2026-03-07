@@ -370,3 +370,19 @@ Built with [Kiro](https://kiro.dev)
 **Key decisions:** Action sprites use overlay sprites (created/destroyed per use) since their frame dimensions differ from the walk/idle sheet. Base sprite hidden during overlay playback.
 
 ---
+
+## 2026-03-07 00:53 — Fix NPC Sprite Size Changes
+
+**Prompt:** NPC animations are buggy with strange size changes
+
+**What changed:**
+- Diagnosed the root cause: BaseScene cycles ALL spritesheet frames for static NPC idle animations, but some sprites have frames with wildly different content sizes
+- Analyzed all 19 NPC sprites — found 3 with inconsistent frames:
+  - `father.png`: 8→4 frames (frames 4-7 were half-body at 128px vs 188px full-body)
+  - `wolfgang.png`: 7→4 frames (frames 1-3 had width 135-177px vs ~90px for the rest)
+  - `willem.png`: 30→24 frames (frames 24-29 were oversized, but idle/walk ranges 0-15 unaffected)
+- Verified all remaining sprites pass consistency checks (height ±10px, width ±20px)
+
+**Key decisions:** Stripped bad frames from sheets rather than adding special-case logic in game code. Simpler and prevents any future code from accidentally using inconsistent frames.
+
+---

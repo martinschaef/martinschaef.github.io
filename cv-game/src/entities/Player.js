@@ -68,9 +68,9 @@ export class Player {
         }
         // Action animations (single-row sheets)
         const actions = {
-            martin_attack: { frames: 5, rate: 12 },
-            martin_hit:    { frames: 6, rate: 10 },
-            martin_powerup:{ frames: 9, rate: 8 },
+            martin_attack: { frames: 6, rate: 12 },
+            martin_hit:    { frames: 3, rate: 10 },
+            martin_powerup:{ frames: 5, rate: 8 },
             martin_blast:  { frames: 10, rate: 10 },
         };
         for (const [key, cfg] of Object.entries(actions)) {
