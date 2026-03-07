@@ -422,3 +422,27 @@ Built with [Kiro](https://kiro.dev)
 **Key decisions:** Switched from 8-col to 4-col grid since new sheet has 4 frames per animation (was 7-8). Attack kept as separate sheet due to wider frames (174 vs 100).
 
 ---
+
+## 2026-03-07 13:45 — Full Reprocess of Player Sprite Sheet
+
+**Prompt:** Reprocess martin_new.png with detailed row-by-row animation mapping
+
+**What changed:**
+- Processed `assets/sprites/sheets/martin_new.png` (2760×1504, grey checkerboard BG):
+  - BG removal: dual checkerboard color match + low-saturation filter (removed 78% of pixels)
+  - 6 rows × variable frames, filtered labels/text by minimum height (100px)
+  - Separated walk vs strike frames within rows by height threshold (200px)
+- Created spritesheets:
+  - `martin.png`: 7×3 grid (fw=76) — idle(4), walk_down(7), walk_up(5)
+  - `martin_attack.png`: 7 frames (fw=144) — strike south
+  - `martin_attack_north.png`: 7 frames (fw=122) — strike north
+  - `martin_attack_west.png`: 9 frames (fw=146) — strike west (rows 5+6 combined)
+  - `martin_powerup.png`: 5 frames (fw=178) — power up
+- QA verified: all sheets have 0 height variation, all frames bottom-anchored at 183px
+- Fixed powerup sheet: 2px bottom misalignment corrected by shifting content down
+- Walk left/right reuse walk_down frames (no side-view walk in source sheet)
+- Cache-busted all sprite URLs to v=3
+
+**Key decisions:** Used saturation-based BG detection (sat < 0.10) combined with checkerboard color matching — more robust than either alone. Split animations within rows by frame height (walk frames ~250px, strike frames ~155px). Idle reordered from sheet order (S,W,N,E) to game order (S,E,N,W).
+
+---

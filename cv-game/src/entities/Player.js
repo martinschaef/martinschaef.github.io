@@ -1,7 +1,7 @@
 const SPEED = 160;
 const SCALE = 0.4;
 
-// martin.png: 76x183 frames, 7 cols x 3 rows
+// martin.png: 86x183 frames, 7 cols x 3 rows
 // Row 0: idle per direction — 0:down, 1:right, 2:up, 3:left
 // Row 1: walk_down (7 frames: 7-13)
 // Row 2: walk_up (5 frames: 14-18)
@@ -68,7 +68,7 @@ export class Player {
         }
         // Action animations (single-row sheets)
         const actions = {
-            martin_attack: { frames: 7, rate: 12 },
+            martin_attack: { frames: 5, rate: 12 },
             martin_hit:    { frames: 3, rate: 10 },
             martin_powerup:{ frames: 5, rate: 8 },
             martin_blast:  { frames: 10, rate: 10 },
