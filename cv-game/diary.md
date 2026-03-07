@@ -386,3 +386,20 @@ Built with [Kiro](https://kiro.dev)
 **Key decisions:** Stripped bad frames from sheets rather than adding special-case logic in game code. Simpler and prevents any future code from accidentally using inconsistent frames.
 
 ---
+
+## 2026-03-07 01:00 — Reprocess Player Action Sprites
+
+**Prompt:** New animation sheets in new_animations/ — process them and fix heights
+
+**What changed:**
+- Processed 3 new source sheets from `new_animations/`:
+  - `martin_swing.png` (978×542): Detected 3×2 grid → 6 attack frames at 220×183
+  - `martin_hit.png` (639×247): Detected 3×1 grid → 3 hit frames at 158×183
+  - `martin_powerup.png` (1168×250): Content-extracted → 5 powerup frames at 160×183
+- All frames scaled to 183px height (matching martin.png), bottom-center anchored
+- Updated frameWidth values in `BaseScene.loadLevelAssets()` and frame counts in `Player._createAnims()`
+- All sheets verified: 0 remainder, 0 height variation across frames
+
+**Key decisions:** Used regular grid detection for swing/hit (frames too close together for gap-based extraction). Tried multiple grid sizes and picked the one with most consistent frame content.
+
+---

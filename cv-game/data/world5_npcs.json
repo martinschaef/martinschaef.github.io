@@ -1,0 +1,32 @@
+{
+  "dejan": {
+    "name": "Dejan",
+    "sprite": "dejan",
+    "dialogue": {
+      "start": {
+        "text": "...",
+        "next": null
+      }
+    }
+  },
+  "lauren": {
+    "name": "Lauren",
+    "sprite": "lauren",
+    "dialogue": {
+      "start": {
+        "text": "...",
+        "next": null
+      }
+    }
+  },
+  "byron2": {
+    "name": "Byron",
+    "sprite": "byron2",
+    "dialogue": {
+      "start": {
+        "text": "...",
+        "next": null
+      }
+    }
+  }
+}
