@@ -469,3 +469,15 @@ Built with [Kiro](https://kiro.dev)
 **Prevention:** Always use flood-fill from edges for BG removal on AI-generated sprite sheets. Never use saturation or color-only filters — characters can have any color including greys that match the BG.
 
 ---
+
+## 2026-03-07 17:39 — Revert martin.png to March 4 version
+
+**Prompt:** martin.png is no good, revert to 2 days ago
+
+**What changed:**
+- Reverted `martin.png`, `Player.js`, and `BaseScene.js` to commit `3f36e55` (March 4)
+- Original sprite: 832×732, 104×183 frames, 8×4 grid
+- The flood-fill sprite extraction from `martin_new.png` wasn't producing acceptable results
+- Attack sprite sheets from today's work remain on disk but are not loaded
+
+---

@@ -18,9 +18,10 @@ export class TitleScreen extends Phaser.Scene {
             fontSize: '18px', fontFamily: 'monospace', color: '#cbdbfc'
         }).setOrigin(0.5);
 
-        this._createButton(cx, h * 0.42, 'START GAME', () => this._start());
-        this._createButton(cx, h * 0.54, 'LEVEL SELECT ▾', () => this._toggleLevelSelect());
-        this._createButton(cx, h * 0.66, 'ABOUT', () => this._showAbout());
+        this._createButton(cx, h * 0.38, 'START GAME', () => this._start());
+        this._createButton(cx, h * 0.50, 'LEVEL SELECT ▾', () => this._toggleLevelSelect());
+        this._createButton(cx, h * 0.62, 'CREDITS', () => this.scene.start('CreditsScreen'));
+        this._createButton(cx, h * 0.74, 'ABOUT', () => this._showAbout());
 
         const prompt = this.add.text(cx, h - 60, 'Press ENTER or tap START', {
             fontSize: '14px', fontFamily: 'monospace', color: '#8b8b8b'

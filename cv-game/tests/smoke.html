@@ -21,6 +21,7 @@ function finish() {
 <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
 <script type="module">
 import { TitleScreen } from '../src/scenes/TitleScreen.js';
+import { CreditsScreen } from '../src/scenes/CreditsScreen.js';
 import { World1_Saarbruecken } from '../src/scenes/World1_Saarbruecken.js';
 import { World2_Freiburg } from '../src/scenes/World2_Freiburg.js';
 import { World3_Macau } from '../src/scenes/World3_Macau.js';
@@ -29,8 +30,8 @@ import { World5_NYC } from '../src/scenes/World5_NYC.js';
 
 out('✓ All module imports OK');
 
-const scenes = [TitleScreen, World1_Saarbruecken, World2_Freiburg, World3_Macau, World4_SanFrancisco, World5_NYC];
-const toTest = ['TitleScreen', 'World1_Saarbruecken', 'World2_Freiburg', 'World3_Macau', 'World4_SanFrancisco', 'World5_NYC'];
+const scenes = [TitleScreen, CreditsScreen, World1_Saarbruecken, World2_Freiburg, World3_Macau, World4_SanFrancisco, World5_NYC];
+const toTest = ['TitleScreen', 'CreditsScreen', 'World1_Saarbruecken', 'World2_Freiburg', 'World3_Macau', 'World4_SanFrancisco', 'World5_NYC'];
 const tested = new Set();
 
 const config = {
