@@ -403,3 +403,22 @@ Built with [Kiro](https://kiro.dev)
 **Key decisions:** Used regular grid detection for swing/hit (frames too close together for gap-based extraction). Tried multiple grid sizes and picked the one with most consistent frame content.
 
 ---
+
+## 2026-03-07 10:16 — New Player Sprite from Nano Banana
+
+**Prompt:** Process new sprite sheet from NANO_BANANA_SPRITE_PROMPT.md for walking and striking
+
+**What changed:**
+- Processed `assets/sprites/sheets/martin_new.png` (1792×2390, cyan background):
+  - Removed cyan BG (color-distance threshold 40)
+  - Found 5 content rows: idle(4), walk_down(4), walk_right(4), walk_up(4), attack(3)
+  - Reordered idle frames from prompt order (down,left,right,up) to game order (down,right,up,left)
+  - Scaled all frames to 183px height (scale factor 0.403), bottom-center anchored
+- Created `martin.png`: 400×732, 4×4 grid, frameWidth=100 (was 104)
+- Created `martin_attack.png`: 522×183, 3 frames, frameWidth=174 (was 220)
+- Updated `Player.js`: new frame indices for 4-col layout (walk_down=4-7, walk_right=8-11, walk_up=12-15)
+- Updated `BaseScene.js`: new frameWidth values
+
+**Key decisions:** Switched from 8-col to 4-col grid since new sheet has 4 frames per animation (was 7-8). Attack kept as separate sheet due to wider frames (174 vs 100).
+
+---
