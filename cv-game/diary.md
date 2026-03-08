@@ -493,3 +493,20 @@ Built with [Kiro](https://kiro.dev)
 - `tests/smoke.html` — added CreditsScreen to import and test lists
 
 ---
+
+## 2026-03-08 08:55 — Credits Screen Redesign + HUD Bar
+
+**Prompt:** Credits screen doesn't fit mobile; make it one NPC per row with configurable descriptions and scrollable. Also clean up the overlapping HUD icons.
+
+**What changed:**
+- `data/credits.json` — new file with sprite key, frame width, display name, and description text for each of the 19 NPCs. Editable without touching code.
+- `src/scenes/CreditsScreen.js` — rewritten: single-column layout (sprite left, name+text right), scrollable via drag or mouse wheel, loads NPC data from credits.json
+- `src/scenes/BaseScene.js` — replaced scattered HUD elements (title, controls hint, hearts, mute) with a clean 32px semi-transparent bar at top:
+  - Left: ← Menu button (returns to title)
+  - Center-left: level title
+  - Center: hearts
+  - Right: mute toggle
+  - Resize-aware repositioning
+- Removed old `createMuteButton()` (mute now lives in the HUD bar)
+
+---

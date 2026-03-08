@@ -1,32 +1,26 @@
 {
   "dejan": {
-    "name": "Dejan",
     "sprite": "dejan",
-    "dialogue": {
-      "start": {
-        "text": "...",
-        "next": null
-      }
-    }
+    "dialogue": [
+      { "text": "Martin! Welcome to New York. The city never sleeps, and neither do our deployments." },
+      { "text": "We've been pushing the boundaries of automated reasoning here. It's a whole new scale." },
+      { "text": "Remember when we thought Freiburg was intense? That was just the warm-up." }
+    ]
   },
   "lauren": {
-    "name": "Lauren",
     "sprite": "lauren",
-    "dialogue": {
-      "start": {
-        "text": "...",
-        "next": null
-      }
-    }
+    "dialogue": [
+      { "text": "Hey Martin! Have you seen the latest results from the analysis pipeline?" },
+      { "text": "We're catching bugs that would have taken weeks to find manually." },
+      { "text": "New York's tough, but the work we're doing here matters." }
+    ]
   },
   "byron2": {
-    "name": "Byron",
     "sprite": "byron2",
-    "dialogue": {
-      "start": {
-        "text": "...",
-        "next": null
-      }
-    }
+    "dialogue": [
+      { "text": "Look who made it to the Big Apple! Long way from Freiburg, huh?" },
+      { "text": "The team here is something else. Fast-paced, but we ship real impact." },
+      { "text": "Let's grab coffee later. I know a place in Midtown." }
+    ]
   }
 }
