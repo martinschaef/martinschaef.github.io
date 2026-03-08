@@ -33,17 +33,12 @@ export class BaseScene extends Phaser.Scene {
     }
 
     createMuteButton() {
-        const cam = this.cameras.main;
-        this._muteBtn = this.add.text(cam.width - 12, 12, this.sound.mute ? '🔇' : '🔊', {
-            fontSize: '22px'
-        }).setOrigin(1, 0).setScrollFactor(0).setDepth(200).setInteractive({ useHandCursor: true });
-        this._muteBtn.on('pointerdown', () => this._toggleMute());
-        this.input.keyboard.on('keydown-M', () => this._toggleMute());
+        // Mute button is now part of the HUD bar in createLevel
     }
 
     _toggleMute() {
         this.sound.mute = !this.sound.mute;
-        if (this._muteBtn) this._muteBtn.setText(this.sound.mute ? '🔇' : '🔊');
+        if (this._hudMute) this._hudMute.setText(this.sound.mute ? '🔇' : '🔊');
     }
 
     // ── Level asset loading (call in preload) ─────────────
@@ -137,32 +132,47 @@ export class BaseScene extends Phaser.Scene {
         this._prevUp = false;
         this._prevDown = false;
 
-        // HUD
-        this.add.text(16, 16, title, {
-            fontSize: '14px', fontFamily: 'monospace', color: '#f4e842',
-            stroke: '#000', strokeThickness: 3
-        }).setScrollFactor(0).setDepth(100);
-        this.add.text(16, 36, 'WASD/Arrows: Move | E/Space: Talk | Z: Attack | ↑↓: Choose', {
-            fontSize: '11px', fontFamily: 'monospace', color: '#cbdbfc',
-            stroke: '#000', strokeThickness: 2
-        }).setScrollFactor(0).setDepth(100);
+        // HUD bar
+        const cam = this.cameras.main;
+        const barH = 32;
+        this._hudBar = this.add.rectangle(cam.width / 2, barH / 2, cam.width, barH, 0x000000, 0.7)
+            .setScrollFactor(0).setDepth(100);
+
+        this._hudBack = this.add.text(8, barH / 2, '← Menu', {
+            fontSize: '12px', fontFamily: 'monospace', color: '#ffffff'
+        }).setOrigin(0, 0.5).setScrollFactor(0).setDepth(101).setInteractive({ useHandCursor: true });
+        this._hudBack.on('pointerdown', () => { this.stopMusic(); this.scene.start('TitleScreen'); });
+
+        this._hudTitle = this.add.text(80, barH / 2, title, {
+            fontSize: '12px', fontFamily: 'monospace', color: '#f4e842'
+        }).setOrigin(0, 0.5).setScrollFactor(0).setDepth(101);
 
         // Hearts
         this._hearts = [];
+        const heartsX = 220;
         for (let i = 0; i < this.player.maxHp; i++) {
-            this._hearts.push(this.add.text(16 + i * 24, 56, '❤️', { fontSize: '18px' }).setScrollFactor(0).setDepth(100));
+            this._hearts.push(this.add.text(heartsX + i * 20, barH / 2, '❤️', {
+                fontSize: '14px'
+            }).setOrigin(0, 0.5).setScrollFactor(0).setDepth(101));
         }
+
+        this._hudMute = this.add.text(cam.width - 8, barH / 2, this.sound.mute ? '🔇' : '🔊', {
+            fontSize: '16px'
+        }).setOrigin(1, 0.5).setScrollFactor(0).setDepth(101).setInteractive({ useHandCursor: true });
+        this._hudMute.on('pointerdown', () => this._toggleMute());
+        this.input.keyboard.on('keydown-M', () => this._toggleMute());
 
         // Resize handler
         this._ww = ww; this._wh = wh;
         this.scale.on('resize', (gs) => {
             this.cameras.main.setSize(gs.width, gs.height);
             this.cameras.main.setBounds(0, 0, this._ww, this._wh);
+            this._hudBar.setPosition(gs.width / 2, barH / 2).setSize(gs.width, barH);
+            this._hudMute.setPosition(gs.width - 8, barH / 2);
         });
 
         this.cameras.main.fadeIn(500);
         if (musicKey) this.playMusic(musicKey);
-        this.createMuteButton();
     }
 
     _setupNPCs(col, npcData, spriteData, S) {
