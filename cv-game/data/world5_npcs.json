@@ -10,9 +10,7 @@
   "lauren": {
     "sprite": "lauren",
     "dialogue": [
-      { "text": "Hey Martin! Have you seen the latest results from the analysis pipeline?" },
-      { "text": "We're catching bugs that would have taken weeks to find manually." },
-      { "text": "New York's tough, but the work we're doing here matters." }
+      { "text": "I have two bears." }
     ]
   },
   "byron2": {

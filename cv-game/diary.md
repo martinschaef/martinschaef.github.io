@@ -510,3 +510,17 @@ Built with [Kiro](https://kiro.dev)
 - Removed old `createMuteButton()` (mute now lives in the HUD bar)
 
 ---
+
+## 2026-03-08 20:07 — Lauren Walking Sprite
+
+**Prompt:** Process lauren-walking.png sprite sheet and make Lauren NPC walk
+
+**What changed:**
+- Processed `assets/sprites/sheets/lauren-walking.png` (2182×1920, noisy grey BG)
+- BG removal: flood-fill from edges through low-saturation pixels (sat < 0.12) — same safe approach as martin sprite fix
+- Extracted 4 idle frames (row 0) + 7 walk frames (row 1), skipped row 3 (oversized label frames)
+- Built new `assets/sprites/lauren.png`: 1100×188, fw=100, 11 frames
+- Updated `data/sprites.json`: lauren now has `wander: true`, speed 25, idle anim (frames 0-3), walk anim (frames 4-10)
+- Updated `BaseScene.js` knownSprites and `credits.json` with new fw=100
+
+---
