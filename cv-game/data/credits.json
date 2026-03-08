@@ -1,21 +1,116 @@
 {
-  "doris":        { "sprite": "doris",       "fw": 76,  "name": "Doris (Mom)",      "text": "Always worried, always supportive." },
-  "father":       { "sprite": "father",      "fw": 76,  "name": "Dad",              "text": "The quiet engineer behind the scenes." },
-  "wolfgang":     { "sprite": "wolfgang",    "fw": 177, "name": "Wolfgang",          "text": "Big brother, bigger opinions." },
-  "monika":       { "sprite": "monika",      "fw": 75,  "name": "Monika",            "text": "Sister and voice of reason." },
-  "christine":    { "sprite": "christine",   "fw": 77,  "name": "Christine",         "text": "The youngest, the wildcard." },
-  "valentin":     { "sprite": "valentin",    "fw": 69,  "name": "Valentin",          "text": "Cousin and childhood co-conspirator." },
-  "tobert":       { "sprite": "tobert",      "fw": 93,  "name": "Tobert",            "text": "Best friend since forever." },
-  "ben":          { "sprite": "ben",         "fw": 81,  "name": "Ben",               "text": "Partner in crime at university." },
-  "podelski":     { "sprite": "podelski",    "fw": 76,  "name": "Prof. Podelski",    "text": "PhD advisor and mentor." },
-  "podelski_dog": { "sprite": "podelski_dog","fw": 145, "name": "Podelski's Dog",    "text": "The real boss of the research group." },
-  "byron":        { "sprite": "byron",       "fw": 60,  "name": "Byron",             "text": "Colleague and debugging partner." },
-  "byron2":       { "sprite": "byron2",      "fw": 57,  "name": "Byron (NYC)",       "text": "Same Byron, new city." },
-  "dejan":        { "sprite": "dejan",       "fw": 80,  "name": "Dejan",             "text": "Collaborator across continents." },
-  "evren":        { "sprite": "evren",       "fw": 115, "name": "Evren",             "text": "The formal methods whisperer." },
-  "john":         { "sprite": "john",        "fw": 72,  "name": "John",              "text": "Always up for a whiteboard session." },
-  "stephan":      { "sprite": "stephan",     "fw": 82,  "name": "Stephan",           "text": "Research partner from Freiburg days." },
-  "zhiming":      { "sprite": "zhiming",     "fw": 71,  "name": "Zhiming",           "text": "The Macau connection." },
-  "lauren":       { "sprite": "lauren",      "fw": 103, "name": "Lauren",            "text": "NYC teammate and ally." },
-  "willem":       { "sprite": "willem",      "fw": 116, "name": "Willem",            "text": "The Macau mentor." }
+  "doris": {
+    "sprite": "doris",
+    "fw": 76,
+    "name": "Doris (Mom)",
+    "text": "Always worried, always supportive."
+  },
+  "father": {
+    "sprite": "father",
+    "fw": 76,
+    "name": "Dad",
+    "text": "The quiet engineer behind the scenes."
+  },
+  "wolfgang": {
+    "sprite": "wolfgang",
+    "fw": 177,
+    "name": "Wolfgang",
+    "text": "Big brother, bigger opinions."
+  },
+  "monika": {
+    "sprite": "monika",
+    "fw": 75,
+    "name": "Monika",
+    "text": "Sister and voice of reason."
+  },
+  "christine": {
+    "sprite": "christine",
+    "fw": 77,
+    "name": "Christine",
+    "text": "The youngest, the wildcard."
+  },
+  "valentin": {
+    "sprite": "valentin",
+    "fw": 69,
+    "name": "Valentin",
+    "text": "Cousin and childhood co-conspirator."
+  },
+  "tobert": {
+    "sprite": "tobert",
+    "fw": 93,
+    "name": "Tobert",
+    "text": "Best friend since forever."
+  },
+  "ben": {
+    "sprite": "ben",
+    "fw": 81,
+    "name": "Ben",
+    "text": "Partner in crime at university."
+  },
+  "podelski": {
+    "sprite": "podelski",
+    "fw": 76,
+    "name": "Prof. Podelski",
+    "text": "PhD advisor and mentor."
+  },
+  "podelski_dog": {
+    "sprite": "podelski_dog",
+    "fw": 145,
+    "name": "Podelski's Dog",
+    "text": "The real boss of the research group."
+  },
+  "byron": {
+    "sprite": "byron",
+    "fw": 60,
+    "name": "Byron",
+    "text": "Colleague and debugging partner."
+  },
+  "byron2": {
+    "sprite": "byron2",
+    "fw": 57,
+    "name": "Byron (NYC)",
+    "text": "Same Byron, new city."
+  },
+  "dejan": {
+    "sprite": "dejan",
+    "fw": 80,
+    "name": "Dejan",
+    "text": "Collaborator across continents."
+  },
+  "evren": {
+    "sprite": "evren",
+    "fw": 115,
+    "name": "Evren",
+    "text": "The formal methods whisperer."
+  },
+  "john": {
+    "sprite": "john",
+    "fw": 72,
+    "name": "John",
+    "text": "Always up for a whiteboard session."
+  },
+  "stephan": {
+    "sprite": "stephan",
+    "fw": 82,
+    "name": "Stephan",
+    "text": "Research partner from Freiburg days."
+  },
+  "zhiming": {
+    "sprite": "zhiming",
+    "fw": 71,
+    "name": "Zhiming",
+    "text": "The Macau connection."
+  },
+  "lauren": {
+    "sprite": "lauren",
+    "fw": 100,
+    "name": "Lauren",
+    "text": "NYC teammate and ally."
+  },
+  "willem": {
+    "sprite": "willem",
+    "fw": 116,
+    "name": "Willem",
+    "text": "The Macau mentor."
+  }
 }
