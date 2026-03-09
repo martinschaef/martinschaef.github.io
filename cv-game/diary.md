@@ -541,3 +541,32 @@ Built with [Kiro](https://kiro.dev)
 - Walk east = walk_west flipped (existing flipX logic handles this)
 
 ---
+
+## 2026-03-09 10:08 — Fix Player Idle Mapping + Debug Technique
+
+**Prompt:** Animations messed up, find a way to debug and document it
+
+**Bug:** Idle frames 1 and 3 were swapped (west↔east). Walk north had 7 frames, not 6.
+
+**Debug technique — labeled frame grid:**
+```python
+from PIL import Image, ImageDraw
+img = Image.open('assets/sprites/martin.png').convert('RGBA')
+fw, fh = 112, 183
+cols, rows = img.size[0]//fw, img.size[1]//fh
+debug = Image.new('RGBA', ((fw+4)*cols, (fh+20)*rows), (34,32,52,255))
+draw = ImageDraw.Draw(debug)
+for r in range(rows):
+    for c in range(cols):
+        idx = r*cols + c
+        frame = img.crop((c*fw, r*fh, (c+1)*fw, (r+1)*fh))
+        x, y = c*(fw+4), r*(fh+20)+16
+        debug.paste(frame, (x, y), frame)
+        draw.text((x+fw//2, r*(fh+20)+2), f"{idx}", fill=(255,255,0), anchor="mt")
+debug.save('/tmp/sprite_debug_grid.png')
+```
+This renders every frame with its index number, making it trivial to verify which frame is which direction. Always run this after processing a new sprite sheet.
+
+**Lesson:** Never assume idle order is S,E,N,W — always visually verify with the labeled grid. The source sheet had S,W,N,E order.
+
+---

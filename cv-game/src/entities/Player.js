@@ -1,17 +1,18 @@
 const SPEED = 160;
 const SCALE = 0.4;
 
-// martin.png: 112x183 frames, 7 cols x 3 rows
-// Row 0: idle per direction — 0:south, 1:west, 2:north, 3:east
-// Row 1: walk_south (7 frames: 7-13)
-// Row 2: walk_north (7 frames: 14-20)
+// martin.png: 112x183 frames, 8 cols x 4 rows
+// Row 0: idle — 0:south, 1:west, 2:north, 3:east
+// Row 1: walk_south (7f: 8-14)
+// Row 2: walk_north (6f: 16-21)
+// Row 3: walk_west (8f: 24-31) — flipX for east
 const IDLE = { down: 0, left: 1, up: 2, right: 3 };
 
 const WALK = {
-    down:  { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
-    left:  { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
-    right: { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
-    up:    { frames: [14, 15, 16, 17, 18, 19, 20], rate: 8 },
+    down:  { frames: [8, 9, 10, 11, 12, 13, 14], rate: 8 },
+    left:  { frames: [24, 25, 26, 27, 28, 29, 30, 31], rate: 8 },
+    right: { frames: [24, 25, 26, 27, 28, 29, 30, 31], rate: 8 },
+    up:    { frames: [16, 17, 18, 19, 20, 21], rate: 8 },
 };
 
 export class Player {
@@ -157,7 +158,7 @@ export class Player {
         }
 
         this.sprite.setVelocity(vx, vy);
-        this.sprite.setFlipX(this.facing === 'left');
+        this.sprite.setFlipX(this.facing === 'right');
 
         if (vx !== 0 || vy !== 0) {
             this.sprite.anims.play(`martin_walk_${this.facing}`, true);
