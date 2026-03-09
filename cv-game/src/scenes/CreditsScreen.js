@@ -58,9 +58,14 @@ export class CreditsScreen extends Phaser.Scene {
         // Scrollable camera
         this.cameras.main.setBounds(0, 0, w, totalH);
 
-        // Drag to scroll
+        // Touch/mouse drag to scroll
+        let dragY = 0;
+        this.input.on('pointerdown', (p) => { dragY = p.y; });
         this.input.on('pointermove', (p) => {
-            if (p.isDown) this.cameras.main.scrollY -= p.velocity.y / 10;
+            if (p.isDown) {
+                this.cameras.main.scrollY -= (p.y - dragY);
+                dragY = p.y;
+            }
         });
         // Mouse wheel
         this.input.on('wheel', (p, go, dx, dy) => {

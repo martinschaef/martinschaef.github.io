@@ -149,7 +149,7 @@ export class BaseScene extends Phaser.Scene {
 
         // Hearts
         this._hearts = [];
-        const heartsX = 220;
+        const heartsX = cam.width / 2 - (this.player.maxHp * 20) / 2;
         for (let i = 0; i < this.player.maxHp; i++) {
             this._hearts.push(this.add.text(heartsX + i * 20, barH / 2, '❤️', {
                 fontSize: '14px'
