@@ -9,6 +9,7 @@
   },
   "lauren": {
     "sprite": "lauren",
+    "random": true,
     "dialogue": [
       { "text": "I have two bears." },
       { "text": "I'm coming!", "flee": true }

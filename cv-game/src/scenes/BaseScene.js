@@ -232,7 +232,7 @@ export class BaseScene extends Phaser.Scene {
                 const z = this.add.zone(x, y, 28, 28);
                 this.physics.add.existing(z, true); this.npcBodies.add(z);
             }
-            this.npcList.push({ x, y, id: n.id, dialogue: cfg.dialogue, sprite, label, wander: isWanderer });
+            this.npcList.push({ x, y, id: n.id, dialogue: cfg.dialogue, random: cfg.random, sprite, label, wander: isWanderer });
         });
 
         this.physics.add.collider(this.player.sprite, this.npcBodies);
@@ -578,8 +578,9 @@ export class BaseScene extends Phaser.Scene {
         for (const npc of this.npcList) {
             if (Phaser.Math.Distance.Between(px, py, npc.x, npc.y) < 60) {
                 this._currentNPC = npc;
-                this._dialogueNode = 0;
-                this._showNode(0);
+                const start = npc.random ? Math.floor(Math.random() * npc.dialogue.length) : 0;
+                this._dialogueNode = start;
+                this._showNode(start);
                 return;
             }
         }
@@ -608,7 +609,7 @@ export class BaseScene extends Phaser.Scene {
         let next = this._dialogueNode + 1;
         const nodes = this._currentNPC.dialogue;
         while (next < nodes.length && nodes[next].id) next++;
-        if (next < nodes.length) this._showNode(next);
+        if (next < nodes.length && !this._currentNPC.random) this._showNode(next);
         else {
             if (node.flee) this._fleeNPC(this._currentNPC);
             this.hideMessage(); this._currentNPC = null;
