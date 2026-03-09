@@ -10,7 +10,8 @@
   "lauren": {
     "sprite": "lauren",
     "dialogue": [
-      { "text": "I have two bears." }
+      { "text": "I have two bears." },
+      { "text": "I'm coming!", "flee": true }
     ]
   },
   "byron2": {

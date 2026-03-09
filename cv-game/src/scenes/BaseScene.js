@@ -609,10 +609,26 @@ export class BaseScene extends Phaser.Scene {
         const nodes = this._currentNPC.dialogue;
         while (next < nodes.length && nodes[next].id) next++;
         if (next < nodes.length) this._showNode(next);
-        else { this.hideMessage(); this._currentNPC = null; }
+        else {
+            if (node.flee) this._fleeNPC(this._currentNPC);
+            this.hideMessage(); this._currentNPC = null;
+        }
     }
 
     // ── Combat helpers ────────────────────────────────────
+
+    _fleeNPC(npc) {
+        const s = npc.sprite;
+        if (!s || !s.body) return;
+        const dx = s.x - this.player.sprite.x;
+        const dy = s.y - this.player.sprite.y;
+        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+        const speed = (s._wanderSpeed || 30) * 5;
+        s.setVelocity(dx / len * speed, dy / len * speed);
+        if (dx !== 0) s.setFlipX(dx < 0);
+        if (s._animKey) s.play(s._animKey + '_walk', true);
+        s._wanderTimer = 2000;
+    }
 
     _killEnemy(enemy) {
         enemy.setVelocity(0);
