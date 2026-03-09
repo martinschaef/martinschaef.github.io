@@ -111,9 +111,10 @@
       "speed": 25,
       "animations": {
         "idle": {
-          "start": 0,
-          "count": 4,
-          "rate": 4
+          "south": 0,
+          "west": 1,
+          "north": 2,
+          "east": 3
         },
         "walk_down": {
           "start": 4,

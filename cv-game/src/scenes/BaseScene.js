@@ -197,22 +197,24 @@ export class BaseScene extends Phaser.Scene {
                     sprite = this.physics.add.sprite(x, y, cfg.sprite, 0).setScale(sDef.scale || 0.4).setDepth(5);
                     sprite.body.setCollideWorldBounds(true);
                     const key = cfg.sprite;
-                    if (!this.anims.exists(key + '_idle')) {
-                        const a = sDef.animations;
-                        const mkAnim = (name, d) => {
-                            if (d) this.anims.create({ key: key + '_' + name, frames: this.anims.generateFrameNumbers(key, { start: d.start, end: d.start + d.count - 1 }), frameRate: d.rate, repeat: -1 });
-                        };
-                        mkAnim('idle', a.idle);
-                        mkAnim('walk', a.walk);
-                        mkAnim('walk_down', a.walk_down);
-                        mkAnim('walk_up', a.walk_up);
-                        mkAnim('walk_side', a.walk_side);
-                    }
-                    sprite.play(key + '_idle');
+                    const a = sDef.animations;
+                    const mkAnim = (name, d) => {
+                        if (d && d.start !== undefined && !this.anims.exists(key + '_' + name))
+                            this.anims.create({ key: key + '_' + name, frames: this.anims.generateFrameNumbers(key, { start: d.start, end: d.start + d.count - 1 }), frameRate: d.rate, repeat: -1 });
+                    };
+                    mkAnim('idle', a.idle);
+                    mkAnim('walk', a.walk);
+                    mkAnim('walk_down', a.walk_down);
+                    mkAnim('walk_up', a.walk_up);
+                    mkAnim('walk_side', a.walk_side);
+                    // Directional idle: individual frames per direction
+                    sprite._idleFrames = (a.idle.south !== undefined) ? a.idle : null;
+                    if (sprite._idleFrames) sprite.setFrame(a.idle.south);
+                    else sprite.play(key + '_idle');
                     sprite._wanderTimer = 0;
                     sprite._wanderSpeed = sDef.speed || 30;
                     sprite._animKey = key;
-                    sprite._hasDirectional = !!(sDef.animations.walk_down);
+                    sprite._hasDirectional = !!(a.walk_down);
                     this.wanderingNPCs.push(sprite);
                 } else {
                     sprite = this.add.sprite(x, y, cfg.sprite, 0).setScale(sDef?.scale || 0.4).setDepth(5);
@@ -484,13 +486,17 @@ export class BaseScene extends Phaser.Scene {
                 const [dx, dy] = dirs[Math.floor(Math.random() * dirs.length)];
                 s.setVelocity(dx * s._wanderSpeed, dy * s._wanderSpeed);
                 if (dx !== 0) s.setFlipX(dx < 0);
-                let anim;
-                if (!dx && !dy) { anim = '_idle'; }
-                else if (s._hasDirectional) {
-                    if (dx !== 0) anim = '_walk_side';
-                    else anim = dy > 0 ? '_walk_down' : '_walk_up';
-                } else { anim = '_walk'; }
-                s.play(s._animKey + anim, true);
+                if (!dx && !dy) {
+                    s.stop();
+                    if (s._idleFrames) s.setFrame(s._idleFrames[s._lastDir || 'south']);
+                    else s.play(s._animKey + '_idle', true);
+                } else if (s._hasDirectional) {
+                    s._lastDir = dx > 0 ? 'east' : dx < 0 ? 'west' : dy > 0 ? 'south' : 'north';
+                    const anim = dx !== 0 ? '_walk_side' : (dy > 0 ? '_walk_down' : '_walk_up');
+                    s.play(s._animKey + anim, true);
+                } else {
+                    s.play(s._animKey + '_walk', true);
+                }
             }
         });
 
@@ -641,11 +647,13 @@ export class BaseScene extends Phaser.Scene {
         s.setVelocity(dx / len * speed, dy / len * speed);
         if (dx !== 0) s.setFlipX(dx < 0);
         if (s._animKey) {
-            let anim = '_walk';
             if (s._hasDirectional) {
-                anim = Math.abs(dx) > Math.abs(dy) ? '_walk_side' : (dy > 0 ? '_walk_down' : '_walk_up');
+                const anim = Math.abs(dx) > Math.abs(dy) ? '_walk_side' : (dy > 0 ? '_walk_down' : '_walk_up');
+                s._lastDir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'east' : 'west') : (dy > 0 ? 'south' : 'north');
+                s.play(s._animKey + anim, true);
+            } else {
+                s.play(s._animKey + '_walk', true);
             }
-            s.play(s._animKey + anim, true);
         }
         s._wanderTimer = 2000;
     }
