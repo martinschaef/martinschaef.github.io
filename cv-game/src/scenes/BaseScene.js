@@ -197,15 +197,18 @@ export class BaseScene extends Phaser.Scene {
                     sprite = this.physics.add.sprite(x, y, cfg.sprite, 0).setScale(sDef.scale || 0.4).setDepth(5);
                     sprite.body.setCollideWorldBounds(true);
                     const key = cfg.sprite;
+                    const a = sDef.animations;
                     if (!this.anims.exists(key + '_idle')) {
-                        const a = sDef.animations;
                         this.anims.create({ key: key + '_idle', frames: this.anims.generateFrameNumbers(key, { start: a.idle.start, end: a.idle.start + a.idle.count - 1 }), frameRate: a.idle.rate, repeat: -1 });
                         this.anims.create({ key: key + '_walk', frames: this.anims.generateFrameNumbers(key, { start: a.walk.start, end: a.walk.start + a.walk.count - 1 }), frameRate: a.walk.rate, repeat: -1 });
+                        if (a.walk_down) this.anims.create({ key: key + '_walk_down', frames: this.anims.generateFrameNumbers(key, { start: a.walk_down.start, end: a.walk_down.start + a.walk_down.count - 1 }), frameRate: a.walk_down.rate, repeat: -1 });
+                        if (a.walk_up) this.anims.create({ key: key + '_walk_up', frames: this.anims.generateFrameNumbers(key, { start: a.walk_up.start, end: a.walk_up.start + a.walk_up.count - 1 }), frameRate: a.walk_up.rate, repeat: -1 });
                     }
                     sprite.play(key + '_idle');
                     sprite._wanderTimer = 0;
                     sprite._wanderSpeed = sDef.speed || 30;
                     sprite._animKey = key;
+                    sprite._hasDirWalk = !!(a.walk_down);
                     this.wanderingNPCs.push(sprite);
                 } else {
                     sprite = this.add.sprite(x, y, cfg.sprite, 0).setScale(sDef?.scale || 0.4).setDepth(5);
@@ -477,7 +480,13 @@ export class BaseScene extends Phaser.Scene {
                 const [dx, dy] = dirs[Math.floor(Math.random() * dirs.length)];
                 s.setVelocity(dx * s._wanderSpeed, dy * s._wanderSpeed);
                 if (dx !== 0) s.setFlipX(dx < 0);
-                s.play(dx || dy ? s._animKey + '_walk' : s._animKey + '_idle', true);
+                if (!dx && !dy) {
+                    s.play(s._animKey + '_idle', true);
+                } else if (s._hasDirWalk && dy !== 0 && dx === 0) {
+                    s.play(s._animKey + (dy > 0 ? '_walk_down' : '_walk_up'), true);
+                } else {
+                    s.play(s._animKey + '_walk', true);
+                }
             }
         });
 

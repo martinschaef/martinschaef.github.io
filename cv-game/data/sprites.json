@@ -116,7 +116,17 @@
           "rate": 4
         },
         "walk": {
-          "start": 8,
+          "start": 4,
+          "count": 8,
+          "rate": 8
+        },
+        "walk_down": {
+          "start": 12,
+          "count": 8,
+          "rate": 8
+        },
+        "walk_up": {
+          "start": 20,
           "count": 8,
           "rate": 8
         }
