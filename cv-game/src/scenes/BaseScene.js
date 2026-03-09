@@ -199,13 +199,20 @@ export class BaseScene extends Phaser.Scene {
                     const key = cfg.sprite;
                     if (!this.anims.exists(key + '_idle')) {
                         const a = sDef.animations;
-                        this.anims.create({ key: key + '_idle', frames: this.anims.generateFrameNumbers(key, { start: a.idle.start, end: a.idle.start + a.idle.count - 1 }), frameRate: a.idle.rate, repeat: -1 });
-                        this.anims.create({ key: key + '_walk', frames: this.anims.generateFrameNumbers(key, { start: a.walk.start, end: a.walk.start + a.walk.count - 1 }), frameRate: a.walk.rate, repeat: -1 });
+                        const mkAnim = (name, d) => {
+                            if (d) this.anims.create({ key: key + '_' + name, frames: this.anims.generateFrameNumbers(key, { start: d.start, end: d.start + d.count - 1 }), frameRate: d.rate, repeat: -1 });
+                        };
+                        mkAnim('idle', a.idle);
+                        mkAnim('walk', a.walk);
+                        mkAnim('walk_down', a.walk_down);
+                        mkAnim('walk_up', a.walk_up);
+                        mkAnim('walk_side', a.walk_side);
                     }
                     sprite.play(key + '_idle');
                     sprite._wanderTimer = 0;
                     sprite._wanderSpeed = sDef.speed || 30;
                     sprite._animKey = key;
+                    sprite._hasDirectional = !!(sDef.animations.walk_down);
                     this.wanderingNPCs.push(sprite);
                 } else {
                     sprite = this.add.sprite(x, y, cfg.sprite, 0).setScale(sDef?.scale || 0.4).setDepth(5);
@@ -477,7 +484,13 @@ export class BaseScene extends Phaser.Scene {
                 const [dx, dy] = dirs[Math.floor(Math.random() * dirs.length)];
                 s.setVelocity(dx * s._wanderSpeed, dy * s._wanderSpeed);
                 if (dx !== 0) s.setFlipX(dx < 0);
-                s.play(dx || dy ? s._animKey + '_walk' : s._animKey + '_idle', true);
+                let anim;
+                if (!dx && !dy) { anim = '_idle'; }
+                else if (s._hasDirectional) {
+                    if (dx !== 0) anim = '_walk_side';
+                    else anim = dy > 0 ? '_walk_down' : '_walk_up';
+                } else { anim = '_walk'; }
+                s.play(s._animKey + anim, true);
             }
         });
 
@@ -627,7 +640,13 @@ export class BaseScene extends Phaser.Scene {
         const speed = (s._wanderSpeed || 30) * 5;
         s.setVelocity(dx / len * speed, dy / len * speed);
         if (dx !== 0) s.setFlipX(dx < 0);
-        if (s._animKey) s.play(s._animKey + '_walk', true);
+        if (s._animKey) {
+            let anim = '_walk';
+            if (s._hasDirectional) {
+                anim = Math.abs(dx) > Math.abs(dy) ? '_walk_side' : (dy > 0 ? '_walk_down' : '_walk_up');
+            }
+            s.play(s._animKey + anim, true);
+        }
         s._wanderTimer = 2000;
     }
 
@@ -693,7 +712,7 @@ export class BaseScene extends Phaser.Scene {
             christine: { w: 77 }, valentin: { w: 69 }, tobert: { w: 93 }, ben: { w: 81 },
             podelski: { w: 76 }, podelski_dog: { w: 145 }, byron: { w: 60 }, byron2: { w: 57 }, dejan: { w: 80 },
             evren: { w: 115 }, john: { w: 72 }, stephan: { w: 82 }, zhiming: { w: 71 },
-            lauren: { w: 100 }, willem: { w: 116 }
+            lauren: { w: 118 }, willem: { w: 116 }
         };
         npcIds.forEach(id => {
             const s = knownSprites[id];
