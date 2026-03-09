@@ -1,18 +1,18 @@
 const SPEED = 160;
 const SCALE = 0.4;
 
-// martin.png: 104x183 frames, 8 cols x 4 rows
+// martin.png: 112x183 frames, 7 cols x 3 rows
 // Row 0: idle per direction — 0:down, 1:right, 2:up, 3:left
-// Row 1: walk_down (7 frames: 8-14)
-// Row 2: walk_right (8 frames: 16-23) — flip for left
-// Row 3: walk_up (6 frames: 24-29)
+// Row 1: walk_down (7 frames: 7-13)
+// Row 2: walk_up (6 frames: 14-19)
+// No walk_side row — reuse walk_down for left/right
 const IDLE = { down: 0, left: 3, up: 2, right: 1 };
 
 const WALK = {
-    down:  { frames: [8, 9, 10, 11, 12, 13, 14], rate: 8 },
-    left:  { frames: [16, 17, 18, 19, 20, 21, 22, 23], rate: 8 },
-    right: { frames: [16, 17, 18, 19, 20, 21, 22, 23], rate: 8 },
-    up:    { frames: [24, 25, 26, 27, 28, 29], rate: 8 },
+    down:  { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
+    left:  { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
+    right: { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
+    up:    { frames: [14, 15, 16, 17, 18, 19], rate: 8 },
 };
 
 export class Player {
