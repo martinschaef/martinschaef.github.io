@@ -524,3 +524,20 @@ Built with [Kiro](https://kiro.dev)
 - Updated `BaseScene.js` knownSprites and `credits.json` with new fw=100
 
 ---
+
+## 2026-03-09 01:08 — Lauren Directional Walking
+
+**Prompt:** Process lauren_sheet.png with walk north/south/west and update NPC
+
+**What changed:**
+- Processed `assets/sprites/sheets/lauren_sheet.png` (2182×1920, same noisy grey BG)
+- Row 3 had frames touching at 1px gap — used fixed frame positions from saturation analysis instead of auto-detection
+- Built `lauren.png`: 25 frames, fw=118 (idle 0-3, walk_south 4-10, walk_north 11-18, walk_west 19-24)
+- Added directional walk support to wandering NPC system:
+  - `sprites.json` can now specify `walk_down`, `walk_up`, `walk_side` animations
+  - Wander AI picks correct animation based on movement direction
+  - Flee also uses directional animation
+  - Backward compatible: NPCs with only `walk` still work (e.g. Willem)
+- Walk east = walk_west flipped (existing flipX logic handles this)
+
+---

@@ -120,12 +120,12 @@
           "count": 7,
           "rate": 8
         },
-        "walk_up": {
+        "walk_side": {
           "start": 11,
           "count": 8,
           "rate": 8
         },
-        "walk_side": {
+        "walk_up": {
           "start": 19,
           "count": 6,
           "rate": 8
