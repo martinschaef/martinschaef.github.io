@@ -2,17 +2,16 @@ const SPEED = 160;
 const SCALE = 0.4;
 
 // martin.png: 112x183 frames, 7 cols x 3 rows
-// Row 0: idle per direction — 0:down, 1:right, 2:up, 3:left
-// Row 1: walk_down (7 frames: 7-13)
-// Row 2: walk_up (6 frames: 14-19)
-// No walk_side row — reuse walk_down for left/right
-const IDLE = { down: 0, left: 3, up: 2, right: 1 };
+// Row 0: idle per direction — 0:south, 1:west, 2:north, 3:east
+// Row 1: walk_south (7 frames: 7-13)
+// Row 2: walk_north (7 frames: 14-20)
+const IDLE = { down: 0, left: 1, up: 2, right: 3 };
 
 const WALK = {
     down:  { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
     left:  { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
     right: { frames: [7, 8, 9, 10, 11, 12, 13], rate: 8 },
-    up:    { frames: [14, 15, 16, 17, 18, 19], rate: 8 },
+    up:    { frames: [14, 15, 16, 17, 18, 19, 20], rate: 8 },
 };
 
 export class Player {
