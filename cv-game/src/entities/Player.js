@@ -158,7 +158,7 @@ export class Player {
         }
 
         this.sprite.setVelocity(vx, vy);
-        this.sprite.setFlipX(this.facing === 'right');
+        this.sprite.setFlipX(this.facing === 'left');
 
         if (vx !== 0 || vy !== 0) {
             this.sprite.anims.play(`martin_walk_${this.facing}`, true);
