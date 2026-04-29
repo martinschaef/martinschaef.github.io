@@ -1,44 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Martin Sch&auml;f - Publications</title>
+    <title>Martin Schäf · Publications</title>
     <link rel="stylesheet" href="stylesheets/modern-style.css">
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
+<body>
 
-<body class="publications">
+<nav>
+    <a href="index.html">Home</a>
+    <a href="pub.html" class="active">Publications</a>
+    <a href="https://dblp.org/pid/41/7506.html" target="_blank">DBLP</a>
+    <a href="http://scholar.google.com/citations?user=WNktVKIAAAAJ&hl=en" target="_blank">Scholar</a>
+</nav>
 
-    <div id="page-wrap">
-
-        <nav style="text-align: center; margin-bottom: 20px;">
-            <a href="index.html" style="margin-right: 20px; font-weight: 600;">Home</a>
-            <a href="pub.html" style="font-weight: 600;">Publications</a>
-        </nav>
-
-        <div id="contact-info" class="vcard"></div>
-
-
-        <dl>
-
-            <dd class="clear"></dd>
-
-            <dt>Publications</dt>
-            <dd id="publications-list"></dd>
-
-        <div class="clear"></div>
-
-    </div>
-
-</body>
+<main>
+    <section>
+        <h2>Publications</h2>
+        <div id="publications-list"></div>
+    </section>
+</main>
 
 <script>
-    fetch('contact-info.html')
-        .then(r => r.text())
-        .then(html => document.getElementById('contact-info').innerHTML = html);
-
     fetch('publications.json')
         .then(r => r.json())
         .then(pubs => {
@@ -46,11 +31,18 @@
             pubs.forEach(p => (byYear[p.year] = byYear[p.year] || []).push(p));
             document.getElementById('publications-list').innerHTML = Object.keys(byYear)
                 .sort((a, b) => b - a)
-                .map(y => `<h2><span>${y >= 2010 ? y : '2010 and earlier'}</span></h2><ul>${byYear[y].map(p =>
-                    `<li><b>${p.url ? `<a href="${p.url}" target="_blank">${p.title}</a>` : p.title}</b><br />${p.authors}<br />${p.venue}</li>`
-                ).join('')}</ul>`).join('');
+                .map(y => `
+                    <h3 class="year-heading">${y >= 2010 ? y : '2010 and earlier'}</h3>
+                    <ul class="pub-list">${byYear[y].map(p =>
+                        `<li>
+                            ${p.url ? `<a href="${p.url}" target="_blank" class="pub-title">${p.title}</a>` : `<span class="pub-title">${p.title}</span>`}
+                            <span class="pub-authors">${p.authors}</span>
+                            <span class="pub-venue">${p.venue}</span>
+                        </li>`
+                    ).join('')}</ul>
+                `).join('');
         })
         .catch(e => console.error('Failed to load publications:', e));
 </script>
-
+</body>
 </html>
