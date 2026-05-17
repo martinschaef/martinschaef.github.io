@@ -81,6 +81,11 @@
 
 ---
 
+## Reminders
+- [ ] Add cheat codes
+
+---
+
 ## Weekend 6: Polish & Deploy
 **Goal:** Ship it.
 
