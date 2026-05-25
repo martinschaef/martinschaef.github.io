@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logic, in Dialogue · Martin Schäf · Research Vision</title>
-<meta name="robots" content="noindex">
+<title>Logic, in Dialogue · Martin Schäf · Research Statement</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +46,49 @@
   }
 
   /* ===== Layout ===== */
-  .page{max-width:980px;margin:0 auto;padding:60px 32px 100px;position:relative}
+  .page{max-width:980px;margin:0 auto;padding:32px 32px 100px;position:relative}
+
+  /* ===== Site nav ===== */
+  nav.site-nav{
+    max-width:900px;
+    margin:0 auto 28px;
+    padding:0 0 0 0;
+    display:flex;
+    gap:0;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  nav.site-nav::before, nav.site-nav::after{
+    content:"";
+    position:absolute;
+    bottom:-5px;
+    width:8px;height:8px;
+    border:1px solid var(--gold);
+    background:var(--bg);
+    transform:rotate(45deg);
+  }
+  nav.site-nav::before{left:6px}
+  nav.site-nav::after{right:6px}
+  nav.site-nav a{
+    font-family:'Cinzel', serif;
+    padding:12px 22px;
+    font-size:11px;
+    font-weight:500;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--muted);
+    border:none;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+    transition:color 0.2s, border-color 0.2s;
+  }
+  nav.site-nav a:hover{color:var(--cream); border-bottom-color:transparent}
+  nav.site-nav a.active{color:var(--gold-bright); border-bottom-color:var(--gold)}
+  @media (max-width:680px){
+    nav.site-nav{padding:0 12px; overflow-x:auto}
+    nav.site-nav::before, nav.site-nav::after{display:none}
+    nav.site-nav a{padding:10px 14px; font-size:10px; letter-spacing:0.22em}
+  }
 
   /* ===== Hero ===== */
   .hero{text-align:center;padding:40px 0 30px;position:relative}
@@ -441,6 +482,14 @@
 
 <div class="page">
 
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="research-vision.html" class="active">Research Statement</a>
+    <a href="pub.html">Publications</a>
+    <a href="https://dblp.org/pid/41/7506.html" target="_blank">DBLP</a>
+    <a href="http://scholar.google.com/citations?user=WNktVKIAAAAJ&amp;hl=en" target="_blank">Scholar</a>
+  </nav>
+
   <!-- ═══════════════════ HERO ═══════════════════ -->
   <header class="hero">
     <svg class="sunburst" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -493,35 +542,37 @@
   <!-- ═══════════════════ OVERTURE ═══════════════════ -->
   <section class="overture">
     <p class="lead drop-cap">
-      Formal systems produce facts about the world. A type checker proves an invariant.
-      A model checker rules out a state. A rule engine returns an outcome. A theorem
-      prover certifies a derivation. Each fact is small, checkable, and grounded in
-      logic. Each one stands on its own.
+      Program analysis and verification turn programs into checkable facts. A type
+      checker proves an invariant. A model checker rules out a state. An
+      interpolation engine isolates the reason a trace fails. Each fact is small,
+      grounded in logic, and stands on its own.
     </p>
     <p>
-      The harder problem is what happens next. A fact has to reach a person who will
-      act on it. The person speaks natural language. The system speaks logic. The two
-      languages do not align. A developer reading an analyzer report, a tax preparer
-      asking a rule engine about an edge case, a mathematician inspecting a proof
-      assistant: each one is doing the same work, translating between an answer the
-      system computed and a question the person actually had in mind.
+      The harder problem is turning that capability into something useful. Four
+      questions show up across two decades of my work. How do you represent a
+      program in logic so a verifier can reason about it effectively. How do you
+      distill the result into a small fact a developer can act on. When the
+      verifier gets stuck, how do you enlist a human, and how do you make that
+      exchange bearable for the human and useful to the machine. How do you know
+      any of it is working on real codebases.
     </p>
     <p>
-      My research has been about that translation, organized around four questions.
-      Why did the system do what it did. How do you present the answer to a human.
-      What does the human contribute back. Was the exchange productive. The first
-      three are design questions. The fourth is an empirical one. I have worked on
-      these in different roles since 2006, in academia, at SRI, and at AWS, with
-      software as the running case.
+      I have worked on these questions since 2006, in academia, at SRI, and at AWS,
+      with software as the running case. The first two are design problems. The
+      third is a protocol problem. The fourth is empirical. Each has its own
+      literature. Each has been pursued under one shared assumption: a human is
+      somewhere in the loop, slow and scarce, and the work is built around getting
+      the most out of that person.
     </p>
     <p>
-      Since 2024 the assumption underneath the loop has changed. The human in the
-      loop was always the limiting reagent. Crowds were slow. Annotations were
-      expensive. Reports went unread. Large language models lift that constraint, and
-      in doing so they reopen every research question that was settled around the
-      old constraint. It is worth going back through the work and asking which
-      results still hold, which methods become newly tractable, and which protocols
-      need to be designed from scratch.
+      Since 2024 that assumption has changed. The human was always the limiting
+      reagent. Crowds were slow. Annotations were expensive. Reports went unread.
+      Studies of analyzer adoption depended on logs and inference because direct
+      measurement was too costly. Large language models lift the constraint at every
+      step of the loop. They can read the program. They can propose the abstraction.
+      They can guess the invariant. They can read the report and act on it. They
+      can also be confidently wrong in ways verifiers cannot. The constraint that
+      shaped each line of work no longer holds.
     </p>
 
     <p style="border-left:3px solid var(--gold); padding:6px 0 6px 18px; margin:30px 0; font-size:1.05em; color:var(--gold-bright); font-style:italic">
@@ -531,17 +582,16 @@
     </p>
 
     <p>
-      Language models change what plays the human role. The fluent participant is
-      now cheap, fast, and available at every step of the loop. It can read the
-      artifact, propose the missing piece, and explain a finding in plain English.
-      It can also be confidently wrong in ways formal systems cannot. So the four
-      questions reopen, and they reopen wherever a formal system meets a human
-      audience. The interpolant explaining a program failure to a coding agent. The
-      conditional answer a rule engine has to give when a question leaves most of
-      the input blank. The proof step a theorem prover has to justify in prose for
-      the mathematician at the keyboard. The same loop, different artifacts. The
-      interesting research question is which parts of the symbolic side bear weight
-      when the rest is rebuilt.
+      The four questions reopen, each one in a different way. An abstraction that
+      took years to design by hand may now be tractable as an agentic refinement
+      under verifier supervision. An interpolant that used to be presented to a
+      developer becomes an assertion an agent can call without recompiling. An
+      invariant a crowd would have been asked to guess is now proposed by a model
+      and rejected or accepted by the same verifier. A study that depended on
+      sparse human signal becomes a controlled experiment with thousands of agent
+      runs. The symbolic backbone is what holds the new loop together. The
+      interesting research question is which parts of that backbone bear weight
+      when the rest is rebuilt around a fluent participant.
     </p>
   </section>
 
@@ -565,24 +615,140 @@
     <div class="side-header">
       <div class="label">Side A · Why?</div>
       <h2>Why Did the System Do That?</h2>
-      <p class="caption">Distilling a failing run, in logic, into the smallest fact that explains it.</p>
+      <p class="caption">Finding abstractions that let a verifier reason effectively about a program.</p>
     </div>
 
     <div class="tracklist">
       <div class="track">
-        <div class="num">A1 · 2012</div>
+        <div class="num">A1 · 2015</div>
         <div class="body">
-          <h3><a href="http://cs.nyu.edu/wies/publ/error_invariants.pdf" target="_blank">Error Invariants</a></h3>
-          <p class="meta">E. Ermis, M. Schäf, T. Wies — FM</p>
+          <h3><a href="papers/bixie_tool.pdf" target="_blank">Bixie: Finding and Understanding Inconsistent Code</a></h3>
+          <p class="meta">T. McCarthy, P. Rümmer, M. Schäf — ICSE Demo</p>
           <p>
-            A sequence of Craig interpolants along a failing trace produces the smallest
-            formula at each program point that explains why the trace fails. The result
-            is a logical fingerprint of the bug, one slice at a time.
+            A weakest-precondition abstraction for Java that flags paths whose
+            preconditions contradict the program's own assumptions. The abstraction is
+            cheap enough to run on every commit and precise enough to find real bugs.
           </p>
         </div>
       </div>
       <div class="track">
-        <div class="num">A2 · 2013</div>
+        <div class="num">A2 · 2015</div>
+        <div class="body">
+          <h3><a href="papers/hcvs15.pdf" target="_blank">Non-Monotonic Program Analysis</a></h3>
+          <p class="meta">D. Schwartz-Narbonne, C. Oh, M. Schäf, P. Rümmer, A. Tiwari, T. Wies — HCVS</p>
+          <p>
+            An abstraction that adds and drops facts as the analysis proceeds. The
+            classical chain of monotonically growing approximations becomes a search
+            over abstractions. Useful when the right invariant is not the union of
+            cheaper ones.
+          </p>
+        </div>
+      </div>
+      <div class="track">
+        <div class="num">A3 · 2017</div>
+        <div class="body">
+          <h3><a href="papers/lpar17_01.pdf" target="_blank">Quantified Heap Invariants for Object-Oriented Programs</a></h3>
+          <p class="meta">T. Kahsai, R. Kersten, P. Rümmer, M. Schäf — LPAR</p>
+          <p>
+            A heap abstraction that admits quantified invariants over object fields.
+            The right shape of quantifier turns proofs that were out of reach into
+            proofs the verifier can find on its own.
+          </p>
+        </div>
+      </div>
+      <div class="track">
+        <div class="num">A4 · 2020</div>
+        <div class="body">
+          <h3><a href="https://conf.researchr.org/details/icse-2020/icse-2020-papers/126/Verifying-Object-Construction" target="_blank">Verifying Object Construction</a></h3>
+          <p class="meta">M. Kellogg, M. Ran, M. Sridharan, M. Schäf, M. D. Ernst — ICSE</p>
+          <p>
+            A type-state abstraction for object initialization. The fact that an
+            object's invariants must hold before any method can be called becomes a
+            type-system property the compiler can check.
+          </p>
+        </div>
+      </div>
+      <div class="track">
+        <div class="num">A5 · 2021</div>
+        <div class="body">
+          <h3><a href="https://www.amazon.science/publications/rapid-checking-api-usage-for-the-cloud-in-the-cloud" target="_blank">RAPID: API Checking for the Cloud in the Cloud</a></h3>
+          <p class="meta">M. Emmi, L. Hadarean, R. Jhala, L. Pike, N. Rosner, M. Schäf, A. Sengupta, W. Visser — ESEC/FSE</p>
+          <p>
+            An abstraction of cloud APIs as protocols, with a checker that verifies
+            client code against the protocol. The model is what the API documentation
+            should have been. The checker turns it into a property the build can
+            enforce.
+          </p>
+        </div>
+      </div>
+      <div class="track">
+        <div class="num">A6 · 2024</div>
+        <div class="body">
+          <h3><a href="https://www.amazon.science/publications/inference-for-ever-changing-policy-of-taint-analysis" target="_blank">Inference for ever-changing policy of taint analysis</a></h3>
+          <p class="meta">W.-H. Chiang, P. Li, Q. Zhou, S. Banerjee, M. Schäf, Y. Lyu, H. Nguyen, O. Tripp — ICSE-SEIP</p>
+          <p>
+            A taint analysis whose source/sink/sanitizer policy is inferred from the
+            codebase rather than written by hand. The abstraction is the same. The
+            cost of keeping the policy current drops to where industrial use becomes
+            tractable.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tv-block">
+      <span class="tv-label">Side A · Taylor's Version</span>
+      <h3>Why, Re-recorded</h3>
+      <p>
+        The expensive part of this work was the abstraction itself. Translating a
+        program into a heap model, into a type-state, into an API protocol, into a
+        taint policy, took years of careful design and engineering for each
+        abstraction. The agent changes that calculus. An agentic loop can do most of
+        the translation in a semi-automatic pass and use the verifier as the oracle
+        that confirms whether the abstraction captures the behavior. Wrong
+        translations get rejected. Right ones are kept. Trying a new abstraction
+        becomes a matter of running the loop instead of writing a paper.
+      </p>
+      <p>
+        The output side changes too. These tools were designed to give a human
+        developer actionable information. The first reader is now usually an agent.
+        What the agent needs differs from what the developer needs. The information
+        density can be higher. The form can be more structured. The audience for a
+        program-analysis report is no longer fixed, and the design space for the
+        report opens up with it.
+      </p>
+      <p class="open"><span class="lab">From the Vault</span>
+        Which abstractions are too expensive to design by hand but cheap enough for
+        an agent to discover under verifier supervision? And what does a
+        program-analysis output look like when its first reader is another program?
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ SIDE B ═══════════════════ -->
+  <section class="album">
+    <div class="side-header">
+      <div class="label">Side B · Show?</div>
+      <h2>How Do You Say It to a Human?</h2>
+      <p class="caption">Distilling a failing run into a small fact that explains the bug.</p>
+    </div>
+
+    <div class="tracklist">
+      <div class="track">
+        <div class="num">B1 · 2012</div>
+        <div class="body">
+          <h3><a href="http://cs.nyu.edu/wies/publ/error_invariants.pdf" target="_blank">Error Invariants</a></h3>
+          <p class="meta">E. Ermis, M. Schäf, T. Wies — FM</p>
+          <p>
+            A sequence of Craig interpolants along a failing trace produces the
+            smallest formula at each program point that still explains the failure.
+            The output replaces a long trace with a short generalization. Less to read.
+            Fewer variables to track.
+          </p>
+        </div>
+      </div>
+      <div class="track">
+        <div class="num">B2 · 2013</div>
         <div class="body">
           <h3><a href="http://cs.nyu.edu/wies/publ/flow-sensitive_fault_localization.pdf" target="_blank">Flow-sensitive Fault Localization</a></h3>
           <p class="meta">J. Christ, E. Ermis, M. Schäf, T. Wies — VMCAI</p>
@@ -594,87 +760,27 @@
         </div>
       </div>
       <div class="track">
-        <div class="num">A3 · 2016</div>
+        <div class="num">B3 · 2015</div>
+        <div class="body">
+          <h3><a href="papers/vermeer_tool.pdf" target="_blank">VERMEER: A Tool for Tracing and Explaining Faulty C Programs</a></h3>
+          <p class="meta">D. Schwartz-Narbonne, C. Oh, M. Schäf, T. Wies — ICSE Demo</p>
+          <p>
+            The interactive tool. A developer steps through the trace; the explanation
+            engine highlights the variables and statements that the interpolants say
+            matter, and abstracts away the rest.
+          </p>
+        </div>
+      </div>
+      <div class="track">
+        <div class="num">B4 · 2016</div>
         <div class="body">
           <h3><a href="papers/tap2016.pdf" target="_blank">Classifying Bugs with Interpolants</a></h3>
           <p class="meta">A. Podelski, M. Schäf, T. Wies — TAP</p>
           <p>
-            The <em>shape</em> of an interpolant is itself a fingerprint of the bug
-            class. Quantifiers, variables, and arithmetic operators carry information
-            about what kind of error produced the trace. Off-by-one looks like off-by-one
+            The <em>shape</em> of an interpolant is a fingerprint of the bug class.
+            Quantifiers, variables, and arithmetic operators carry information about
+            what kind of error produced the trace. Off-by-one looks like off-by-one
             in logic.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="tv-block">
-      <span class="tv-label">Side A · Taylor's Version</span>
-      <h3>Why, Re-recorded</h3>
-      <p>
-        The symbolic backbone stays in place. The participant on the generative side
-        changes. <strong>Error Invariants</strong> becomes a hypothesis loop. The
-        language model proposes candidate explanations in natural language. The
-        interpolation engine accepts only those backed by a valid interpolant. <strong>
-        Flow-sensitive Fault Localization</strong> becomes a comparison. Does an LLM
-        reading of a failing trace respect control flow the way a flow-sensitive
-        symbolic localizer does, or does it produce plausible flat narratives that miss
-        the join points? <strong>Classifying Bugs with Interpolants</strong> becomes a
-        head-to-head with LLM embeddings of the same buggy programs. The interpolant
-        signature is small, sound, and interpretable. The embedding is large, fluent,
-        and opaque. The question is which bug families each one captures and which
-        neither does.
-      </p>
-      <p class="open"><span class="lab">From the Vault</span>
-        When the symbolic and generative sides disagree on what to highlight, which
-        signal teaches the developer faster, and which bug families does neither
-        representation catch?
-      </p>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ SIDE B ═══════════════════ -->
-  <section class="album">
-    <div class="side-header">
-      <div class="label">Side B · Show?</div>
-      <h2>How Do You Say It to a Human?</h2>
-      <p class="caption">A correct fact is not yet a useful one. Presentation is its own research problem.</p>
-    </div>
-
-    <div class="tracklist">
-      <div class="track">
-        <div class="num">B1 · 2015</div>
-        <div class="body">
-          <h3><a href="papers/bixie_tool.pdf" target="_blank">Bixie: Finding and Understanding Inconsistent Code</a></h3>
-          <p class="meta">T. McCarthy, P. Rümmer, M. Schäf — ICSE Demo</p>
-          <p>
-            A tool that finds <em>inconsistent</em> code, meaning paths the program will
-            execute that contradict its own assumptions. The contradiction is rendered
-            in a form a developer can read, not just one a verifier can prove.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">B2 · 2015</div>
-        <div class="body">
-          <h3><a href="papers/vermeer_tool.pdf" target="_blank">VERMEER</a></h3>
-          <p class="meta">D. Schwartz-Narbonne, C. Oh, M. Schäf, T. Wies — ICSE Demo</p>
-          <p>
-            An interactive tool that traces and explains C-program failures via concolic
-            abstraction and slicing. The audience is a human reading a counter-example and
-            deciding what the program had been trying to do.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">B3 · 2016</div>
-        <div class="body">
-          <h3><a href="papers/icpc2016.pdf" target="_blank">Multistaging to Understand</a></h3>
-          <p class="meta">H. Sanchez, E. J. Whitehead, M. Schäf — ICPC</p>
-          <p>
-            Distilling Java code examples into staged simplifications. Each stage drops
-            details a reader can defer, leaving a kernel that captures the example's
-            essence. Comprehension as a controlled descent through abstraction levels.
           </p>
         </div>
       </div>
@@ -684,22 +790,30 @@
       <span class="tv-label">Side B · Taylor's Version</span>
       <h3>Show, Re-recorded</h3>
       <p>
-        Each of these tools chose what <em>not</em> to show. Bixie hid the parts of the
-        proof a developer did not need. VERMEER abstracted the trace to the slice that
-        mattered. Multistaging dropped detail in stages until the kernel surfaced. With
-        a language model in the loop, the abstraction can be rendered in prose.
-        <strong>Bixie</strong> becomes a tool whose contradictions are explained in
-        natural language. The verifier releases only the explanations it can re-derive
-        from the inconsistency. <strong>VERMEER</strong> reverses its audience. The
-        explanation now flows to an LLM coding agent. The new dependent variable is how
-        aggressively the trace can be abstracted before the agent loses the bug.
-        <strong>Multistaging to Understand</strong> becomes a question about who chooses
-        the stages. An LLM-chosen simplification may still be faithful, or it may drop
-        the detail that carried the meaning.
+        The original motivation was cognitive load. An error invariant generalizes
+        the reason a specific execution failed. Showing a developer a predicate at a
+        program point requires less cognitive effort than reading a trace. The
+        motivation transfers when the reader is an agent, but the gain is different.
+        The agent saves tokens. The agent does not have to re-execute or re-compile
+        to check whether a candidate fix satisfies the invariant. The invariant is a
+        check the agent can call. <strong>Error Invariants</strong> and
+        <strong>Flow-sensitive Fault Localization</strong> become assertions the
+        agent's repair has to satisfy. <strong>Classifying Bugs with Interpolants</strong>
+        becomes a fingerprint the agent can use to retrieve fixes from prior runs.
+        The interpolation engine can also synthesize new tests from the same data,
+        which the agent can use to confirm a fix on cases the developer never wrote.
+      </p>
+      <p>
+        Beyond the agentic repair loop, the line of work points at a larger
+        question. Our recent paper on <em>delta debugging for LLM-integrated
+        systems</em> is one step into this. When natural language is part of the
+        program, a failure is no longer just a state contradiction. We need to
+        rethink what "the reason for the failure" means.
       </p>
       <p class="open"><span class="lab">From the Vault</span>
-        Are humans and language models sensitive to the same abstractions, or do the
-        same explanations land for one audience and fall flat for the other?
+        What does fault localization mean when half the program is a prompt? Which
+        of the symbolic explanation primitives transfer, and which need a new
+        definition before they can be applied?
       </p>
     </div>
   </section>
@@ -709,7 +823,7 @@
     <div class="side-header">
       <div class="label">Side C · Listen?</div>
       <h2>What Does the Other Voice Add?</h2>
-      <p class="caption">When the verifier gets stuck, someone else gets to guess. The protocol turns guesses into something checkable.</p>
+      <p class="caption">Enlisting a human when the verifier gets stuck. Where to draw the boundary, and how to structure the exchange.</p>
     </div>
 
     <div class="tracklist">
@@ -719,14 +833,28 @@
           <h3>Chekofv: Crowd-Sourced Formal Verification</h3>
           <p class="meta">H. Logas, F. Kirchner, J. Murray, M. Schäf, J. Whitehead — FWFM</p>
           <p>
-            A game in which crowds propose candidate loop invariants and a verifier filters
-            them. The protocol works because humans can guess what verifiers cannot
-            synthesize.
+            A game in which crowds propose candidate loop invariants. The verifier
+            filters them. The protocol works because the search space is large for a
+            machine and not for a human, and the verifier can cheaply confirm a
+            useful guess.
           </p>
         </div>
       </div>
       <div class="track">
-        <div class="num">C2 · 2016</div>
+        <div class="num">C2 · 2015</div>
+        <div class="body">
+          <h3><a href="papers/lpar15_02.pdf" target="_blank">Gamifying Program Analysis</a></h3>
+          <p class="meta">D. Fava, J. Signoles, M. Lemerre, M. Schäf, A. Tiwari — LPAR</p>
+          <p>
+            A study of which program-analysis subproblems can be cast as games for
+            non-experts. The contribution is the boundary itself: which questions are
+            cheap to verify, hard to synthesize, and presentable in a form a layperson
+            can answer.
+          </p>
+        </div>
+      </div>
+      <div class="track">
+        <div class="num">C3 · 2016</div>
         <div class="body">
           <h3><a href="papers/icse2016.pdf" target="_blank">Crowd-Sourcing Program Preconditions</a></h3>
           <p class="meta">D. Fava, D. Shapiro, J. Osborn, M. Schäf, J. Whitehead — ICSE</p>
@@ -738,7 +866,7 @@
         </div>
       </div>
       <div class="track">
-        <div class="num">C3 · 2017</div>
+        <div class="num">C4 · 2017</div>
         <div class="body">
           <h3><a href="papers/lpar17_02.pdf" target="_blank">Abduction by Non-Experts</a></h3>
           <p class="meta">N. Bjørner, D. Jovanović, T. Lepoint, P. Rümmer, M. Schäf — LPAR</p>
@@ -749,44 +877,41 @@
           </p>
         </div>
       </div>
-      <div class="track">
-        <div class="num">C4 · 2020</div>
-        <div class="body">
-          <h3><a href="https://homes.cs.washington.edu/~mernst/pubs/continuous-compliance-ase2020.pdf" target="_blank">Continuous Compliance</a> &amp; <a href="https://conf.researchr.org/details/icse-2020/icse-2020-papers/126/Verifying-Object-Construction" target="_blank">Verifying Object Construction</a></h3>
-          <p class="meta">M. Kellogg et al. — ASE &amp; ICSE</p>
-          <p>
-            Two type-system-based checkers. One enforces compliance properties on every
-            commit. One tracks object initialization. Both are sound. Both pay the same
-            tax: an annotation only the developer can write. The "other voice" here is
-            quieter, but it is the same voice.
-          </p>
-        </div>
-      </div>
     </div>
 
     <div class="tv-block">
       <span class="tv-label">Side C · Taylor's Version</span>
       <h3>Listen, Re-recorded</h3>
       <p>
-        The crowd protocol consists of a generative human and a symbolic referee. The
-        re-recording puts a language model on the generative side. <strong>Chekofv</strong>
-        becomes an LLM ensemble proposing invariants while the verifier rejects the
-        unsound. The new question is whether the ensemble preserves the diversity of
-        guess that made the crowd useful, or collapses onto a narrow modal hypothesis.
-        <strong>Crowd-Sourcing Preconditions</strong> swaps a hundred labelers for one
-        model under many personas. The question is whether the inferred boundary still
-        bends around the surprising edge cases. <strong>Abduction by Non-Experts</strong>
-        becomes a replication with an LLM as the non-expert under study. The interesting
-        cases are abductive failures the model shares with human novices and abductive
-        failures unique to the model. The <strong>type-system pair</strong> is the same
-        protocol at a different tempo. The model proposes the qualifiers no one wants
-        to write. The type checker rejects the unsound ones. The rejections become a
-        curriculum. The annotations write themselves. The checker stays the unmoved
-        gatekeeper.
+        This body of work was about a particular kind of failure. Some verification
+        problems, like finding loop invariants or doing abductive inference, are
+        hard for machines because the search space is large and a wrong guess
+        provides no useful signal for correcting course. The work asked three
+        questions: where is the boundary at which a machine needs help, how should
+        the interaction be structured so it is bearable for the human and useful
+        for the machine, and what kind of feedback can the machine give to keep the
+        human productive.
+      </p>
+      <p>
+        The boundary moves. A language model can guess invariants quickly, pull
+        context from the source code and documentation, and draw on its
+        pre-training. Many of the iterations a crowd was needed for can now run
+        with a model in the loop. Not all of them. There remain cases where neither
+        the model nor the verifier can make progress and a human is the best
+        signal.
+      </p>
+      <p>
+        What also changes is the language of the exchange. The 2014 work could only
+        ask a layperson a question expressed as a puzzle, because the underlying
+        formula was unreadable. Now we can ask the question in prose. The human
+        can answer in prose. The machine can read the answer and turn it into a
+        candidate the verifier can check. The interface stops being a translation
+        problem and starts being a conversation.
       </p>
       <p class="open"><span class="lab">From the Vault</span>
-        When the verifier rejects, does the model iterate productively, or does it
-        argue with the verifier in confident, well-formed sentences?
+        Which verification subproblems still need a human in the loop after the
+        model has tried, and what does an interface look like that lets the human
+        contribute in natural language without losing the verifier's guarantees?
       </p>
     </div>
   </section>
@@ -796,7 +921,7 @@
     <div class="side-header">
       <div class="label">Side D · Measure?</div>
       <h2>Was Any of This Productive?</h2>
-      <p class="caption">The unfashionable side. Production studies that ask whether the loop converges on anything useful.</p>
+      <p class="caption">Production studies that ask whether the loop converges on anything useful.</p>
     </div>
 
     <div class="tracklist">
@@ -829,20 +954,29 @@
       <span class="tv-label">Side D · Taylor's Version</span>
       <h3>Measure, Re-recorded</h3>
       <p>
-        The empirical strand becomes more interesting, not less, when a language model
-        is in the loop. <strong>Long-term Rule Quality via True Negatives</strong>
-        applies the same monitoring methodology to LLM-based checks. The drift signature
-        changes shape. Models go stale overnight in ways static rules cannot. The
-        true-negative measurement becomes the only honest way to notice.
-        <strong>Developer-Analyzer Interactions</strong> grows a third party. An LLM
-        mediator translates findings, summarizes them, and proposes fixes. The
-        observational methodology stays the same. Three voices now appear on every pull
-        request. The empirical question is whether the mediator is a net win for
-        developer trust or a new register of confident wrongness.
+        The bottleneck of the original work was data. Human feedback was slow,
+        expensive, and sparse. Whether a developer accepted or ignored a finding
+        was sometimes the only signal we had, and even that had to be inferred
+        from messy logs. We built methodologies that wrung as much as possible out
+        of small samples.
+      </p>
+      <p>
+        The constraint relaxes when machines write most of the code and react to
+        most of the tool signal. Every agent run is an experiment. Every accepted
+        or rejected finding is recorded. Controlled experiments become tractable.
+        We can change the feedback the analyzer gives back to the agent and
+        measure whether the next batch of agent output improves.
+        <strong>Long-term Rule Quality via True Negatives</strong> becomes a
+        per-rule controlled study, run nightly, with a sample size measured in
+        thousands of agent invocations. <strong>Developer-Analyzer Interactions
+        in Code Reviews</strong> becomes <em>agent</em>-analyzer interactions,
+        with no recall bias, no Hawthorne effect, and a feedback channel that can
+        be tuned and re-measured.
       </p>
       <p class="open"><span class="lab">From the Vault</span>
-        How do empirical methods built around static, sound analyzers adapt to a world
-        where the analyzer itself can change between Tuesday and Wednesday?
+        What does an analyzer look like when the only readers are agents, and the
+        evaluation loop is fast enough to do real A/B tests on the feedback that
+        the analyzer gives?
       </p>
     </div>
   </section>
@@ -934,7 +1068,7 @@
       </g>
     </svg>
     <p>All originals are published works · all Taylor's Versions are open research sketches</p>
-    <p>Return to <a href="index.html">the homepage</a> · Browse <a href="pub.html">the catalog in full</a></p>
+    <p><a href="index.html">Home</a> · <a href="pub.html">Full publication list</a></p>
   </footer>
 
 </div>
