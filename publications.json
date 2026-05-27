@@ -1,6 +1,13 @@
 [
   {
     "year": 2026,
+    "title": "On the Pursuit of Insight and Elegance - Essays Dedicated to Andreas Podelski on the Occasion of His 65th Birthday",
+    "authors": "Daniel Dietsch, Andrey Rybalchenko, Martin Schäf, and Thomas Wies (Editors)",
+    "venue": "Lecture Notes in Computer Science, Volume 14765, Springer, 2026",
+    "url": "https://link.springer.com/book/10.1007/978-3-032-13711-1"
+  },
+  {
+    "year": 2026,
     "title": "Delta Debugging for LLM-integrated Systems",
     "authors": "Hao-Nan Zhu, Muhammad Numair Mansur, Martin Schäf, Zeya Chen, Tancrède Lepoint, and Willem Visser",
     "venue": "48th International Conference on Software Engineering (ICSE - SEIP), Rio de Janeiro, Brazil, April 2026",
