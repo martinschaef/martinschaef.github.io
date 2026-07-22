@@ -1,6 +1,30 @@
 [
   {
     "year": 2026,
+    "title": "The Question Is a Region: A Neurosymbolic Retrofit for Categorical Question Answering over Rule Engines",
+    "authors": "Liana Hadarean, Tancrède Lepoint, Martin Schäf, and Willem Visser",
+    "venue": "20th International Conference on Neurosymbolic Learning and Reasoning (NeSy), October 2026",
+    "url": "https://www.martinschaef.de"
+  },
+
+  {
+    "year": 2026,
+    "title": "Why Is This on My Bill? Documentation-Grounded Rule Learning for Itemized Bill Explanation",
+    "authors": "Jason Lefever, Muhammad Numair Mansur, John Konstantinides, Martin Schäf, and Willem Visser",
+    "venue": "41st IEEE/ACM International Conference on Automated Software Engineering (ASE), October 2026",
+    "url": "https://www.martinschaef.de"
+  },
+
+  {
+    "year": 2026,
+    "title": "Proof-of-Policy: Blockchain-Inspired Consensus for Governing Autonomous AI Agent Fleets",
+    "authors": "Tancrède Lepoint and Martin Schäf",
+    "venue": "1st Conference of Synthetic Security Research (SYNSEC), October 2026",
+    "url": "https://www.martinschaef.de"
+  },
+
+  {
+    "year": 2026,
     "title": "On the Pursuit of Insight and Elegance - Essays Dedicated to Andreas Podelski on the Occasion of His 65th Birthday",
     "authors": "Daniel Dietsch, Andrey Rybalchenko, Martin Schäf, and Thomas Wies (Editors)",
     "venue": "Lecture Notes in Computer Science, Volume 14765, Springer, 2026",
