@@ -4,42 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Martin Schäf · Publications</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Limelight&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <link rel="stylesheet" href="stylesheets/modern-style.css">
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="research-vision.html">Research Statement</a>
-    <a href="pub.html" class="active">Publications</a>
-    <a href="https://dblp.org/pid/41/7506.html" target="_blank">DBLP</a>
-    <a href="http://scholar.google.com/citations?user=WNktVKIAAAAJ&hl=en" target="_blank">Scholar</a>
-</nav>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-<main>
-    <section>
-        <h2>Publications</h2>
+<header class="site-header">
+    <nav aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="research-vision.html">Research</a>
+        <a href="pub.html" class="active">Publications</a>
+        <a href="https://dblp.org/pid/41/7506.html" target="_blank" rel="noopener">DBLP</a>
+        <a href="http://scholar.google.com/citations?user=WNktVKIAAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
+    </nav>
+</header>
+
+<main id="main-content">
+
+    <section aria-labelledby="pubs-page-heading">
+        <h1 id="pubs-page-heading">Publications</h1>
+        <div class="pub-intro">
+            <p>
+                Peer-reviewed publications in formal verification, program analysis,
+                developer tools, and applied science. Grouped by year.
+            </p>
+            <span id="pub-count" class="pub-count" aria-live="polite"></span>
+        </div>
         <div id="publications-list"></div>
     </section>
+
 </main>
 
 <script>
     fetch('publications.json')
         .then(r => r.json())
         .then(pubs => {
+            // Show count
+            document.getElementById('pub-count').textContent = pubs.length + ' papers';
+
+            // Group by year
             const byYear = {};
             pubs.forEach(p => (byYear[p.year] = byYear[p.year] || []).push(p));
+
             document.getElementById('publications-list').innerHTML = Object.keys(byYear)
                 .sort((a, b) => b - a)
                 .map(y => `
-                    <h3 class="year-heading">${y >= 2010 ? y : '2010 and earlier'}</h3>
+                    <h2 class="year-heading">${y}</h2>
                     <ul class="pub-list">${byYear[y].map(p =>
                         `<li>
-                            ${p.url ? `<a href="${p.url}" target="_blank" class="pub-title">${p.title}</a>` : `<span class="pub-title">${p.title}</span>`}
+                            ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener" class="pub-title">${p.title}</a>` : `<span class="pub-title">${p.title}</span>`}
                             <span class="pub-authors">${p.authors}</span>
                             <span class="pub-venue">${p.venue}</span>
                         </li>`

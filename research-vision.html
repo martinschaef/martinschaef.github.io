@@ -3,1075 +3,558 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logic, in Dialogue · Martin Schäf · Research Statement</title>
+<title>Sound Reasoning for Trustworthy User Interaction · Martin Schäf</title>
+<link rel="preconnect" href="https://rsms.me/">
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<link rel="stylesheet" href="stylesheets/modern-style.css">
 <link rel="icon" type="image/png" href="favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Limelight&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0c0d14;
-    --bg-card:#13141f;
-    --gold:#d4af37;
-    --gold-soft:#b8923a;
-    --gold-bright:#e8c97a;
-    --copper:#c98a55;
-    --cream:#efe6d4;
-    --muted:#9a907c;
-    --rule:rgba(212,175,55,0.35);
-  }
-
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--cream)}
-  body{
-    font-family:'Cormorant Garamond', Georgia, serif;
-    font-size:19px;
-    line-height:1.65;
-    background:
-      radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08), transparent 60%),
-      radial-gradient(ellipse at 50% 100%, rgba(212,175,55,0.05), transparent 60%),
-      var(--bg);
-    background-attachment:fixed;
-  }
-
-  a{color:var(--gold-bright);text-decoration:none;border-bottom:1px solid rgba(232,201,122,0.3)}
-  a:hover{color:#fff;border-bottom-color:#fff}
-  .track .body h3 a, .tv-block h3 a, .coda h3 a{
-    color:inherit;
-    border-bottom:1px solid rgba(232,201,122,0.18);
-  }
-  .track .body h3 a:hover, .tv-block h3 a:hover, .coda h3 a:hover{
-    color:#fff;
-    border-bottom-color:rgba(255,255,255,0.6);
-  }
-
-  /* ===== Layout ===== */
-  .page{max-width:980px;margin:0 auto;padding:32px 32px 100px;position:relative}
-
-  /* ===== Site nav ===== */
-  nav.site-nav{
-    max-width:900px;
-    margin:0 auto 28px;
-    padding:0 0 0 0;
-    display:flex;
-    gap:0;
-    border-bottom:1px solid var(--rule);
-    position:relative;
-  }
-  nav.site-nav::before, nav.site-nav::after{
-    content:"";
-    position:absolute;
-    bottom:-5px;
-    width:8px;height:8px;
-    border:1px solid var(--gold);
-    background:var(--bg);
-    transform:rotate(45deg);
-  }
-  nav.site-nav::before{left:6px}
-  nav.site-nav::after{right:6px}
-  nav.site-nav a{
-    font-family:'Cinzel', serif;
-    padding:12px 22px;
-    font-size:11px;
-    font-weight:500;
-    letter-spacing:0.3em;
-    text-transform:uppercase;
-    color:var(--muted);
-    border:none;
-    border-bottom:2px solid transparent;
-    margin-bottom:-1px;
-    transition:color 0.2s, border-color 0.2s;
-  }
-  nav.site-nav a:hover{color:var(--cream); border-bottom-color:transparent}
-  nav.site-nav a.active{color:var(--gold-bright); border-bottom-color:var(--gold)}
-  @media (max-width:680px){
-    nav.site-nav{padding:0 12px; overflow-x:auto}
-    nav.site-nav::before, nav.site-nav::after{display:none}
-    nav.site-nav a{padding:10px 14px; font-size:10px; letter-spacing:0.22em}
-  }
-
-  /* ===== Hero ===== */
-  .hero{text-align:center;padding:40px 0 30px;position:relative}
-  .hero .sunburst{width:340px;max-width:80%;height:auto;display:block;margin:0 auto 20px;opacity:0.95}
-  h1.title{
-    font-family:'Limelight', 'Cinzel', serif;
-    font-weight:400;
-    font-size:clamp(2.4rem, 6vw, 4.4rem);
-    letter-spacing:0.18em;
-    line-height:1;
-    margin:0;
-    color:var(--gold-bright);
-    text-shadow:0 0 30px rgba(232,201,122,0.15);
-  }
-  h1.title .amp{color:var(--gold);font-style:italic;letter-spacing:0;margin:0 0.05em}
-  .hero .subtitle{
-    font-family:'Cinzel', serif;
-    font-size:0.78rem;
-    letter-spacing:0.45em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin:18px 0 0;
-  }
-  .hero .byline{
-    font-family:'Cormorant Garamond', serif;
-    font-style:italic;
-    color:var(--muted);
-    margin-top:6px;
-  }
-
-  /* ===== Ornaments ===== */
-  .chevron-rule{display:flex;align-items:center;justify-content:center;margin:48px 0;gap:12px}
-  .chevron-rule .line{flex:1;height:1px;background:linear-gradient(90deg, transparent, var(--gold) 50%, transparent)}
-  .chevron-rule .glyph{
-    font-family:'Cinzel', serif;
-    color:var(--gold);
-    font-size:0.95rem;
-    letter-spacing:0.4em;
-    text-transform:uppercase;
-    white-space:nowrap;
-    padding:0 6px;
-  }
-  .chevron-rule .diamond{
-    width:10px;height:10px;
-    border:1px solid var(--gold);
-    transform:rotate(45deg);
-    background:var(--bg);
-    flex-shrink:0;
-  }
-
-  /* ===== Overture / Manifesto ===== */
-  .overture{
-    max-width:700px;margin:0 auto;
-    text-align:left;
-  }
-  .overture p{margin:1.2em 0}
-  .overture .first-line{
-    font-family:'Cinzel', serif;
-    font-size:0.78rem;
-    letter-spacing:0.5em;
-    text-transform:uppercase;
-    color:var(--gold);
-    text-align:center;
-    margin-bottom:30px;
-  }
-  .overture .lead::first-line{
-    font-variant:small-caps;
-    letter-spacing:0.06em;
-  }
-  .drop-cap::first-letter{
-    font-family:'Limelight', serif;
-    color:var(--gold-bright);
-    float:left;
-    font-size:4.2rem;
-    line-height:0.85;
-    padding:6px 12px 0 0;
-    margin-top:4px;
-  }
-
-  /* ===== Pillars ===== */
-  .pillars{
-    display:grid;
-    grid-template-columns:repeat(2, 1fr);
-    gap:20px;
-    margin:30px 0;
-  }
-  .pillar{
-    border:1px solid var(--rule);
-    padding:26px 22px 22px;
-    text-align:left;
-    background:linear-gradient(180deg, rgba(212,175,55,0.04), transparent 60%);
-    position:relative;
-  }
-  .pillar::before{
-    content:"";
-    position:absolute;top:-1px;left:50%;transform:translateX(-50%);
-    width:28px;height:6px;
-    background:var(--gold);
-  }
-  .pillar .num{
-    font-family:'Cinzel', serif;
-    color:var(--gold);
-    font-size:0.72rem;
-    letter-spacing:0.4em;
-    text-transform:uppercase;
-    display:block;
-    margin-bottom:6px;
-  }
-  .pillar h3{
-    font-family:'Cinzel', serif;
-    font-size:1.05rem;
-    margin:0 0 10px;
-    color:var(--gold-bright);
-    letter-spacing:0.04em;
-  }
-  .pillar p{margin:0;font-size:0.96em;color:var(--cream)}
-  @media (max-width:760px){
-    .pillars{grid-template-columns:1fr}
-  }
-
-  /* ===== Side header ===== */
-  .side-header{margin:0 0 14px;text-align:center}
-  .side-header .label{
-    font-family:'Cinzel', serif;
-    font-size:0.78rem;
-    letter-spacing:0.5em;
-    text-transform:uppercase;
-    color:var(--gold);
-  }
-  .side-header h2{
-    font-family:'Cinzel', serif;
-    font-weight:500;
-    font-size:clamp(1.6rem, 3.2vw, 2.2rem);
-    letter-spacing:0.1em;
-    margin:6px 0 4px;
-    color:var(--cream);
-  }
-  .side-header .caption{
-    font-style:italic;
-    color:var(--muted);
-    max-width:560px;
-    margin:6px auto 0;
-    font-size:1.02em;
-  }
-
-  /* ===== Track list (originals) ===== */
-  .tracklist{
-    border:1px solid var(--rule);
-    background:var(--bg-card);
-    margin:0 0 18px;
-    position:relative;
-  }
-  .tracklist::before, .tracklist::after{
-    content:"";
-    position:absolute;
-    width:14px;height:14px;
-    border:1px solid var(--gold);
-    background:var(--bg);
-    transform:rotate(45deg);
-  }
-  .tracklist::before{top:-8px;left:-8px}
-  .tracklist::after{bottom:-8px;right:-8px}
-  .track{
-    display:grid;
-    grid-template-columns:42px 1fr;
-    gap:16px;
-    padding:18px 26px;
-    border-bottom:1px solid rgba(212,175,55,0.18);
-  }
-  .track:last-child{border-bottom:none}
-  .track .num{
-    font-family:'Cinzel', serif;
-    color:var(--gold);
-    font-size:0.78rem;
-    letter-spacing:0.18em;
-    padding-top:5px;
-    border-right:1px solid rgba(212,175,55,0.25);
-    text-align:center;
-    padding-right:10px;
-  }
-  .track .body h3{
-    font-family:'Cinzel', serif;
-    font-weight:500;
-    font-size:1.02rem;
-    letter-spacing:0.04em;
-    margin:0 0 3px;
-    color:var(--gold-bright);
-  }
-  .track .meta{
-    font-style:italic;
-    color:var(--muted);
-    font-size:0.86em;
-    margin:0 0 8px;
-  }
-  .track p{margin:0;font-size:0.97em;line-height:1.55}
-  @media (max-width:760px){
-    .track{grid-template-columns:1fr;gap:4px;padding:16px 18px}
-    .track .num{border-right:none;text-align:left;padding:0;font-size:0.7rem}
-  }
-
-  /* ===== Taylor's Version block ===== */
-  .tv-block{
-    border:1px solid rgba(201,138,85,0.5);
-    background:linear-gradient(180deg, rgba(201,138,85,0.08), rgba(201,138,85,0.03));
-    padding:22px 26px;
-    position:relative;
-  }
-  .tv-block .tv-label{
-    font-family:'Cinzel', serif;
-    font-size:0.7rem;
-    letter-spacing:0.4em;
-    text-transform:uppercase;
-    color:var(--copper);
-    display:block;
-    margin-bottom:6px;
-  }
-  .tv-block h3{
-    font-family:'Cormorant Garamond', serif;
-    font-style:italic;
-    font-weight:500;
-    font-size:1.15rem;
-    color:var(--gold-bright);
-    margin:0 0 10px;
-  }
-  .tv-block p{margin:0.5em 0;font-size:0.98em}
-  .tv-block .open{
-    margin-top:14px;
-    font-size:0.92em;
-    color:var(--cream);
-    border-top:1px solid rgba(201,138,85,0.3);
-    padding-top:12px;
-  }
-  .tv-block .open .lab{
-    font-family:'Cinzel', serif;
-    font-size:0.62rem;
-    letter-spacing:0.3em;
-    text-transform:uppercase;
-    color:var(--copper);
-    display:inline;
-    margin-right:8px;
-  }
-
-  /* ===== Pair card (legacy, kept for any leftovers) ===== */
-  .pair{
-    border:1px solid var(--rule);
-    margin:22px 0;
-    background:var(--bg-card);
-    display:grid;
-    grid-template-columns:1fr 1px 1fr;
-    position:relative;
-  }
-  .pair::before, .pair::after{
-    content:"";
-    position:absolute;
-    width:14px;height:14px;
-    border:1px solid var(--gold);
-    background:var(--bg);
-    transform:rotate(45deg);
-  }
-  .pair::before{top:-8px;left:-8px}
-  .pair::after{bottom:-8px;right:-8px}
-  .pair .divider{
-    background:linear-gradient(180deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
-  }
-  .pair .side{padding:22px 26px}
-  .pair .badge{
-    display:inline-block;
-    font-family:'Cinzel', serif;
-    font-size:0.66rem;
-    letter-spacing:0.36em;
-    text-transform:uppercase;
-    padding:5px 10px;
-    border:1px solid var(--gold);
-    color:var(--gold);
-    margin-bottom:14px;
-  }
-  .pair .side.tv .badge{
-    border-color:var(--copper);
-    color:var(--copper);
-  }
-  .pair h3{
-    font-family:'Cinzel', serif;
-    font-weight:500;
-    font-size:1.08rem;
-    letter-spacing:0.04em;
-    margin:0 0 6px;
-    color:var(--gold-bright);
-  }
-  .pair h3 .ver{
-    font-family:'Cormorant Garamond', serif;
-    font-style:italic;
-    color:var(--copper);
-    font-size:0.95em;
-    letter-spacing:0;
-    display:block;
-    margin-top:2px;
-  }
-  .pair .meta{
-    font-style:italic;
-    color:var(--muted);
-    font-size:0.9em;
-    margin:0 0 12px;
-  }
-  .pair p{margin:0.5em 0}
-  .pair .swap{
-    font-style:italic;
-    color:var(--copper);
-    font-size:0.95em;
-    margin:0 0 12px;
-    padding:8px 12px;
-    border-left:2px solid var(--copper);
-    background:rgba(201,138,85,0.06);
-  }
-  .pair .swap .arrow{
-    font-style:normal;
-    font-family:'Cinzel', serif;
-    color:var(--gold);
-    margin:0 6px;
-    font-size:0.9em;
-  }
-  .pair .rq{
-    font-family:'Cormorant Garamond', serif;
-    font-size:0.97em;
-    color:var(--cream);
-    border-left:2px solid var(--copper);
-    padding:2px 0 2px 12px;
-    margin-top:14px;
-  }
-  .pair .rq .lab{
-    font-family:'Cinzel', serif;
-    font-size:0.66rem;
-    letter-spacing:0.3em;
-    text-transform:uppercase;
-    color:var(--copper);
-    display:block;
-    margin-bottom:2px;
-  }
-  @media (max-width:760px){
-    .pair{grid-template-columns:1fr}
-    .pair .divider{
-      height:1px;width:auto;
-      background:linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
-    }
-  }
-
-  /* ===== Coda ===== */
-  .coda{
-    text-align:center;
-    border:1px solid var(--rule);
-    padding:36px 30px;
-    margin:60px 0 30px;
-    background:linear-gradient(180deg, rgba(212,175,55,0.05), transparent);
-    position:relative;
-  }
-  .coda h2{
-    font-family:'Cinzel', serif;
-    font-size:0.78rem;
-    letter-spacing:0.5em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin:0 0 8px;
-  }
-  .coda h3{
-    font-family:'Cinzel', serif;
-    font-size:1.3rem;
-    color:var(--gold-bright);
-    letter-spacing:0.04em;
-    margin:0 0 10px;
-  }
-  .coda p{max-width:620px;margin:0 auto}
-
-  /* ===== Footer ===== */
-  footer{
-    text-align:center;
-    color:var(--muted);
-    font-style:italic;
-    font-size:0.92em;
-    margin-top:40px;
-  }
-  footer .ornament{margin:30px auto 14px;width:160px;height:auto;display:block}
-  footer a{color:var(--muted);border-color:rgba(154,144,124,0.3)}
-
-  /* ===== Section spacing ===== */
-  section.album{margin-top:64px}
-
-  /* ===== Selection ===== */
-  ::selection{background:var(--gold);color:#0a0a14}
-</style>
 </head>
 <body>
 
-<div class="page">
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <nav class="site-nav">
-    <a href="index.html">Home</a>
-    <a href="research-vision.html" class="active">Research Statement</a>
-    <a href="pub.html">Publications</a>
-    <a href="https://dblp.org/pid/41/7506.html" target="_blank">DBLP</a>
-    <a href="http://scholar.google.com/citations?user=WNktVKIAAAAJ&amp;hl=en" target="_blank">Scholar</a>
-  </nav>
+<header class="site-header">
+    <nav aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="research-vision.html" class="active">Research</a>
+        <a href="pub.html">Publications</a>
+        <a href="https://dblp.org/pid/41/7506.html" target="_blank" rel="noopener">DBLP</a>
+        <a href="http://scholar.google.com/citations?user=WNktVKIAAAAJ&amp;hl=en" target="_blank" rel="noopener">Scholar</a>
+    </nav>
+</header>
 
-  <!-- ═══════════════════ HERO ═══════════════════ -->
-  <header class="hero">
-    <svg class="sunburst" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <g stroke="#d4af37" stroke-width="0.8" fill="none" stroke-linecap="round">
-        <!-- center point -->
-        <circle cx="200" cy="180" r="3" fill="#d4af37" stroke="none"/>
-        <circle cx="200" cy="180" r="9"/>
-        <circle cx="200" cy="180" r="14" stroke-width="0.5"/>
-        <!-- rays -->
-        <line x1="200" y1="180" x2="200" y2="20"/>
-        <line x1="200" y1="180" x2="170" y2="24"/>
-        <line x1="200" y1="180" x2="140" y2="34"/>
-        <line x1="200" y1="180" x2="110" y2="50"/>
-        <line x1="200" y1="180" x2="82" y2="74"/>
-        <line x1="200" y1="180" x2="58" y2="104"/>
-        <line x1="200" y1="180" x2="38" y2="138"/>
-        <line x1="200" y1="180" x2="22" y2="174"/>
-        <line x1="200" y1="180" x2="230" y2="24"/>
-        <line x1="200" y1="180" x2="260" y2="34"/>
-        <line x1="200" y1="180" x2="290" y2="50"/>
-        <line x1="200" y1="180" x2="318" y2="74"/>
-        <line x1="200" y1="180" x2="342" y2="104"/>
-        <line x1="200" y1="180" x2="362" y2="138"/>
-        <line x1="200" y1="180" x2="378" y2="174"/>
-        <!-- arcs (semicircles) -->
-        <path d="M 70 180 A 130 130 0 0 1 330 180"/>
-        <path d="M 100 180 A 100 100 0 0 1 300 180" stroke-width="0.5"/>
-        <path d="M 140 180 A 60 60 0 0 1 260 180"/>
-        <!-- baseline with diamonds -->
-        <line x1="0" y1="180" x2="400" y2="180" stroke-width="0.5"/>
-        <g fill="#d4af37" stroke="none">
-          <rect x="68" y="178" width="4" height="4" transform="rotate(45 70 180)"/>
-          <rect x="328" y="178" width="4" height="4" transform="rotate(45 330 180)"/>
-        </g>
-      </g>
-    </svg>
-    <h1 class="title">Logic<span class="amp">,</span>in Dialogue</h1>
-    <p class="subtitle">A Research Vision · Originals &amp; Taylor's Versions</p>
-    <p class="byline">Four questions about how humans and formal systems exchange answers, and what changes when a language model joins the loop</p>
-  </header>
+<main id="main-content">
 
-  <div class="chevron-rule">
-    <span class="line"></span>
-    <span class="diamond"></span>
-    <span class="glyph">Overture</span>
-    <span class="diamond"></span>
-    <span class="line"></span>
-  </div>
-
-  <!-- ═══════════════════ OVERTURE ═══════════════════ -->
-  <section class="overture">
-    <p class="lead drop-cap">
-      Program analysis and verification turn programs into checkable facts. A type
-      checker proves an invariant. A model checker rules out a state. An
-      interpolation engine isolates the reason a trace fails. Each fact is small,
-      grounded in logic, and stands on its own.
-    </p>
-    <p>
-      The harder problem is turning that capability into something useful. Four
-      questions show up across two decades of my work. How do you represent a
-      program in logic so a verifier can reason about it effectively. How do you
-      distill the result into a small fact a developer can act on. When the
-      verifier gets stuck, how do you enlist a human, and how do you make that
-      exchange bearable for the human and useful to the machine. How do you know
-      any of it is working on real codebases.
-    </p>
-    <p>
-      I have worked on these questions since 2006, in academia, at SRI, and at AWS,
-      with software as the running case. The first two are design problems. The
-      third is a protocol problem. The fourth is empirical. Each has its own
-      literature. Each has been pursued under one shared assumption: a human is
-      somewhere in the loop, slow and scarce, and the work is built around getting
-      the most out of that person.
-    </p>
-    <p>
-      Since 2024 that assumption has changed. The human was always the limiting
-      reagent. Crowds were slow. Annotations were expensive. Reports went unread.
-      Studies of analyzer adoption depended on logs and inference because direct
-      measurement was too costly. Large language models lift the constraint at every
-      step of the loop. They can read the program. They can propose the abstraction.
-      They can guess the invariant. They can read the report and act on it. They
-      can also be confidently wrong in ways verifiers cannot. The constraint that
-      shaped each line of work no longer holds.
-    </p>
-
-    <p style="border-left:3px solid var(--gold); padding:6px 0 6px 18px; margin:30px 0; font-size:1.05em; color:var(--gold-bright); font-style:italic">
-      I am now in my neurosymbolic era. The catalog below pairs published work with
-      a <em>Taylor's Version</em> that asks how it changes when a language model
-      joins the loop.
-    </p>
-
-    <p>
-      The four questions reopen, each one in a different way. An abstraction that
-      took years to design by hand may now be tractable as an agentic refinement
-      under verifier supervision. An interpolant that used to be presented to a
-      developer becomes an assertion an agent can call without recompiling. An
-      invariant a crowd would have been asked to guess is now proposed by a model
-      and rejected or accepted by the same verifier. A study that depended on
-      sparse human signal becomes a controlled experiment with thousands of agent
-      runs. The symbolic backbone is what holds the new loop together. The
-      interesting research question is which parts of that backbone bear weight
-      when the rest is rebuilt around a fluent participant.
-    </p>
-  </section>
-
-  <div class="chevron-rule">
-    <span class="line"></span>
-    <span class="diamond"></span>
-    <span class="glyph">The Catalog</span>
-    <span class="diamond"></span>
-    <span class="line"></span>
-  </div>
-
-  <p style="text-align:center;font-style:italic;color:var(--muted);max-width:640px;margin:0 auto 10px">
-    Four sides, one question each. The published work appears on top. Below it, a
-    Taylor's Version asks how the same question reads when a language model is in the
-    room. The catalog leans on software because that is where most of the published
-    work lives. The questions do not.
-  </p>
-
-  <!-- ═══════════════════ SIDE A ═══════════════════ -->
-  <section class="album">
-    <div class="side-header">
-      <div class="label">Side A · Why?</div>
-      <h2>Why Did the System Do That?</h2>
-      <p class="caption">Finding abstractions that let a verifier reason effectively about a program.</p>
-    </div>
-
-    <div class="tracklist">
-      <div class="track">
-        <div class="num">A1 · 2015</div>
-        <div class="body">
-          <h3><a href="papers/bixie_tool.pdf" target="_blank">Bixie: Finding and Understanding Inconsistent Code</a></h3>
-          <p class="meta">T. McCarthy, P. Rümmer, M. Schäf — ICSE Demo</p>
-          <p>
-            A weakest-precondition abstraction for Java that flags paths whose
-            preconditions contradict the program's own assumptions. The abstraction is
-            cheap enough to run on every commit and precise enough to find real bugs.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">A2 · 2015</div>
-        <div class="body">
-          <h3><a href="papers/hcvs15.pdf" target="_blank">Non-Monotonic Program Analysis</a></h3>
-          <p class="meta">D. Schwartz-Narbonne, C. Oh, M. Schäf, P. Rümmer, A. Tiwari, T. Wies — HCVS</p>
-          <p>
-            An abstraction that adds and drops facts as the analysis proceeds. The
-            classical chain of monotonically growing approximations becomes a search
-            over abstractions. Useful when the right invariant is not the union of
-            cheaper ones.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">A3 · 2017</div>
-        <div class="body">
-          <h3><a href="papers/lpar17_01.pdf" target="_blank">Quantified Heap Invariants for Object-Oriented Programs</a></h3>
-          <p class="meta">T. Kahsai, R. Kersten, P. Rümmer, M. Schäf — LPAR</p>
-          <p>
-            A heap abstraction that admits quantified invariants over object fields.
-            The right shape of quantifier turns proofs that were out of reach into
-            proofs the verifier can find on its own.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">A4 · 2020</div>
-        <div class="body">
-          <h3><a href="https://conf.researchr.org/details/icse-2020/icse-2020-papers/126/Verifying-Object-Construction" target="_blank">Verifying Object Construction</a></h3>
-          <p class="meta">M. Kellogg, M. Ran, M. Sridharan, M. Schäf, M. D. Ernst — ICSE</p>
-          <p>
-            A type-state abstraction for object initialization. The fact that an
-            object's invariants must hold before any method can be called becomes a
-            type-system property the compiler can check.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">A5 · 2021</div>
-        <div class="body">
-          <h3><a href="https://www.amazon.science/publications/rapid-checking-api-usage-for-the-cloud-in-the-cloud" target="_blank">RAPID: API Checking for the Cloud in the Cloud</a></h3>
-          <p class="meta">M. Emmi, L. Hadarean, R. Jhala, L. Pike, N. Rosner, M. Schäf, A. Sengupta, W. Visser — ESEC/FSE</p>
-          <p>
-            An abstraction of cloud APIs as protocols, with a checker that verifies
-            client code against the protocol. The model is what the API documentation
-            should have been. The checker turns it into a property the build can
-            enforce.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">A6 · 2024</div>
-        <div class="body">
-          <h3><a href="https://www.amazon.science/publications/inference-for-ever-changing-policy-of-taint-analysis" target="_blank">Inference for ever-changing policy of taint analysis</a></h3>
-          <p class="meta">W.-H. Chiang, P. Li, Q. Zhou, S. Banerjee, M. Schäf, Y. Lyu, H. Nguyen, O. Tripp — ICSE-SEIP</p>
-          <p>
-            A taint analysis whose source/sink/sanitizer policy is inferred from the
-            codebase rather than written by hand. The abstraction is the same. The
-            cost of keeping the policy current drops to where industrial use becomes
-            tractable.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="tv-block">
-      <span class="tv-label">Side A · Taylor's Version</span>
-      <h3>Why, Re-recorded</h3>
-      <p>
-        The expensive part of this work was the abstraction itself. Translating a
-        program into a heap model, into a type-state, into an API protocol, into a
-        taint policy, took years of careful design and engineering for each
-        abstraction. The agent changes that calculus. An agentic loop can do most of
-        the translation in a semi-automatic pass and use the verifier as the oracle
-        that confirms whether the abstraction captures the behavior. Wrong
-        translations get rejected. Right ones are kept. Trying a new abstraction
-        becomes a matter of running the loop instead of writing a paper.
-      </p>
-      <p>
-        The output side changes too. These tools were designed to give a human
-        developer actionable information. The first reader is now usually an agent.
-        What the agent needs differs from what the developer needs. The information
-        density can be higher. The form can be more structured. The audience for a
-        program-analysis report is no longer fixed, and the design space for the
-        report opens up with it.
-      </p>
-      <p class="open"><span class="lab">From the Vault</span>
-        Which abstractions are too expensive to design by hand but cheap enough for
-        an agent to discover under verifier supervision? And what does a
-        program-analysis output look like when its first reader is another program?
-      </p>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ SIDE B ═══════════════════ -->
-  <section class="album">
-    <div class="side-header">
-      <div class="label">Side B · Show?</div>
-      <h2>How Do You Say It to a Human?</h2>
-      <p class="caption">Distilling a failing run into a small fact that explains the bug.</p>
-    </div>
-
-    <div class="tracklist">
-      <div class="track">
-        <div class="num">B1 · 2012</div>
-        <div class="body">
-          <h3><a href="http://cs.nyu.edu/wies/publ/error_invariants.pdf" target="_blank">Error Invariants</a></h3>
-          <p class="meta">E. Ermis, M. Schäf, T. Wies — FM</p>
-          <p>
-            A sequence of Craig interpolants along a failing trace produces the
-            smallest formula at each program point that still explains the failure.
-            The output replaces a long trace with a short generalization. Less to read.
-            Fewer variables to track.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">B2 · 2013</div>
-        <div class="body">
-          <h3><a href="http://cs.nyu.edu/wies/publ/flow-sensitive_fault_localization.pdf" target="_blank">Flow-sensitive Fault Localization</a></h3>
-          <p class="meta">J. Christ, E. Ermis, M. Schäf, T. Wies — VMCAI</p>
-          <p>
-            Fault localization that respects control flow. The explanation tracks how
-            information moves through branches and joins, so the localized cause is
-            faithful to the program's structure rather than a flat slice.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">B3 · 2015</div>
-        <div class="body">
-          <h3><a href="papers/vermeer_tool.pdf" target="_blank">VERMEER: A Tool for Tracing and Explaining Faulty C Programs</a></h3>
-          <p class="meta">D. Schwartz-Narbonne, C. Oh, M. Schäf, T. Wies — ICSE Demo</p>
-          <p>
-            The interactive tool. A developer steps through the trace; the explanation
-            engine highlights the variables and statements that the interpolants say
-            matter, and abstracts away the rest.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">B4 · 2016</div>
-        <div class="body">
-          <h3><a href="papers/tap2016.pdf" target="_blank">Classifying Bugs with Interpolants</a></h3>
-          <p class="meta">A. Podelski, M. Schäf, T. Wies — TAP</p>
-          <p>
-            The <em>shape</em> of an interpolant is a fingerprint of the bug class.
-            Quantifiers, variables, and arithmetic operators carry information about
-            what kind of error produced the trace. Off-by-one looks like off-by-one
-            in logic.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="tv-block">
-      <span class="tv-label">Side B · Taylor's Version</span>
-      <h3>Show, Re-recorded</h3>
-      <p>
-        The original motivation was cognitive load. An error invariant generalizes
-        the reason a specific execution failed. Showing a developer a predicate at a
-        program point requires less cognitive effort than reading a trace. The
-        motivation transfers when the reader is an agent, but the gain is different.
-        The agent saves tokens. The agent does not have to re-execute or re-compile
-        to check whether a candidate fix satisfies the invariant. The invariant is a
-        check the agent can call. <strong>Error Invariants</strong> and
-        <strong>Flow-sensitive Fault Localization</strong> become assertions the
-        agent's repair has to satisfy. <strong>Classifying Bugs with Interpolants</strong>
-        becomes a fingerprint the agent can use to retrieve fixes from prior runs.
-        The interpolation engine can also synthesize new tests from the same data,
-        which the agent can use to confirm a fix on cases the developer never wrote.
-      </p>
-      <p>
-        Beyond the agentic repair loop, the line of work points at a larger
-        question. Our recent paper on <em>delta debugging for LLM-integrated
-        systems</em> is one step into this. When natural language is part of the
-        program, a failure is no longer just a state contradiction. We need to
-        rethink what "the reason for the failure" means.
-      </p>
-      <p class="open"><span class="lab">From the Vault</span>
-        What does fault localization mean when half the program is a prompt? Which
-        of the symbolic explanation primitives transfer, and which need a new
-        definition before they can be applied?
-      </p>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ SIDE C ═══════════════════ -->
-  <section class="album">
-    <div class="side-header">
-      <div class="label">Side C · Listen?</div>
-      <h2>What Does the Other Voice Add?</h2>
-      <p class="caption">Enlisting a human when the verifier gets stuck. Where to draw the boundary, and how to structure the exchange.</p>
-    </div>
-
-    <div class="tracklist">
-      <div class="track">
-        <div class="num">C1 · 2014</div>
-        <div class="body">
-          <h3>Chekofv: Crowd-Sourced Formal Verification</h3>
-          <p class="meta">H. Logas, F. Kirchner, J. Murray, M. Schäf, J. Whitehead — FWFM</p>
-          <p>
-            A game in which crowds propose candidate loop invariants. The verifier
-            filters them. The protocol works because the search space is large for a
-            machine and not for a human, and the verifier can cheaply confirm a
-            useful guess.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">C2 · 2015</div>
-        <div class="body">
-          <h3><a href="papers/lpar15_02.pdf" target="_blank">Gamifying Program Analysis</a></h3>
-          <p class="meta">D. Fava, J. Signoles, M. Lemerre, M. Schäf, A. Tiwari — LPAR</p>
-          <p>
-            A study of which program-analysis subproblems can be cast as games for
-            non-experts. The contribution is the boundary itself: which questions are
-            cheap to verify, hard to synthesize, and presentable in a form a layperson
-            can answer.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">C3 · 2016</div>
-        <div class="body">
-          <h3><a href="papers/icse2016.pdf" target="_blank">Crowd-Sourcing Program Preconditions</a></h3>
-          <p class="meta">D. Fava, D. Shapiro, J. Osborn, M. Schäf, J. Whitehead — ICSE</p>
-          <p>
-            Players label test inputs. Preconditions are inferred from their consensus.
-            A precondition, in this view, is the boundary a crowd draws around
-            <em>valid</em>.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">C4 · 2017</div>
-        <div class="body">
-          <h3><a href="papers/lpar17_02.pdf" target="_blank">Abduction by Non-Experts</a></h3>
-          <p class="meta">N. Bjørner, D. Jovanović, T. Lepoint, P. Rümmer, M. Schäf — LPAR</p>
-          <p>
-            Empirical study showing that laypeople <em>can</em> perform abductive
-            reasoning, given an interface that translates the symbolic problem into
-            something familiar.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="tv-block">
-      <span class="tv-label">Side C · Taylor's Version</span>
-      <h3>Listen, Re-recorded</h3>
-      <p>
-        This body of work was about a particular kind of failure. Some verification
-        problems, like finding loop invariants or doing abductive inference, are
-        hard for machines because the search space is large and a wrong guess
-        provides no useful signal for correcting course. The work asked three
-        questions: where is the boundary at which a machine needs help, how should
-        the interaction be structured so it is bearable for the human and useful
-        for the machine, and what kind of feedback can the machine give to keep the
-        human productive.
-      </p>
-      <p>
-        The boundary moves. A language model can guess invariants quickly, pull
-        context from the source code and documentation, and draw on its
-        pre-training. Many of the iterations a crowd was needed for can now run
-        with a model in the loop. Not all of them. There remain cases where neither
-        the model nor the verifier can make progress and a human is the best
-        signal.
-      </p>
-      <p>
-        What also changes is the language of the exchange. The 2014 work could only
-        ask a layperson a question expressed as a puzzle, because the underlying
-        formula was unreadable. Now we can ask the question in prose. The human
-        can answer in prose. The machine can read the answer and turn it into a
-        candidate the verifier can check. The interface stops being a translation
-        problem and starts being a conversation.
-      </p>
-      <p class="open"><span class="lab">From the Vault</span>
-        Which verification subproblems still need a human in the loop after the
-        model has tried, and what does an interface look like that lets the human
-        contribute in natural language without losing the verifier's guarantees?
-      </p>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ SIDE D ═══════════════════ -->
-  <section class="album">
-    <div class="side-header">
-      <div class="label">Side D · Measure?</div>
-      <h2>Was Any of This Productive?</h2>
-      <p class="caption">Production studies that ask whether the loop converges on anything useful.</p>
-    </div>
-
-    <div class="tracklist">
-      <div class="track">
-        <div class="num">D1 · 2023</div>
-        <div class="body">
-          <h3><a href="https://www.amazon.science/publications/long-term-static-analysis-rule-quality-monitoring-using-true-negatives" target="_blank">Long-term Rule Quality via True Negatives</a></h3>
-          <p class="meta">L. Luo, R. Mukherjee, O. Tripp, M. Schäf, Q. Zhou, D. Sanchez — ICSE-SEIP</p>
-          <p>
-            Methodology for monitoring static-analysis rule quality over time using
-            true-negative measurements. In industrial settings, precision and recall on
-            a fixed benchmark are a comforting lie.
-          </p>
-        </div>
-      </div>
-      <div class="track">
-        <div class="num">D2 · 2024</div>
-        <div class="body">
-          <h3><a href="https://www.amazon.science/publications/understanding-developer-analyzer-interactions-in-code-reviews" target="_blank">Developer–Analyzer Interactions in Code Reviews</a></h3>
-          <p class="meta">B. Cirisci, L. Luo, M. N. Mansur, D. Sanchez, M. Schäf, O. Tripp, M. B. Zafar, Q. Zhou — ASE</p>
-          <p>
-            An empirical study of how developers respond to analyzer findings on pull
-            requests. What they accept, what they ignore, what they argue with.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="tv-block">
-      <span class="tv-label">Side D · Taylor's Version</span>
-      <h3>Measure, Re-recorded</h3>
-      <p>
-        The bottleneck of the original work was data. Human feedback was slow,
-        expensive, and sparse. Whether a developer accepted or ignored a finding
-        was sometimes the only signal we had, and even that had to be inferred
-        from messy logs. We built methodologies that wrung as much as possible out
-        of small samples.
-      </p>
-      <p>
-        The constraint relaxes when machines write most of the code and react to
-        most of the tool signal. Every agent run is an experiment. Every accepted
-        or rejected finding is recorded. Controlled experiments become tractable.
-        We can change the feedback the analyzer gives back to the agent and
-        measure whether the next batch of agent output improves.
-        <strong>Long-term Rule Quality via True Negatives</strong> becomes a
-        per-rule controlled study, run nightly, with a sample size measured in
-        thousands of agent invocations. <strong>Developer-Analyzer Interactions
-        in Code Reviews</strong> becomes <em>agent</em>-analyzer interactions,
-        with no recall bias, no Hawthorne effect, and a feedback channel that can
-        be tuned and re-measured.
-      </p>
-      <p class="open"><span class="lab">From the Vault</span>
-        What does an analyzer look like when the only readers are agents, and the
-        evaluation loop is fast enough to do real A/B tests on the feedback that
-        the analyzer gives?
-      </p>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ CODA ═══════════════════ -->
-  <div class="chevron-rule">
-    <span class="line"></span>
-    <span class="diamond"></span>
-    <span class="glyph">Coda</span>
-    <span class="diamond"></span>
-    <span class="line"></span>
-  </div>
-
-  <section class="coda" style="text-align:left">
-    <h2 style="text-align:center">The Bridge: Tracks From the Current Era</h2>
-    <p style="text-align:center;font-style:italic;color:var(--muted);max-width:600px;margin:8px auto 24px">
-      One released, two in the studio. The neurosymbolic era, in progress.
-    </p>
-
-    <div style="border-left:2px solid var(--gold); padding:6px 18px; margin:0 0 22px">
-      <div style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:4px">Released · ICSE-SEIP 2026</div>
-      <h3 style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-bright);margin:0 0 6px">
-        <a href="https://www.amazon.science/publications/delta-debugging-for-llm-integrated-systems" target="_blank">Delta Debugging for LLM-integrated Systems</a>
-      </h3>
-      <p style="font-style:italic;color:var(--muted);margin:0 0 10px;font-size:0.92em">
-        Zhu, Mansur, Schäf, Chen, Lepoint, Visser
-      </p>
-      <p style="margin:0">
-        Delta debugging is a 1999 algorithm. It minimizes a failing input until the
-        smallest one that still fails is found. The paper applies it to systems whose
-        failing component is a language model. The four questions still apply. Why did
-        it fail: the minimal witness. How to show it: a printable counter-example. What
-        does the system add back: each minimization step. Was it productive: yes,
-        measurably, on real LLM-integrated systems. Old machinery, new artifact, same
-        conversation.
-      </p>
-    </div>
-
-    <div style="border-left:2px solid var(--copper); padding:6px 18px; margin:0 0 22px; background:rgba(201,138,85,0.03)">
-      <div style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--copper);margin-bottom:4px">In the Studio · Vault Track 1</div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:var(--gold-bright);margin:0 0 8px">
-        A neurosymbolic primitive for question answering over rule engines
-      </h3>
-      <p style="margin:0">
-        The artifact is not a program. It is a rule engine, of the kind that underlies
-        contracts, tax software, and eligibility checks. The engine answers point
-        queries cleanly. It answers human questions badly, because the human leaves
-        most of the input form blank and the engine cannot say what depends on the
-        missing parts. The paper introduces a neurosymbolic primitive that walks the
-        rule-trigger graph, constructs a small covering set of inputs, and renders a
-        <em>conditional</em> answer of the form "yes if X, no if Y" that re-executes
-        through the engine for validation. The four questions show up together. Side A
-        distills the relevant dependency. Side C accepts the model's hypotheses through
-        a verifier. Side B presents the result in a form a human can read. Side D
-        measures whether the result was correct. The same loop, in a different
-        discipline.
-      </p>
-    </div>
-
-    <div style="border-left:2px solid var(--copper); padding:6px 18px; margin:0; background:rgba(201,138,85,0.03)">
-      <div style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--copper);margin-bottom:4px">In the Studio · Vault Track 2</div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:var(--gold-bright);margin:0 0 8px">
-        Learned eligibility conditions, validated on production billing
-      </h3>
-      <p style="margin:0">
-        Pricing-term oracles produce thousands of false discrepancies on real billing
-        data. The reason is that the eligibility conditions live in source code and
-        side-channel docs, not in the terms themselves. An LLM coding agent learns the
-        missing conditions from the data, validates each one against production billing
-        with zero false positives, and traces it back to its documentation source. If
-        no source exists, the agent flags it as a documentation gap. The methodology
-        is Side D in full bloom. The analyzer is now the agent. The true-negative
-        monitoring carries forward. The productivity question is answered nightly.
-      </p>
-    </div>
-  </section>
-
-  <!-- ═══════════════════ FOOTER ═══════════════════ -->
-  <footer>
-    <svg class="ornament" viewBox="0 0 200 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <g stroke="#d4af37" stroke-width="0.7" fill="none">
-        <line x1="0" y1="15" x2="60" y2="15"/>
-        <line x1="140" y1="15" x2="200" y2="15"/>
-        <polygon points="70,15 90,5 110,15 90,25"/>
-        <polygon points="80,15 90,10 100,15 90,20" fill="#d4af37"/>
-        <line x1="118" y1="15" x2="132" y2="15"/>
-        <circle cx="65" cy="15" r="2" fill="#d4af37" stroke="none"/>
-        <circle cx="135" cy="15" r="2" fill="#d4af37" stroke="none"/>
-      </g>
-    </svg>
-    <p>All originals are published works · all Taylor's Versions are open research sketches</p>
-    <p><a href="index.html">Home</a> · <a href="pub.html">Full publication list</a></p>
-  </footer>
-
+<div class="research-header">
+    <h1>Sound Reasoning for Trustworthy User Interaction</h1>
+    <p class="subtitle">Program analysis, verification, and neuro-symbolic reasoning</p>
 </div>
 
+<section class="overture" aria-labelledby="overture-heading">
+    <h2 id="overture-heading" class="visually-hidden">Research vision</h2>
+    <p>
+        My research comprises different aspects of software quality, with a particular
+        focus on using sound reasoning to provide useful information to users. In the
+        past years, I have worked on static error detection, fault localization,
+        lightweight verification of object and API protocols, and neuro-symbolic
+        reasoning over rule engines. The analyzed artifacts range from Java programs
+        and cloud configurations to pricing agreements and executable legal rules.
+    </p>
+    <p>
+        Driven by the wish for verified software, program analysis has been an active
+        field of research for decades. Despite major achievements, usability remains an
+        open problem. Analysis tools either require extensive specifications and user
+        interaction, or produce warnings whose relevance a developer has to establish
+        independently. My work studies analyses with a more limited scope, but with a
+        result usable directly. For inconsistent code, the result is a proof
+        that no execution through a statement terminates successfully. For fault
+        localization, it is an invariant that identifies which parts of an error trace
+        do not need to be considered when fixing the observed error. For object
+        construction and API use, it is a type-state property that holds without an
+        annotation at each client use. The limitation of each analysis is part of its
+        result: an abstraction suppresses a warning, but does not establish a
+        property outside the modeled behavior.
+    </p>
+    <p>
+        Recent work considers the same problems for systems that use language models.
+        A language model translates a question into a constraint, infers a candidate
+        rule from documentation, or proposes an action for an agent. However, the model
+        does not establish that the resulting formalization is complete or correct. In
+        <em>The Question Is a Region</em>, a symbolic execution engine enumerates the
+        outcomes of an under-specified question, and an SMT solver proves that the
+        returned conditions cover the corresponding region. The language model lifts
+        the question and presents the result; the rule engine decides each verdict.
+        This separation makes the remaining unverified step explicit. The sections below
+        describe the corresponding research areas, beginning with static error detection.
+    </p>
+</section>
+
+<section class="chapter" aria-labelledby="guaranteed-bugs-heading">
+    <div class="chapter-label">Research area 1</div>
+    <h2 id="guaranteed-bugs-heading">Sound Detection of Inconsistent Code</h2>
+    <p>
+        Inconsistent code refers to a statement that does not occur on a successful
+        execution. The statement is either unreachable, or every execution through it
+        leads to an error. This property requires no functional specification. Its
+        detection reduces to proving that none of the paths through the statement is
+        feasible and successfully terminating.
+    </p>
+    <p>
+        In my early work, we used a sound over-approximation of successful executions to
+        detect inconsistent code. If the over-approximation contains no path through a
+        statement, no concrete successful execution contains that statement. A coarse
+        abstraction invents successful paths and therefore misses inconsistencies; it
+        does not justify a false inconsistency report under the modeled semantics.
+    </p>
+
+<figure class="figure-container coverage-figure" role="img" aria-labelledby="fig-cfg-caption">
+        <div class="coverage-animation" aria-hidden="true">
+            <div class="coverage-code-panel">
+                <div class="coverage-panel-heading">
+                    <span>Program</span>
+                    <span class="coverage-set-label">effectual set = { L4, L6 }</span>
+                </div>
+                <ol class="coverage-code-list">
+                    <li><span class="line-number">1</span><code>int classify(int x) {</code></li>
+                    <li><span class="line-number">2</span><code><span class="code-indent">int y = 0;</span></code></li>
+                    <li><span class="line-number">3</span><code><span class="code-indent">if (x &lt; 0)</span></code></li>
+                    <li class="coverage-target coverage-target-a">
+                        <span class="line-number">4</span><code><span class="code-indent-2">y = y + 1;</span></code>
+                        <span class="coverage-result coverage-result-a">✓ x = -3</span>
+                    </li>
+                    <li><span class="line-number">5</span><code><span class="code-indent">else</span></code></li>
+                    <li class="coverage-target coverage-target-b">
+                        <span class="line-number">6</span><code><span class="code-indent-2">y = y + 2;</span></code>
+                        <span class="coverage-result coverage-result-b">× UNSAT</span>
+                    </li>
+                    <li><span class="line-number">7</span><code>&nbsp;</code></li>
+                    <li><span class="line-number">8</span><code><span class="code-indent">assert(y != 2);</span></code></li>
+                    <li><span class="line-number">9</span><code><span class="code-indent">return y;</span></code></li>
+                    <li><span class="line-number">10</span><code>}</code></li>
+                </ol>
+            </div>
+
+            <div class="coverage-solver-panel">
+                <div class="coverage-panel-heading">SMT coverage loop</div>
+                <div class="coverage-iterations">
+                    <div class="coverage-iteration coverage-iteration-1">
+                        <div class="coverage-iteration-head">
+                            <span>Iteration 1</span><strong class="solver-sat">✓ SAT</strong>
+                        </div>
+                        <code class="coverage-query">VC ∧ (at(L4) ∨ at(L6))</code>
+                        <dl>
+                            <div><dt>witness</dt><dd>x = -3</dd></div>
+                            <div><dt>y at assert</dt><dd>1</dd></div>
+                            <div><dt>path covers</dt><dd>L4</dd></div>
+                        </dl>
+                        <p class="coverage-block">block covered representative: ¬at(L4)</p>
+                    </div>
+                    <div class="coverage-iteration coverage-iteration-2">
+                        <div class="coverage-iteration-head">
+                            <span>Iteration 2</span><strong class="solver-unsat">× UNSAT</strong>
+                        </div>
+                        <code class="coverage-query">VC ∧ at(L6)</code>
+                        <dl>
+                            <div><dt>witness</dt><dd>none</dd></div>
+                            <div><dt>y at assert</dt><dd>2</dd></div>
+                            <div><dt>uncovered</dt><dd>L6</dd></div>
+                        </dl>
+                        <p class="coverage-conclusion">Every execution through L6 fails the assertion.</p>
+                    </div>
+                </div>
+                <div class="coverage-progress" aria-hidden="true">
+                    <span></span><span></span>
+                </div>
+            </div>
+        </div>
+        <figcaption id="fig-cfg-caption">
+            <strong>Effectual-set coverage.</strong> A model covers L4. The remaining
+            obligation <code>VC ∧ at(L6)</code> is UNSAT because every execution through
+            L6 fails; hence L6 has no execution that terminates successfully.
+        </figcaption>
+    </figure>
+
+    <p>
+        Some inconsistent statements are deliberate or harmless. For example, compilers
+        introduce unreachable code, and developers use unreachable branches for
+        debugging. We therefore distinguish code whose reachability is not disproved and whose
+        executions lead to an error from code that is unreachable for other reasons.
+        Experiments on open-source programs showed that the former category yielded
+        patchable bugs. Bixie findings led to accepted fixes in Tomcat, Soot, Bouncy
+        Castle, and WildFly. The implementation approximated exceptions, reflection,
+        threads, and integer semantics unsoundly. Consequently, its reports did not
+        inherit the theoretical guarantee for behaviors outside this model.
+    </p>
+
+    <div class="paper-chips">
+        <a href="papers/bixie_tool.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2015</span> Bixie</a>
+        <a href="papers/atva15.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2015</span> Severity Levels of Inconsistent Code</a>
+        <a href="papers/lpar15_01.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2015</span> Finding Inconsistencies with Loops</a>
+    </div>
+</section>
+
+<section class="chapter" aria-labelledby="explanations-heading">
+    <div class="chapter-label">Research area 2</div>
+    <h2 id="explanations-heading">Proof-Based Fault Localization</h2>
+    <p>
+        Static checkers report errors as an initial state and a trace that leads to an
+        assertion violation. The source location of the violation does not identify its
+        cause. Two traces ending at the same location need not depend on the same facts,
+        and two traces ending at different locations need not have different causes.
+        Semantic classification therefore abstracts from syntax and retains the facts
+        relevant to the failure.
+    </p>
+    <p>
+        We use verification proofs for this abstraction. An error invariant follows from
+        a trace prefix and contradicts the remaining suffix together with the expected
+        outcome. It describes the states that necessarily lead to the error at a given
+        program point. Craig interpolation computes such invariants from the proof using
+        only symbols shared across the cut. If the same invariant holds before and after
+        a block, the block does not contribute to this failure and is removed from the
+        explanation.
+    </p>
+
+<figure class="figure-container trace-figure" aria-labelledby="fig-interp-caption">
+        <div class="trace-animation" aria-hidden="true">
+            <div class="trace-program">
+                <div class="coverage-panel-heading"><span>Program</span></div>
+                <ol class="coverage-code-list">
+                    <li><span class="line-number">1</span><code>void update(int a) {</code></li>
+                    <li><span class="line-number">2</span><code><span class="code-indent">int y = 0;</span></code></li>
+                    <li><span class="line-number">3</span><code><span class="code-indent">int n = 0;</span></code></li>
+                    <li><span class="line-number">4</span><code><span class="code-indent">y = y + 1;</span></code></li>
+                    <li class="pl-irrelevant"><span class="line-number">5</span><code><span class="code-indent">n = a + 7;</span></code></li>
+                    <li class="pl-irrelevant"><span class="line-number">6</span><code><span class="code-indent">n = n * 2;</span></code></li>
+                    <li class="pl-irrelevant"><span class="line-number">7</span><code><span class="code-indent">log(n);</span></code></li>
+                    <li><span class="line-number">8</span><code><span class="code-indent">assert(y != 1);</span></code></li>
+                    <li><span class="line-number">9</span><code>}</code></li>
+                </ol>
+                <p class="trace-program-note">Lines 5 to 7 only touch <code>n</code>.</p>
+            </div>
+
+            <div class="trace-panel">
+                <div class="coverage-panel-heading"><span>Error trace</span><span class="coverage-set-label">interpolants</span></div>
+                <div class="trace-list">
+                    <div class="trace-inv trace-inv-fade1">true</div>
+                    <div class="trace-step"><span class="trace-ln">2</span><code>y = 0</code></div>
+                    <div class="trace-inv trace-inv-fade1">y = 0</div>
+                    <div class="trace-step"><span class="trace-ln">3</span><code>n = 0</code></div>
+                    <div class="trace-inv trace-inv-fade2">y = 0</div>
+                    <div class="trace-step"><span class="trace-ln">4</span><code>y = y + 1</code></div>
+                    <div class="trace-inv trace-inv-key trace-inv-fade2">y = 1</div>
+
+                    <div class="trace-step trace-fold"><span class="trace-ln">5</span><code>n = a + 7</code></div>
+                    <div class="trace-inv trace-fold trace-inv-fade3">y = 1</div>
+                    <div class="trace-step trace-fold"><span class="trace-ln">6</span><code>n = n * 2</code></div>
+                    <div class="trace-inv trace-fold trace-inv-fade3">y = 1</div>
+                    <div class="trace-step trace-fold"><span class="trace-ln">7</span><code>log(n)</code></div>
+
+                    <div class="trace-folded"><span class="trace-fold-badge">folded</span> lines 5 to 7 replaced by <code>havoc n</code></div>
+
+                    <div class="trace-inv trace-inv-key trace-inv-fade3">y = 1</div>
+                    <div class="trace-step trace-step-fail"><span class="trace-ln">8</span><code>assert(y != 1)</code><span class="trace-fail">fails</span></div>
+                    <div class="trace-inv trace-inv-false trace-inv-fade3">false</div>
+                </div>
+                <p class="trace-caption-live">
+                    <span class="trace-phase trace-phase-1">Interpolate at every cut.</span>
+                    <span class="trace-phase trace-phase-2">Same invariant <code>y = 1</code> before and after lines 5 to 7.</span>
+                    <span class="trace-phase trace-phase-3">Fold the block. The reason for the failure is unchanged.</span>
+                </p>
+            </div>
+        </div>
+        <figcaption id="fig-interp-caption">
+            <strong>Trace folding.</strong> The invariant <code>y = 1</code> holds before
+            and after lines 5–7, so we replace them with <code>havoc n</code> without
+            changing this failure. The explanation is sufficient, not necessarily
+            minimal.
+        </figcaption>
+    </figure>
+
+    <p>
+        Flow-sensitive fault localization retains conditions introduced by branches and
+        joins. Concolic fault abstraction applies the same reasoning backward from a
+        concrete breakpoint. The proof also provides a signature for classifying error
+        messages: invariant Hoare triples are removed, and the remaining state-changing
+        triples characterize the cause. On our benchmarks, more than half of the error
+        messages from procedures with multiple reports shared a signature with another
+        message.
+    </p>
+
+    <div class="paper-chips">
+        <a href="http://cs.nyu.edu/wies/publ/error_invariants.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2012</span> Error Invariants</a>
+        <a href="http://cs.nyu.edu/wies/publ/flow-sensitive_fault_localization.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2013</span> Flow-sensitive Fault Localization</a>
+        <a href="http://cs.nyu.edu/wies/publ/fse2013.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2013</span> Explaining Inconsistent Code</a>
+        <a href="papers/tap2016.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2016</span> Classifying Bugs with Interpolants</a>
+    </div>
+</section>
+
+<section class="chapter" aria-labelledby="implicit-protocols-heading">
+    <div class="chapter-label">Research area 3</div>
+    <h2 id="implicit-protocols-heading">Lightweight Type-State Analysis</h2>
+    <p>
+        Type-state properties constrain the sequence of operations on an object. For
+        example, a request must be configured before it is sent. Standard type-state
+        analyses rely on explicit state annotations and precise alias information.
+        These requirements make them difficult to apply to existing industrial code.
+    </p>
+    <p>
+        We studied special cases in which the analysis retains soundness without a
+        complete alias analysis. Accumulation analysis records the set of methods that
+        have been called on an object. Ignoring an alias loses evidence that a required
+        method was called. It therefore produces an additional warning, not an unsound
+        acceptance. This permits a modular type system that infers the relevant state
+        from ordinary program statements.
+    </p>
+
+<figure class="figure-container typestate-figure" aria-labelledby="fig-typestate-caption">
+        <svg class="svg-animated" viewBox="0 0 640 360" role="img" aria-labelledby="typestate-title typestate-desc">
+            <title id="typestate-title">Dataflow and typestate advance in parallel</title>
+            <desc id="typestate-desc">A request flows through three program locations while its typestate moves from new to configured to sent. Sending from the new state is rejected.</desc>
+            <defs>
+                <marker id="typestate-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+                </marker>
+                <marker id="typestate-error-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#b91c1c"/>
+                </marker>
+            </defs>
+
+            <text x="28" y="30" fill="#475569" font-size="14" font-weight="700">PROGRAM DATAFLOW</text>
+            <g class="anim-fade-in">
+                <rect x="28" y="48" width="154" height="58" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+                <text x="105" y="73" text-anchor="middle" fill="#0f172a" font-family="monospace" font-size="14">req = new</text>
+                <text x="105" y="94" text-anchor="middle" fill="#64748b" font-size="12">location 1</text>
+            </g>
+            <g class="anim-fade-in anim-fade-delay-1">
+                <rect x="243" y="48" width="154" height="58" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+                <text x="320" y="73" text-anchor="middle" fill="#0f172a" font-family="monospace" font-size="14">setRegion(req)</text>
+                <text x="320" y="94" text-anchor="middle" fill="#64748b" font-size="12">location 2</text>
+            </g>
+            <g class="anim-fade-in anim-fade-delay-2">
+                <rect x="458" y="48" width="154" height="58" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+                <text x="535" y="73" text-anchor="middle" fill="#0f172a" font-family="monospace" font-size="14">send(req)</text>
+                <text x="535" y="94" text-anchor="middle" fill="#64748b" font-size="12">location 3</text>
+            </g>
+            <path class="anim-path" d="M 182 77 L 239 77" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#typestate-arrow)"/>
+            <path class="anim-path anim-path-delay" d="M 397 77 L 454 77" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#typestate-arrow)"/>
+            <text x="320" y="132" text-anchor="middle" fill="#64748b" font-size="12">the same request value moves through the program</text>
+
+            <line x1="28" y1="155" x2="612" y2="155" stroke="#e2e8f0"/>
+            <text x="28" y="184" fill="#475569" font-size="14" font-weight="700">TYPESTATE AUTOMATON</text>
+            <path class="anim-path" d="M 151 244 L 274 244" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#typestate-arrow)"/>
+            <path class="anim-path anim-path-delay" d="M 366 244 L 489 244" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#typestate-arrow)"/>
+            <text x="212" y="229" text-anchor="middle" fill="#475569" font-family="monospace" font-size="13">setRegion</text>
+            <text x="428" y="229" text-anchor="middle" fill="#475569" font-family="monospace" font-size="13">send</text>
+            <g class="anim-fade-in">
+                <circle cx="105" cy="244" r="46" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+                <text x="105" y="249" text-anchor="middle" fill="#312e81" font-family="monospace" font-size="15">new</text>
+            </g>
+            <g class="anim-fade-in anim-fade-delay-2">
+                <circle cx="320" cy="244" r="46" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+                <text x="320" y="249" text-anchor="middle" fill="#164e63" font-family="monospace" font-size="14">configured</text>
+            </g>
+            <g class="anim-fade-in anim-fade-delay-4">
+                <circle cx="535" cy="244" r="46" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+                <text x="535" y="249" text-anchor="middle" fill="#166534" font-family="monospace" font-size="15">sent</text>
+            </g>
+            <path class="anim-fade-in anim-fade-delay-4" d="M 105 294 C 185 347, 451 347, 535 294" fill="none" stroke="#b91c1c" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#typestate-error-arrow)"/>
+            <text class="anim-fade-in anim-fade-delay-4" x="320" y="337" text-anchor="middle" fill="#991b1b" font-size="13">send before configuration: rejected transition</text>
+        </svg>
+        <figcaption id="fig-typestate-caption">
+            <strong>Dataflow and typestate.</strong> The analysis follows one request
+            while the automaton advances from <code>new</code> to <code>configured</code>
+            to <code>sent</code>; an early <code>send</code> has no legal transition.
+        </figcaption>
+    </figure>
+
+    <p>
+        <em>Verifying Object Construction</em> applies accumulation analysis to builders,
+        dependency injection, and factory methods. Flow-sensitive refinement determines
+        which setters were invoked without annotations at each client use. For common
+        builder generators, the checker also infers which logical arguments are required.
+        The analysis found 16 security vulnerabilities with 3 false positives in more
+        than 9 million lines of industrial and open-source code.
+    </p>
+    <p>
+        <em>Continuous Compliance</em> applies lightweight verification to source-code
+        audit controls. Five checkers enforce requirements for cryptographic algorithms,
+        key lengths, credentials, HTTPS, and cloud storage. At AWS, the checkers scanned
+        more than 68 million lines of code and required 23 annotations. External auditors
+        accepted their output as evidence for seven services. RAPID applies related
+        techniques to temporal cloud API protocols using value flow and guarded
+        automata.
+    </p>
+
+    <div class="paper-chips">
+        <a href="https://conf.researchr.org/details/icse-2020/icse-2020-papers/126/Verifying-Object-Construction" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2020</span> Verifying Object Construction</a>
+        <a href="https://homes.cs.washington.edu/~mernst/pubs/continuous-compliance-ase2020.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2020</span> Continuous Compliance</a>
+        <a href="https://www.amazon.science/publications/rapid-checking-api-usage-for-the-cloud-in-the-cloud" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2021</span> RAPID</a>
+        <a href="https://www.amazon.science/publications/inference-for-ever-changing-policy-of-taint-analysis" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2024</span> Ever-Changing Taint Policy</a>
+    </div>
+</section>
+
+<section class="chapter" aria-labelledby="checked-conversations-heading">
+    <div class="chapter-label">Research area 4</div>
+    <h2 id="checked-conversations-heading">Neuro-Symbolic Reasoning for User Interaction</h2>
+    <p>
+        Rule engines map a fully specified set of typed inputs to an output. In a chat
+        setting, users leave inputs open because they do not know them or do not consider
+        them relevant. The question then denotes a region of the input space, not one point. The correct answer is a partition of that region into the conditions
+        that produce each output.
+    </p>
+    <p>
+        Neither a language model nor symbolic enumeration solves this problem alone. A
+        language model gives no completeness guarantee. Symbolic enumeration covers
+        every path, but a large partition is difficult to present faithfully. In
+        <em>The Question Is a Region</em>, a language model lifts the question to typed
+        constraints, CUTECat enumerates paths through the rules, the unmodified rule
+        engine evaluates one witness per output category, and Z3 proves that the
+        resulting partition covers the lifted region. If the partition exceeds a fixed
+        budget, guard structure selects one input for a follow-up question.
+    </p>
+
+<figure class="figure-container nesy-figure" role="img" aria-labelledby="fig-nesy-caption">
+        <div class="nesy-animation" aria-hidden="true">
+            <div class="nesy-chat-panel">
+                <div class="coverage-panel-heading">
+                    <span>Conversation</span>
+                    <span class="coverage-set-label">French SMIC calculator</span>
+                </div>
+                <div class="nesy-chat">
+                    <div class="nesy-msg nesy-msg-user nesy-in-1">
+                        <span class="nesy-av nesy-av-u">You</span>
+                        <div class="nesy-bub nesy-bub-u">What is the hourly minimum wage before this year?</div>
+                    </div>
+                    <div class="nesy-msg nesy-in-2">
+                        <span class="nesy-av nesy-av-a">AI</span>
+                        <div class="nesy-bub nesy-bub-a">
+                            I understood: dates before <code>2026-01-01</code> and all nine
+                            territory values. Continue?
+                            <span class="nesy-stepref">Step 1 · Lift</span>
+                        </div>
+                    </div>
+                    <div class="nesy-msg nesy-msg-user nesy-in-3">
+                        <span class="nesy-av nesy-av-u">You</span>
+                        <div class="nesy-bub nesy-bub-u">Continue.</div>
+                    </div>
+                    <div class="nesy-msg nesy-in-4">
+                        <span class="nesy-av nesy-av-a">AI</span>
+                        <div class="nesy-bub nesy-bub-a">
+                            The wage changed across <strong>eight historical periods</strong>, and
+                            dates before 2019 are outside this calculator's scope. Do you have a
+                            specific date in mind?
+                            <span class="nesy-stepref">Step 2 · Solve → Step 3 · Clarify</span>
+                        </div>
+                    </div>
+                    <div class="nesy-msg nesy-msg-user nesy-in-5">
+                        <span class="nesy-av nesy-av-u">You</span>
+                        <div class="nesy-bub nesy-bub-u">2023-01-01.</div>
+                    </div>
+                    <div class="nesy-msg nesy-in-6">
+                        <span class="nesy-av nesy-av-a">AI</span>
+                        <div class="nesy-bub nesy-bub-a">
+                            <strong>€11.27</strong> for Metropole, Guadeloupe, Guyane, Martinique,
+                            LaReunion, SaintBarthelemy, SaintMartin, and SaintPierreEtMiquelon.<br>
+                            <strong>€8.51</strong> for Mayotte.
+                            <em class="nesy-cite">Décret 2022-1608, Article 1</em>
+                            <span class="nesy-stepref">Step 4 · Refine → Step 5 · Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nesy-reason-panel">
+                <div class="coverage-panel-heading">
+                    <span>Trusted core</span>
+                    <span class="coverage-set-label">engine · all-SAT · z3</span>
+                </div>
+                <div class="nesy-stage">
+                    <div class="nesy-step nesy-step-1">
+                        <div class="nesy-step-head"><span>Step 1</span><strong>Lift</strong></div>
+                        <p class="nesy-step-lead">The LLM turns the question into a typed region.</p>
+                        <code class="nesy-code">target = smic_brut_horaire
+pinned = { }
+free   = [ date, territory ]
+Q(D,T) ≡ D &lt; 2026-01-01</code>
+                        <p class="nesy-step-note">Code validates JSON shape, ISO date, and enum domain.</p>
+                    </div>
+
+                    <div class="nesy-step nesy-step-2">
+                        <div class="nesy-step-head"><span>Step 2</span><strong>Solve</strong></div>
+                        <p class="nesy-step-lead">Conjoin the region with the Horn rules and enumerate.</p>
+                        <code class="nesy-code">S = Q(D,T) ∧ H(D,T,W)
+all-SAT → 17 output-distinct models
+          (8 wage periods × 2 groups + 1 reject)</code>
+                        <p class="nesy-step-note nesy-note-warn">17 outcomes &gt; presentation budget → clarify.</p>
+                    </div>
+
+                    <div class="nesy-step nesy-step-3">
+                        <div class="nesy-step-head"><span>Step 3</span><strong>Clarify</strong></div>
+                        <p class="nesy-step-lead">Which free input yields the largest outcome reduction?</p>
+                        <code class="nesy-code">guard_cells(date)      = 9   ← 8 intervals + reject
+guard_cells(territory) = 2   ← Mayotte vs. 8 others</code>
+                        <p class="nesy-step-note">Ask for the <strong>date</strong>: 17 outcomes → ≤ 2. Pinning territory leaves 9.</p>
+                    </div>
+
+                    <div class="nesy-step nesy-step-4">
+                        <div class="nesy-step-head"><span>Step 4</span><strong>Refine</strong></div>
+                        <p class="nesy-step-lead">Re-solve with the answer pinned.</p>
+                        <code class="nesy-code">Q′ = Q(D,T) ∧ H(D,T,W) ∧ D = 2023-01-01</code>
+                        <table class="nesy-table">
+                            <tr><th>Model</th><th>Territory</th><th>Wage</th></tr>
+                            <tr><td>M₁</td><td>Metropole (×8)</td><td class="nesy-w">€11.27</td></tr>
+                            <tr><td>M₂</td><td>Mayotte</td><td class="nesy-w">€8.51</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="nesy-step nesy-step-5">
+                        <div class="nesy-step-head"><span>Step 5</span><strong>Complete</strong></div>
+                        <p class="nesy-step-lead">Prove the two branches tile the region.</p>
+                        <code class="nesy-code">R₁: T ∈ {Metropole, …} ∧ W = 11.27
+R₂: T = Mayotte        ∧ W =  8.51</code>
+                        <p class="nesy-verdict">Q′ ∧ H ∧ ¬(R₁ ∨ R₂) = <strong>UNSAT</strong></p>
+                        <p class="nesy-step-note nesy-note-ok">The partition is complete. Same question → same answer every run.</p>
+                    </div>
+                </div>
+                <div class="nesy-progress" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+        <figcaption id="fig-nesy-caption">
+            <strong>A checked conversation.</strong> Lift maps an under-specified
+            question to a region; All-SAT enumerates outcomes; guard structure selects
+            the clarifying question; and Z3 proves the final two branches complete.
+        </figcaption>
+    </figure>
+
+    <p>
+        The same combination applies to other interactions with learned models.
+        <em>Why Is This on My Bill?</em> uses a model to infer candidate eligibility rules
+        from documentation, validates them against observed billing behavior, and keeps
+        a link to the supporting text. <em>Proof-of-Policy</em> evaluates actions proposed
+        by cooperating agents before execution. Policy miners approve, constrain,
+        modify, defer, or reject each proposal, and an append-only record preserves the
+        decision.
+    </p>
+    <p>
+        The lift from a natural-language question to a symbolic region remains unverified.
+        A wrong lift yields a complete answer to the wrong question. Related translation
+        steps occur when a model infers a billing rule or interprets an agent action. My
+        current work studies checks for these translations and separates claims proved by
+        the symbolic engine from claims inferred by the language model.
+    </p>
+
+    <div class="paper-chips">
+        <a href="papers/nesy26.pdf" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2026</span> The Question Is a Region (NeSy)</a>
+        <a href="https://www.amazon.science/publications/why-is-this-on-my-bill-documentation-grounded-rule-learning-for-itemized-bill-explanation" target="_blank" rel="noopener" class="paper-chip"><span class="chip-year">2026</span> Why Is This on My Bill? (ASE)</a>
+        <a href="pub.html" class="paper-chip"><span class="chip-year">2026</span> Proof-of-Policy (SynSec)</a>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <p>Martin Schäf · <a href="index.html">Home</a> · <a href="pub.html">Publications</a></p>
+</footer>
+
+<script>
+(function() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const figures = document.querySelectorAll('.svg-animated, .coverage-animation, .trace-animation, .nesy-animation');
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            entry.target.classList.toggle('svg-paused', !entry.isIntersecting);
+        });
+    }, { threshold: 0.2 });
+
+    figures.forEach(function(fig) {
+        fig.classList.add('svg-paused');
+        observer.observe(fig);
+    });
+})();
+</script>
 </body>
 </html>
