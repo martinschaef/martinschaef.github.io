@@ -8,7 +8,7 @@
         "cycle": true,
         "dialogue": [
           {
-            "text": "John and Shankar are expecting you in Menlo Park. It's like Macau, but with fewer casinos and more venture capital."
+            "text": "John is expecting you in Menlo Park. It's like Macau, but with fewer casinos and more venture capital."
           },
           {
             "text": "The ferry to the Hong Kong airport leaves from the terminal. Don't forget your passport."
@@ -25,7 +25,7 @@
             "text": "{papersHere} papers already. Your postdoc is going very well, Martin."
           },
           {
-            "text": "I have friends at SRI International in Menlo Park, John Murray and Shankar. I told them about your work. They want you."
+            "text": "I have a friend at SRI International in Menlo Park, John Murray. I told him about your work. He wants you."
           },
           {
             "text": "I'll be sad to lose you, but this is a good step. Go.",
