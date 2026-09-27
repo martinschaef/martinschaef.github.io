@@ -4,7 +4,8 @@
     "dialogue": [
       { "text": "Martin! Welcome to New York. The city never sleeps, and neither do our deployments." },
       { "text": "We've been pushing the boundaries of automated reasoning here. It's a whole new scale." },
-      { "text": "Remember when we thought Freiburg was intense? That was just the warm-up." }
+      { "text": "Remember when we thought Freiburg was intense? That was just the warm-up." },
+      { "text": "Byron's waiting for you. Go talk to him." }
     ]
   },
   "lauren": {
@@ -19,8 +20,13 @@
     "sprite": "byron2",
     "dialogue": [
       { "text": "Look who made it to the Big Apple! Long way from Freiburg, huh?" },
-      { "text": "The team here is something else. Fast-paced, but we ship real impact." },
-      { "text": "Let's grab coffee later. I know a place in Midtown." }
+      { "text": "Remember what I said back then? We're running proofs on the whole cloud now." },
+      { "text": "Automated reasoning, at AWS scale. Ready to join the team?", "choices": [
+        { "text": "Let's prove it.", "next": "yes" },
+        { "text": "Give me a minute.", "next": "wait" }
+      ]},
+      { "id": "yes", "text": "That's the spirit. Welcome aboard.", "goto": "VictoryScreen" },
+      { "id": "wait", "text": "Take your time. There are still papers lying around the city." }
     ]
   }
 }

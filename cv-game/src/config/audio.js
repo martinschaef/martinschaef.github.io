@@ -22,4 +22,5 @@ export const AUDIO = {
     music3:     'assets/audio/music_macau.mp3',
     music4:     'assets/audio/music_sanfrancisco.mp3',
     music5:     'assets/audio/music_nyc.mp3',
+    musicEnding:'assets/audio/music_ending.mp3',  // victory screen + rolling credits
 };

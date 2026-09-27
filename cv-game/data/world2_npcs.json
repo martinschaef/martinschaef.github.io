@@ -1,38 +1,52 @@
 {
   "podelski": {
     "sprite": "podelski_dog",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Woof." }
+    ]
   },
   "podelski_dog": {
     "sprite": "podelski_dog",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Woof! (The professor's dog eyes you like a reviewer.)" },
+      { "text": "Woof woof. (Andreas is in his office. Bring a proof, not an excuse.)" },
+      { "text": "Pet the dog?", "choices": [
+        { "text": "Of course.", "next": "pet" },
+        { "text": "No time, deadline.", "next": "nopet" }
+      ]},
+      { "id": "pet", "text": "The dog approves. Your thesis feels 10% more sound." },
+      { "id": "nopet", "text": "The dog sighs. Somewhere, a loop fails to terminate." }
+    ]
   },
   "byron": {
     "sprite": "byron",
-    "dialogue": [{ "text": "..." }]
-  },
-  "byron2": {
-    "sprite": "byron2",
-    "dialogue": [{ "text": "..." }]
-  },
-  "dejan": {
-    "sprite": "dejan",
-    "dialogue": [{ "text": "..." }]
-  },
-  "evren": {
-    "sprite": "evren",
-    "dialogue": [{ "text": "..." }]
-  },
-  "john": {
-    "sprite": "john",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Hi! I'm Byron. Visiting from Cambridge." },
+      { "text": "Andreas and I have been arguing about termination proofs for years. He's usually right." },
+      { "text": "Keep going with the verification stuff. One day we'll run it on the whole cloud." }
+    ]
   },
   "stephan": {
     "sprite": "stephan",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Martin! I'm stuck on these GUI tests again." },
+      { "text": "What if we translate Java bytecode into Boogie and just look for code that can never run?" },
+      { "text": "We could call it... Joogie. No? Fine, I'll think of something better. (He won't.)" }
+    ]
+  },
+  "evren": {
+    "sprite": "evren",
+    "dialogue": [
+      { "text": "Hey Martin. I've been thinking about error traces." },
+      { "text": "What if we could compute which parts of a failing trace actually matter? Error invariants!" },
+      { "text": "Grab the papers lying around campus. Your thesis isn't going to write itself." }
+    ]
   },
   "zhiming": {
     "sprite": "zhiming",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Martin! I read your paper on doomed program points." },
+      { "text": "We do similar work at UNU-IIST in Macau. Come visit. The exit is that way." }
+    ]
   }
 }

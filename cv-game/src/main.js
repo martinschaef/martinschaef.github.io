@@ -4,8 +4,8 @@ import { World1_Saarbruecken } from './scenes/World1_Saarbruecken.js';
 import { World2_Freiburg } from './scenes/World2_Freiburg.js';
 import { World3_Macau } from './scenes/World3_Macau.js';
 import { World4_SanFrancisco } from './scenes/World4_SanFrancisco.js';
-
 import { World5_NYC } from './scenes/World5_NYC.js';
+import { VictoryScreen } from './scenes/VictoryScreen.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -22,7 +22,7 @@ const config = {
     input: {
         activePointers: 2
     },
-    scene: [TitleScreen, CreditsScreen, World1_Saarbruecken, World2_Freiburg, World3_Macau, World4_SanFrancisco, World5_NYC]
+    scene: [TitleScreen, CreditsScreen, World1_Saarbruecken, World2_Freiburg, World3_Macau, World4_SanFrancisco, World5_NYC, VictoryScreen]
 };
 
 new Phaser.Game(config);

@@ -52,6 +52,11 @@ export class Player {
         // Mobile touch controls
         if (!scene.sys.game.device.os.desktop) {
             this._createTouchControls();
+        } else {
+            // Left click attacks (ignore clicks on the top HUD bar)
+            scene.input.on('pointerdown', (p) => {
+                if (p.leftButtonDown() && p.y > 40) this._touchAttack = true;
+            });
         }
     }
 
@@ -140,6 +145,8 @@ export class Player {
             this._setIdle();
             return;
         }
+        // Brief attack lunge owns the velocity; don't let input cancel it
+        if (this._lungeUntil && this.scene.time.now < this._lungeUntil) return;
 
         const up = this.cursors.up.isDown || this.wasd.up.isDown || this._touchDir === 'up';
         const down = this.cursors.down.isDown || this.wasd.down.isDown || this._touchDir === 'down';
@@ -190,28 +197,88 @@ export class Player {
     attack() {
         if (this.attacking) return;
         this.attacking = true;
+        const scene = this.scene;
+        const spr = this.sprite;
 
-        // Hitbox offset based on facing
-        const offsets = { down: [0, 40], up: [0, -40], left: [-40, 0], right: [40, 0] };
-        const [ox, oy] = offsets[this.facing];
-        const w = this.facing === 'left' || this.facing === 'right' ? 30 : 50;
-        const h = this.facing === 'left' || this.facing === 'right' ? 50 : 30;
+        // Direction the swing is centred on (radians; Phaser y points down)
+        const DIR_ANGLE = { right: 0, down: Math.PI / 2, left: Math.PI, up: -Math.PI / 2 };
+        const base = DIR_ANGLE[this.facing];
+        const dx = Math.cos(base), dy = Math.sin(base);
 
-        const hb = this.scene.add.zone(this.sprite.x + ox, this.sprite.y + oy, w, h);
-        this.scene.physics.add.existing(hb, false);
+        // Swing pivots around Martin's chest, not his feet
+        const pivotX = () => spr.x;
+        const pivotY = () => spr.y - spr.displayHeight * 0.1;
+        const REACH = 44;          // arc radius in px
+        const SPREAD = Math.PI * 0.8; // 144° sweep
+        const SWEEP_MS = 110, FADE_MS = 90;
+
+        // Hitbox covers the arc's footprint in front of the player
+        const hbW = this.facing === 'left' || this.facing === 'right' ? 44 : 70;
+        const hbH = this.facing === 'left' || this.facing === 'right' ? 70 : 44;
+        const hb = scene.add.zone(pivotX() + dx * 30, pivotY() + dy * 30, hbW, hbH);
+        scene.physics.add.existing(hb, false);
         hb.body.setAllowGravity(false);
         this.attackHitbox = hb;
 
-        // Visual slash
-        const slash = this.scene.add.rectangle(this.sprite.x + ox, this.sprite.y + oy, w, h, 0xf4e842, 0.6).setDepth(15);
-        this.scene.sfx('swing', { volume: 0.3 });
+        // Slash: a crescent drawn progressively from one side to the other.
+        // Swing clockwise for right/down, counter-clockwise for left/up so it reads naturally.
+        const clockwise = this.facing === 'right' || this.facing === 'down';
+        const a0 = clockwise ? base - SPREAD / 2 : base + SPREAD / 2;
+        const sweep = clockwise ? SPREAD : -SPREAD;
+        const g = scene.add.graphics().setDepth(this.facing === 'up' ? 9 : 11);
+        const state = { t: 0, alpha: 1 };
 
-        this.scene.time.delayedCall(150, () => {
-            slash.destroy();
-            hb.destroy();
-            this.attackHitbox = null;
-            this.attacking = false;
+        const draw = () => {
+            g.clear();
+            const cx = pivotX(), cy = pivotY();
+            const aEnd = a0 + sweep * state.t;
+            // Trail: fades toward the tail of the swing
+            const aTail = a0 + sweep * Math.max(0, state.t - 0.75);
+            const layers = [
+                { w: 14, color: 0xf4e842, a: 0.35 },
+                { w: 8,  color: 0xfff6b0, a: 0.7 },
+                { w: 3,  color: 0xffffff, a: 1.0 },
+            ];
+            for (const L of layers) {
+                g.lineStyle(L.w, L.color, L.a * state.alpha);
+                g.beginPath();
+                g.arc(cx, cy, REACH, Math.min(aTail, aEnd), Math.max(aTail, aEnd), false);
+                g.strokePath();
+            }
+            // Bright tip at the leading edge
+            g.fillStyle(0xffffff, state.alpha);
+            g.fillCircle(cx + Math.cos(aEnd) * REACH, cy + Math.sin(aEnd) * REACH, 4);
+        };
+
+        scene.tweens.add({
+            targets: state, t: 1, duration: SWEEP_MS, ease: 'Cubic.easeOut',
+            onUpdate: draw,
+            onComplete: () => {
+                scene.tweens.add({
+                    targets: state, alpha: 0, duration: FADE_MS,
+                    onUpdate: draw,
+                    onComplete: () => g.destroy()
+                });
+                hb.destroy();
+                this.attackHitbox = null;
+                this.attacking = false;
+            }
         });
+        draw();
+
+        // Body language: short lunge + squash toward the swing direction
+        const sx = spr.scaleX, sy = spr.scaleY;
+        spr.setVelocity(dx * 120, dy * 120);
+        this._lungeUntil = scene.time.now + 70;
+        scene.tweens.add({
+            targets: spr,
+            scaleX: sx * (dx ? 1.12 : 0.92),
+            scaleY: sy * (dy ? 1.08 : 0.94),
+            duration: 60, yoyo: true, ease: 'Quad.easeOut',
+            onComplete: () => spr.setScale(sx, sy)
+        });
+
+        scene.sfx('swing', { volume: 0.3 });
     }
 
     takeDamage(amount) {

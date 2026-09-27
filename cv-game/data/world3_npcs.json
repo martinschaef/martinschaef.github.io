@@ -1,14 +1,32 @@
 {
   "zhiming": {
     "sprite": "zhiming",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Welcome to Macau, Martin! Welcome to UNU-IIST." },
+      { "text": "Here we turn requirements into prototypes automatically. Mostly automatically." },
+      { "text": "Careful out there. The bugs in Macau gamble with your memory." }
+    ]
   },
   "stephan": {
     "sprite": "stephan",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Told you Joogie was a good name. It got into CAV!" },
+      { "text": "Next up: infeasible code detection at scale. Also, the egg tarts here are dangerous." }
+    ]
   },
   "willem": {
     "sprite": "willem",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Hi, I'm Willem. I once wrote a model checker called Java PathFinder." },
+      { "text": "Your infeasible-code work is interesting. Maybe we work together some day." },
+      { "text": "Some day may take a while. Keep walking." }
+    ]
+  },
+  "evren": {
+    "sprite": "evren",
+    "dialogue": [
+      { "text": "Error invariants got into FM! Now let's make fault localization flow-sensitive." },
+      { "text": "I'll handle the interpolants. You handle the jet lag." }
+    ]
   }
 }

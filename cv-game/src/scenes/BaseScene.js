@@ -67,6 +67,9 @@ export class BaseScene extends Phaser.Scene {
         const npcData = this.cache.json.get(`npcData_w${worldNum}`) || {};
         const enemyData = this.cache.json.get('enemyData') || {};
         const ww = col.world_width * S, wh = col.world_height * S;
+        // Scene instances are reused across restarts; clear stale per-run state
+        this._transitioning = false;
+        this._dialogueActive = false;
 
         // Background
         this.add.image(0, 0, `world${worldNum}_bg`).setOrigin(0).setScale(S).setDepth(0);
@@ -422,6 +425,7 @@ export class BaseScene extends Phaser.Scene {
                 if (!spr.active) return;
                 this.sfx('pickup', { volume: 0.3 });
                 spr.destroy(); glow.destroy(); z.destroy();
+                this.registry.set('papersFound', (this.registry.get('papersFound') || 0) + 1);
                 const comment = snark[Math.floor(rand() * snark.length)];
                 this.showMessage(`📄 "${paper.title}" (${paper.year})\n\n${comment}`);
             });
@@ -615,6 +619,11 @@ export class BaseScene extends Phaser.Scene {
             if (choice.next) { const idx = this._findNode(choice.next); if (idx >= 0) { this._showNode(idx); return; } }
             this.hideMessage(); this._currentNPC = null; return;
         }
+        if (node.goto) {
+            this.hideMessage(); this._currentNPC = null;
+            if (!this._transitioning) { this._transitioning = true; this.transitionTo(node.goto); }
+            return;
+        }
         let next = this._dialogueNode + 1;
         const nodes = this._currentNPC.dialogue;
         while (next < nodes.length && nodes[next].id) next++;
@@ -641,13 +650,33 @@ export class BaseScene extends Phaser.Scene {
     }
 
     _killEnemy(enemy) {
-        enemy.setVelocity(0);
-        const t = enemy._type || 'bug';
-        if (this.anims.exists(t + '_death')) enemy.play(t + '_death');
-        this.sfx('hit');
-        enemy.on('animationcomplete', () => { this.sfx('enemyDeath'); enemy.destroy(); });
         const idx = this.enemies.indexOf(enemy);
         if (idx >= 0) this.enemies.splice(idx, 1);
+        this.registry.set('bugsSquashed', (this.registry.get('bugsSquashed') || 0) + 1);
+        // Stop it from hurting the player while it dies
+        enemy.body.enable = false;
+        enemy.setVelocity(0);
+        this.sfx('hit');
+
+        // Hit feedback: white flash, knockback away from the player, tiny shake
+        enemy.setTintFill(0xffffff);
+        this.time.delayedCall(70, () => enemy.active && enemy.clearTint());
+        const ang = Phaser.Math.Angle.Between(this.player.sprite.x, this.player.sprite.y, enemy.x, enemy.y);
+        this.tweens.add({ targets: enemy, x: enemy.x + Math.cos(ang) * 18, y: enemy.y + Math.sin(ang) * 18, duration: 120, ease: 'Quad.easeOut' });
+        this.cameras.main.shake(60, 0.004);
+
+        const finish = () => {
+            if (!enemy.active) return;
+            this.sfx('enemyDeath');
+            this.tweens.add({ targets: enemy, alpha: 0, duration: 150, onComplete: () => enemy.destroy() });
+        };
+        const t = enemy._type || 'bug';
+        if (this.anims.exists(t + '_death')) {
+            enemy.play(t + '_death');
+            enemy.once('animationcomplete', finish);
+        } else {
+            this.time.delayedCall(150, finish);
+        }
     }
 
     _destroyCrate(crate) {

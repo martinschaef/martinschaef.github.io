@@ -1,10 +1,25 @@
 {
   "john": {
     "sprite": "john",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Welcome to SRI, Martin! Grab a whiteboard marker." },
+      { "text": "Idea: we turn formal verification into a video game and let the crowd do the proofs." },
+      { "text": "Nobody will ever make a video game about formal methods research. Right?" }
+    ]
   },
   "dejan": {
     "sprite": "dejan",
-    "dialogue": [{ "text": "..." }]
+    "dialogue": [
+      { "text": "Hey Martin. Yices is fast, but your loops are still inconsistent." },
+      { "text": "Let's find the inconsistencies before the reviewers do." },
+      { "text": "Also, have you seen JayHorn? Horn clauses for Java. It's going to CAV." }
+    ]
+  },
+  "willem": {
+    "sprite": "willem",
+    "dialogue": [
+      { "text": "Martin! See you at the Java PathFinder workshop?" },
+      { "text": "Rumor has it Amazon is hiring people who prove things. New York, I hear." }
+    ]
   }
 }

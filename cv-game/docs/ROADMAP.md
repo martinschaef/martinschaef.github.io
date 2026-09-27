@@ -1,5 +1,7 @@
 # Career Quest — Development Roadmap
 
+> **Status (2026-09-27):** Full loop playable: Saarbrücken → Freiburg → Macau → San Francisco → NYC → Victory screen with rolling credits. Combat, doors, dialogue in all worlds, publications pickups, music, and mobile controls are done. The per-world special mechanics below (maze, context switch, timer, boss) were not built; `data/progression.json` quest gating exists but is not wired into the game yet.
+
 ## Weekend 1: The Foundation
 **Goal:** Playable room with movement, NPCs, dialogue, and basic combat.
 
@@ -11,10 +13,10 @@
 - [x] Title screen with START GAME, ABOUT, fade transitions
 - [x] Sprite processing pipeline + player animations (idle, walk 4-dir)
 - [x] NPC collision (can't walk through NPCs)
-- [ ] Keyboard Swing attack (Z / Left Click) — hitbox in front of player
+- [x] Keyboard Swing attack (Z / Left Click) — hitbox in front of player
 - [ ] Destructible "Clutter Box" entities that break on swing
-- [ ] Sibling NPCs with simple random patrol movement
-- [ ] Door exit that triggers scene transition (placeholder target)
+- [x] Sibling NPCs with simple random patrol movement
+- [x] Door exit that triggers scene transition (placeholder target)
 
 **Deliverable:** Walk around the house, talk to family, smash boxes, exit through the door.
 
@@ -23,15 +25,15 @@
 ## Weekend 2: World 2 — Freiburg (The PhD Quest)
 **Goal:** Second level with maze navigation, item pickups, and enemy combat.
 
-- [ ] `World2_Freiburg.js` — Black Forest campus tilemap
+- [x] `World2_Freiburg.js` — Black Forest campus tilemap
 - [ ] NPC: Andreas Podelski (in Tower of Logic), Stephan & Even (roommates)
 - [ ] "Stamina Pizza" pickup item (simple inventory/HUD counter)
 - [ ] Enemy: "Infinite Loop" (spinning patrol), "Null Pointer Wraith" (chases player)
-- [ ] Enemy health + death on keyboard swing hits
+- [x] Enemy health + death on keyboard swing hits
 - [ ] "State-Space Explosion" maze section
 - [ ] Item: "Static Analysis Shield" — blocks projectiles when held
 - [ ] Red-pen projectile enemies
-- [ ] Scene transition from World1 → World2
+- [x] Scene transition from World1 → World2
 
 **Deliverable:** Navigate campus, collect pizza, fight enemies, survive the maze, defend thesis.
 
@@ -45,7 +47,7 @@
 - [ ] NPC: Diplomats (UN side), Pit Bosses (Casino side)
 - [ ] Enemy: "Security Vulnerability" (UN side), "Legacy Code Blob" (Casino side)
 - [ ] "Bounty Hunter Logic" screen-clear ability (charged attack)
-- [ ] Scene transition World2 → World3
+- [x] Scene transition World2 → World3
 
 **Deliverable:** Dual-world level with distinct visual halves and a unique mechanic.
 
@@ -54,13 +56,13 @@
 ## Weekend 4: World 4 — San Francisco (The Research Lab)
 **Goal:** Timed collection level with upgraded combat.
 
-- [ ] `World4_SanFrancisco.js` — hilly Bay Area / SRI campus tilemap
+- [x] `World4_SanFrancisco.js` — hilly Bay Area / SRI campus tilemap
 - [ ] Collectible: "Peer-Reviewed Citations" scattered across map
 - [ ] "Conference Deadline" countdown timer HUD element
 - [ ] NPC: Fellow researchers
 - [ ] Enemy: "Vague Specification" (erratic movement), "Reviewer #2" (flying red pen boss)
 - [ ] Keyboard upgrade: "Formal Methods" — increased attack range
-- [ ] Scene transition World3 → World4
+- [x] Scene transition World3 → World4
 
 **Deliverable:** Timed collection challenge, upgraded combat, mini-boss fight.
 
@@ -69,13 +71,13 @@
 ## Weekend 5: World 5 — NYC (The Cloud Citadel) + Polish
 **Goal:** Final level, boss fight, game completion flow.
 
-- [ ] `World5_NYC.js` — Manhattan streets / AWS Tower tilemap
-- [ ] NPC: Byron Cook at tower base
+- [x] `World5_NYC.js` — Manhattan streets / AWS Tower tilemap
+- [x] NPC: Byron Cook at tower base
 - [ ] Yellow cab traffic hazard (moving obstacles)
 - [ ] Final Boss: "The Global Outage" — multi-phase fight
 - [ ] "Senior Principal Engineer Armor" + "Cloud Keyboard" final upgrades
-- [ ] Victory screen / credits showing full CV summary
-- [ ] Scene transition World4 → World5
+- [x] Victory screen / credits showing full CV summary
+- [x] Scene transition World4 → World5
 
 **Deliverable:** Complete game loop from Saarbrücken to NYC.
 
@@ -90,8 +92,8 @@
 **Goal:** Ship it.
 
 - [ ] Replace all placeholder sprites with custom pixel art
-- [ ] Add background music / SFX (8-bit style)
-- [ ] Mobile touch controls (virtual d-pad)
+- [x] Add background music / SFX (8-bit style)
+- [x] Mobile touch controls (virtual d-pad)
 - [ ] Performance pass (asset loading, scene cleanup)
-- [ ] Deploy to martinschaef.github.io
+- [x] Deploy to martinschaef.github.io
 - [ ] README with play link and credits

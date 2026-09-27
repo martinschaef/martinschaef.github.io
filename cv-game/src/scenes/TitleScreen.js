@@ -47,6 +47,8 @@ export class TitleScreen extends Phaser.Scene {
             this._flash('Coming soon!');
             return;
         }
+        this.registry.set('papersFound', 0);
+        this.registry.set('bugsSquashed', 0);
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start(key));
     }
