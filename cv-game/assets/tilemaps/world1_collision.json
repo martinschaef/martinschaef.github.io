@@ -12264,7 +12264,9 @@
       "x": 405,
       "y": 720,
       "target": "World2_Freiburg",
-      "label": "→ Freiburg"
+      "label": "→ Freiburg",
+      "requires": "phd_yes",
+      "locked_text": "You can't just leave Saarbrücken. Maybe Prof. Podelski knows a way out."
     }
   ],
   "enemies": [

@@ -21,8 +21,8 @@ export class Player {
         this.facing = 'down';
         this._touchAction = false;
         this._touchDir = null;
-        this.hp = 3;
-        this.maxHp = 3;
+        this.maxHp = scene.registry.get('maxHp') || 3;
+        this.hp = this.maxHp;
         this.attacking = false;
         this.invincible = false;
         this.attackHitbox = null;

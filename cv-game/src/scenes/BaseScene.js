@@ -151,13 +151,7 @@ export class BaseScene extends Phaser.Scene {
         }).setOrigin(0, 0.5).setScrollFactor(0).setDepth(101);
 
         // Hearts
-        this._hearts = [];
-        const heartsX = cam.width / 2 - (this.player.maxHp * 20) / 2;
-        for (let i = 0; i < this.player.maxHp; i++) {
-            this._hearts.push(this.add.text(heartsX + i * 20, barH / 2, '❤️', {
-                fontSize: '14px'
-            }).setOrigin(0, 0.5).setScrollFactor(0).setDepth(101));
-        }
+        this._buildHearts();
 
         this._hudMute = this.add.text(cam.width - 8, barH / 2, this.sound.mute ? '🔇' : '🔊', {
             fontSize: '16px'
@@ -238,7 +232,7 @@ export class BaseScene extends Phaser.Scene {
                 const z = this.add.zone(x, y, 28, 28);
                 this.physics.add.existing(z, true); this.npcBodies.add(z);
             }
-            this.npcList.push({ x, y, id: n.id, dialogue: cfg.dialogue, random: cfg.random, sprite, label, wander: isWanderer });
+            this.npcList.push({ x, y, id: n.id, cfg, dialogue: cfg.dialogue, random: cfg.random, sprite, label, wander: isWanderer });
         });
 
         this.physics.add.collider(this.player.sprite, this.npcBodies);
@@ -296,6 +290,18 @@ export class BaseScene extends Phaser.Scene {
             }).setOrigin(0.5).setDepth(5);
             this.physics.add.overlap(this.player.sprite, z, () => {
                 if (this._transitioning) return;
+                if (!this._cond(d.requires)) {
+                    // Locked: bounce the player back out and explain, at most every few seconds
+                    const p = this.player, ang = Phaser.Math.Angle.Between(x, y, p.sprite.x, p.sprite.y);
+                    p.sprite.setVelocity(Math.cos(ang) * 200, Math.sin(ang) * 200);
+                    p._lungeUntil = this.time.now + 180;
+                    if (!this.dialogueActive && this.time.now > (this._lockedMsgUntil || 0)) {
+                        this._lockedMsgUntil = this.time.now + 2500;
+                        this._currentNPC = null;
+                        this.showMessage(d.locked_text || 'The door is locked.');
+                    }
+                    return;
+                }
                 this._transitioning = true;
                 // Swap to open door sprite
                 if (doorSpr && this.textures.exists('door_open')) {
@@ -590,8 +596,19 @@ export class BaseScene extends Phaser.Scene {
         const px = this.player.sprite.x, py = this.player.sprite.y;
         for (const npc of this.npcList) {
             if (Phaser.Math.Distance.Between(px, py, npc.x, npc.y) < 60) {
-                this._currentNPC = npc;
-                const start = npc.random ? Math.floor(Math.random() * npc.dialogue.length) : 0;
+                const talksKey = 'talks:' + npc.id;
+                const talks = this.getFlag(talksKey) || 0;
+                // First state whose condition holds wins; the NPC's top-level dialogue is the fallback
+                const st = (npc.cfg?.states || []).find(s => this._cond(s.if, talks)) || npc.cfg || npc;
+                this.setFlag(talksKey, talks + 1);
+                const dialogue = st.dialogue || npc.dialogue;
+                if (!dialogue?.length) return;
+                // "cycle": one line per visit, in order. "random": one random line per visit.
+                const single = st.cycle || st.random;
+                this._currentNPC = { ...npc, dialogue, random: single };
+                let start = 0;
+                if (st.cycle) start = talks % dialogue.length;
+                else if (st.random) start = Math.floor(Math.random() * dialogue.length);
                 this._dialogueNode = start;
                 this._showNode(start);
                 return;
@@ -603,6 +620,7 @@ export class BaseScene extends Phaser.Scene {
         const nodes = this._currentNPC.dialogue;
         if (index >= nodes.length) { this.hideMessage(); this._currentNPC = null; return; }
         this._dialogueNode = index;
+        this._applyEffects(nodes[index]);
         this.showMessage(nodes[index].text, nodes[index].choices || null);
     }
 
@@ -616,6 +634,7 @@ export class BaseScene extends Phaser.Scene {
         if (node.choices) {
             const choice = this.getSelectedChoice();
             if (!choice) return;
+            this._applyEffects(choice);
             if (choice.next) { const idx = this._findNode(choice.next); if (idx >= 0) { this._showNode(idx); return; } }
             this.hideMessage(); this._currentNPC = null; return;
         }
@@ -690,6 +709,68 @@ export class BaseScene extends Phaser.Scene {
 
     _updateHearts() {
         this._hearts.forEach((h, i) => h.setText(i < this.player.hp ? '❤️' : '🖤'));
+    }
+
+    _buildHearts() {
+        (this._hearts || []).forEach(h => h.destroy());
+        this._hearts = [];
+        const cam = this.cameras.main, barH = 32;
+        const heartsX = cam.width / 2 - (this.player.maxHp * 20) / 2;
+        for (let i = 0; i < this.player.maxHp; i++) {
+            this._hearts.push(this.add.text(heartsX + i * 20, barH / 2, '❤️', {
+                fontSize: '14px'
+            }).setOrigin(0, 0.5).setScrollFactor(0).setDepth(101));
+        }
+        this._updateHearts();
+    }
+
+    // ── Quest state ───────────────────────────────────────
+    // Flags live in the game registry so they survive level transitions.
+    // They are reset when a new game starts (TitleScreen).
+
+    _flags() {
+        let f = this.registry.get('flags');
+        if (!f) { f = {}; this.registry.set('flags', f); }
+        return f;
+    }
+
+    setFlag(name, value = true) { this._flags()[name] = value; }
+    getFlag(name) { return this._flags()[name]; }
+
+    // Condition syntax: undefined (always), "flag", "!flag", "talks>=N" (talks with the
+    // current NPC), or an array of those that must all hold.
+    _cond(expr, talks = 0) {
+        if (expr === undefined || expr === null) return true;
+        if (Array.isArray(expr)) return expr.every(e => this._cond(e, talks));
+        const m = /^talks\s*>=\s*(\d+)$/.exec(expr);
+        if (m) return talks >= Number(m[1]);
+        if (expr.startsWith('!')) return !this.getFlag(expr.slice(1));
+        return !!this.getFlag(expr);
+    }
+
+    // Side effects attached to a dialogue node or choice
+    _applyEffects(obj) {
+        if (!obj) return;
+        if (obj.set) [].concat(obj.set).forEach(f => this.setFlag(f));
+        if (obj.reward) this._grantReward(obj.reward);
+    }
+
+    _grantReward(kind) {
+        if (this.getFlag('reward:' + kind)) return;
+        this.setFlag('reward:' + kind);
+        if (kind === 'extra_heart') {
+            const max = (this.registry.get('maxHp') || 3) + 1;
+            this.registry.set('maxHp', max);
+            this.player.maxHp = max;
+            this.player.hp = max;
+            this._buildHearts();
+            this.sfx('pickup', { volume: 0.4 });
+            this.cameras.main.flash(250, 244, 232, 66);
+            const t = this.add.text(this.cameras.main.width / 2, 60, '❤️ +1 max heart', {
+                fontSize: '16px', fontFamily: 'monospace', color: '#f4e842', stroke: '#000', strokeThickness: 4
+            }).setOrigin(0.5).setScrollFactor(0).setDepth(150);
+            this.tweens.add({ targets: t, y: 90, alpha: 0, delay: 1200, duration: 800, onComplete: () => t.destroy() });
+        }
     }
 
     onPlayerDeath() {

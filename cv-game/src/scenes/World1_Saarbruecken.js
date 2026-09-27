@@ -5,7 +5,7 @@ export class World1_Saarbruecken extends BaseScene {
 
     preload() {
         this.loadLevelAssets(1);
-        this.loadNPCSprites(['doris','father','wolfgang','monika','christine','valentin','tobert','ben','podelski']);
+        this.loadNPCSprites(['doris','father','wolfgang','monika','christine','valentin','tobert','ben','podelski','evren']);
         this.loadAudio('music1');
     }
 

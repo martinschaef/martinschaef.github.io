@@ -3,8 +3,8 @@ import { LEVELS } from '../config/levels.js';
 
 // Cast grouped by career chapter; ids refer to data/credits.json
 const CHAPTERS = [
-    { title: 'Chapter I — Saarbrücken',  cast: ['doris', 'father', 'wolfgang', 'monika', 'christine', 'valentin', 'tobert', 'ben'] },
-    { title: 'Chapter II — Freiburg',    cast: ['podelski', 'podelski_dog', 'evren', 'stephan', 'byron'] },
+    { title: 'Chapter I — Saarbrücken',  cast: ['doris', 'father', 'wolfgang', 'monika', 'christine', 'evren', 'valentin', 'tobert', 'ben'] },
+    { title: 'Chapter II — Freiburg',    cast: ['podelski', 'podelski_dog', 'stephan', 'byron'] },
     { title: 'Chapter III — Macau',      cast: ['zhiming', 'willem'] },
     { title: 'Chapter IV — San Francisco', cast: ['john', 'dejan'] },
     { title: 'Chapter V — New York City', cast: ['byron2', 'lauren'] },

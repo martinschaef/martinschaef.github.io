@@ -15,25 +15,25 @@
     "sprite": "wolfgang",
     "fw": 177,
     "name": "Wolfgang",
-    "text": "Big brother, bigger opinions."
+    "text": "Big brother, four years ahead. Never skips leg day."
   },
   "monika": {
     "sprite": "monika",
     "fw": 75,
     "name": "Monika",
-    "text": "Sister and voice of reason."
+    "text": "Big sister, nine years ahead, and voice of reason."
   },
   "christine": {
     "sprite": "christine",
     "fw": 77,
     "name": "Christine",
-    "text": "The youngest, the wildcard."
+    "text": "Big sister, ten years ahead, and keeper of the embarrassing stories."
   },
   "valentin": {
     "sprite": "valentin",
     "fw": 69,
     "name": "Valentin",
-    "text": "Cousin and childhood co-conspirator."
+    "text": "Stair seller at Bickelmann, fan of the absurd, and my first software customer."
   },
   "tobert": {
     "sprite": "tobert",
@@ -45,7 +45,7 @@
     "sprite": "ben",
     "fw": 81,
     "name": "Ben",
-    "text": "Partner in crime at university."
+    "text": "University friend, 3D wizard, and co-author of the stair software."
   },
   "podelski": {
     "sprite": "podelski",
@@ -81,7 +81,7 @@
     "sprite": "evren",
     "fw": 115,
     "name": "Evren",
-    "text": "The formal methods whisperer."
+    "text": "Friend since high school, driver of the old Mercedes, brunch strategist."
   },
   "john": {
     "sprite": "john",
