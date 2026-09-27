@@ -1,25 +1,44 @@
 {
   "john": {
     "sprite": "john",
+    "name": "John",
     "dialogue": [
-      { "text": "Welcome to SRI, Martin! Grab a whiteboard marker." },
-      { "text": "Idea: we turn formal verification into a video game and let the crowd do the proofs." },
-      { "text": "Nobody will ever make a video game about formal methods research. Right?" }
+      {
+        "text": "Welcome to SRI, Martin! Grab a whiteboard marker."
+      },
+      {
+        "text": "Idea: we turn formal verification into a video game and let the crowd do the proofs."
+      },
+      {
+        "text": "Nobody will ever make a video game about formal methods research. Right?"
+      }
     ]
   },
   "dejan": {
     "sprite": "dejan",
+    "name": "Dejan",
     "dialogue": [
-      { "text": "Hey Martin. Yices is fast, but your loops are still inconsistent." },
-      { "text": "Let's find the inconsistencies before the reviewers do." },
-      { "text": "Also, have you seen JayHorn? Horn clauses for Java. It's going to CAV." }
+      {
+        "text": "Hey Martin. Yices is fast, but your loops are still inconsistent."
+      },
+      {
+        "text": "Let's find the inconsistencies before the reviewers do."
+      },
+      {
+        "text": "Also, have you seen JayHorn? Horn clauses for Java. It's going to CAV."
+      }
     ]
   },
   "willem": {
     "sprite": "willem",
+    "name": "Willem",
     "dialogue": [
-      { "text": "Martin! See you at the Java PathFinder workshop?" },
-      { "text": "Rumor has it Amazon is hiring people who prove things. New York, I hear." }
+      {
+        "text": "Martin! See you at the Java PathFinder workshop?"
+      },
+      {
+        "text": "Rumor has it Amazon is hiring people who prove things. New York, I hear."
+      }
     ]
   }
 }

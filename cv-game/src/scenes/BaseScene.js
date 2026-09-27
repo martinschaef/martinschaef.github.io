@@ -229,7 +229,7 @@ export class BaseScene extends Phaser.Scene {
                 sprite = this.add.rectangle(x, y, 28, 28, 0xffff00).setDepth(5);
             }
 
-            const label = this.add.text(x, y - sprite.displayHeight/2 - 10, n.id, {
+            const label = this.add.text(x, y - sprite.displayHeight/2 - 10, cfg.name || n.id, {
                 fontSize: '10px', fontFamily: 'monospace', color: '#fff',
                 stroke: '#000', strokeThickness: 2
             }).setOrigin(0.5).setDepth(5);
@@ -450,6 +450,7 @@ export class BaseScene extends Phaser.Scene {
                 this.sfx('pickup', { volume: 0.3 });
                 spr.destroy(); glow.destroy(); z.destroy();
                 this.registry.set('papersFound', (this.registry.get('papersFound') || 0) + 1);
+                this.setFlag(`papers_w${worldNum}`, (this.getFlag(`papers_w${worldNum}`) || 0) + 1);
                 const comment = snark[Math.floor(rand() * snark.length)];
                 this.showMessage(`📄 "${paper.title}" (${paper.year})\n\n${comment}`);
             });
@@ -647,7 +648,8 @@ export class BaseScene extends Phaser.Scene {
         const left = (this.enemies || []).length;
         return text
             .replace(/\{bugsLeft\}/g, String(left))
-            .replace(/\{bugsNoun\}/g, left === 1 ? 'bug' : 'bugs');
+            .replace(/\{bugsNoun\}/g, left === 1 ? 'bug' : 'bugs')
+            .replace(/\{papersHere\}/g, String(this.getFlag(`papers_w${this._worldNum}`) || 0));
     }
 
     _findNode(id) {
@@ -668,6 +670,12 @@ export class BaseScene extends Phaser.Scene {
             this.hideMessage(); this._currentNPC = null;
             if (!this._transitioning) { this._transitioning = true; this.transitionTo(node.goto); }
             return;
+        }
+        // Explicit jump, or: a branch target (node with an id) ends the conversation
+        if (node.next) { const idx = this._findNode(node.next); if (idx >= 0) { this._showNode(idx); return; } }
+        if (node.id) {
+            if (node.flee) this._fleeNPC(this._currentNPC);
+            this.hideMessage(); this._currentNPC = null; return;
         }
         let next = this._dialogueNode + 1;
         const nodes = this._currentNPC.dialogue;
@@ -764,13 +772,16 @@ export class BaseScene extends Phaser.Scene {
     setFlag(name, value = true) { this._flags()[name] = value; }
     getFlag(name) { return this._flags()[name]; }
 
-    // Condition syntax: undefined (always), "flag", "!flag", "talks>=N" (talks with the
+    // Condition syntax: undefined (always), "flag", "!flag", "name>=N" (numeric flag), "talks>=N" (talks with the
     // current NPC), or an array of those that must all hold.
     _cond(expr, talks = 0) {
         if (expr === undefined || expr === null) return true;
         if (Array.isArray(expr)) return expr.every(e => this._cond(e, talks));
         const m = /^talks\s*>=\s*(\d+)$/.exec(expr);
         if (m) return talks >= Number(m[1]);
+        // Numeric flags, e.g. "papers_w2>=2"
+        const n = /^([\w:]+)\s*>=\s*(\d+)$/.exec(expr);
+        if (n) return (Number(this.getFlag(n[1])) || 0) >= Number(n[2]);
         if (expr.startsWith('!')) return !this.getFlag(expr.slice(1));
         return !!this.getFlag(expr);
     }

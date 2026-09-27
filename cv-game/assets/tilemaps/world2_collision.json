@@ -12224,7 +12224,7 @@
       "y": 466
     },
     {
-      "id": "podelski_dog",
+      "id": "podelski",
       "x": 1461,
       "y": 1070
     }
@@ -12234,7 +12234,9 @@
       "x": 1757,
       "y": 1373,
       "target": "World3_Macau",
-      "label": "→ Macau"
+      "label": "✈ → Macau",
+      "requires": "phd_done",
+      "locked_text": "No flight to Macau without a PhD. Andreas and Balzac are waiting at the faculty."
     }
   ],
   "enemies": [

@@ -1,52 +1,185 @@
 {
   "podelski": {
     "sprite": "podelski_dog",
+    "name": "Podelski & Balzac",
+    "states": [
+      {
+        "if": "phd_done",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Dr. Schäf. It sounds good, no? Your flight leaves from the end of the runway."
+          },
+          {
+            "text": "Balzac will miss you. He won't say it. He is a dog."
+          },
+          {
+            "text": "Macau is far, but a good proof works in every time zone."
+          }
+        ]
+      },
+      {
+        "if": [
+          "podelski_intro",
+          "papers_w2>=2"
+        ],
+        "dialogue": [
+          {
+            "text": "Two papers on doomed code. I think that is a thesis. Let's do the defense. Right now."
+          },
+          {
+            "text": "Question one: what is a doomed program point?",
+            "choices": [
+              {
+                "text": "A statement that fails on every execution that reaches it.",
+                "next": "q2"
+              },
+              {
+                "text": "Any line that Reviewer #2 doesn't like.",
+                "next": "wrong1"
+              },
+              {
+                "text": "Code written after midnight.",
+                "next": "wrong1"
+              }
+            ]
+          },
+          {
+            "id": "wrong1",
+            "text": "Balzac growls. Think about it and come back."
+          },
+          {
+            "id": "q2",
+            "text": "Good. Question two: how do you show a point is doomed?",
+            "choices": [
+              {
+                "text": "Prove that no execution through it can terminate normally.",
+                "next": "q3"
+              },
+              {
+                "text": "Run the program once and see if it crashes.",
+                "next": "wrong2"
+              },
+              {
+                "text": "Ask Stephan.",
+                "next": "wrong2b"
+              }
+            ]
+          },
+          {
+            "id": "wrong2",
+            "text": "That is testing, not proving. Balzac is disappointed. Come back when you're ready."
+          },
+          {
+            "id": "wrong2b",
+            "text": "Stephan is busy clicking buttons. Balzac is disappointed. Come back when you're ready."
+          },
+          {
+            "id": "q3",
+            "text": "Last question. Balzac will ask it.",
+            "next": "q3b"
+          },
+          {
+            "text": "Woof?",
+            "choices": [
+              {
+                "text": "Woof.",
+                "next": "pass"
+              },
+              {
+                "text": "Woof woof!",
+                "next": "pass"
+              }
+            ],
+            "id": "q3b"
+          },
+          {
+            "id": "pass",
+            "text": "Balzac accepts. Congratulations, Dr. Schäf!",
+            "set": "phd_done"
+          }
+        ]
+      },
+      {
+        "if": "podelski_intro",
+        "dialogue": [
+          {
+            "text": "How is the research going? So far I count {papersHere}. A thesis needs at least two papers."
+          },
+          {
+            "text": "Your papers are somewhere out there. The forest path, the wine hill, the city. Balzac found one near the Münster once."
+          }
+        ]
+      }
+    ],
     "dialogue": [
-      { "text": "Woof." }
-    ]
-  },
-  "podelski_dog": {
-    "sprite": "podelski_dog",
-    "dialogue": [
-      { "text": "Woof! (The professor's dog eyes you like a reviewer.)" },
-      { "text": "Woof woof. (Andreas is in his office. Bring a proof, not an excuse.)" },
-      { "text": "Pet the dog?", "choices": [
-        { "text": "Of course.", "next": "pet" },
-        { "text": "No time, deadline.", "next": "nopet" }
-      ]},
-      { "id": "pet", "text": "The dog approves. Your thesis feels 10% more sound." },
-      { "id": "nopet", "text": "The dog sighs. Somewhere, a loop fails to terminate." }
-    ]
-  },
-  "byron": {
-    "sprite": "byron",
-    "dialogue": [
-      { "text": "Hi! I'm Byron. Visiting from Cambridge." },
-      { "text": "Andreas and I have been arguing about termination proofs for years. He's usually right." },
-      { "text": "Keep going with the verification stuff. One day we'll run it on the whole cloud." }
+      {
+        "text": "Martin! Welcome to Freiburg. Your office is here, at the old Flugplatz. Planes used to land here. Now only ideas."
+      },
+      {
+        "text": "This is Balzac. He is in the group. He does not publish, but he reviews."
+      },
+      {
+        "text": "Your first task: find code that is doomed. Code that can only fail. Nobody can prove it's there, so we will."
+      },
+      {
+        "text": "Write two papers about it and come back. Then we talk about your defense.",
+        "set": "podelski_intro"
+      }
     ]
   },
   "stephan": {
     "sprite": "stephan",
+    "name": "Stephan",
+    "cycle": true,
     "dialogue": [
-      { "text": "Martin! I'm stuck on these GUI tests again." },
-      { "text": "What if we translate Java bytecode into Boogie and just look for code that can never run?" },
-      { "text": "We could call it... Joogie. No? Fine, I'll think of something better. (He won't.)" }
+      {
+        "text": "Martin! Fellow PhD student, Stephan. Office across the hall. I'm working on GUI testing. Please don't tell anyone that's a real field."
+      },
+      {
+        "text": "I clicked every button in this application 4,000 times. Then I wrote a program to click them for me. That's the whole thesis."
+      },
+      {
+        "text": "If you ever go somewhere far away for a postdoc, tell me. I'm coming too. Someone has to test your GUIs."
+      },
+      {
+        "text": "Balzac sat on my keyboard again. The paper improved."
+      }
     ]
   },
   "evren": {
     "sprite": "evren",
+    "name": "Evren",
+    "cycle": true,
     "dialogue": [
-      { "text": "Hey Martin. I've been thinking about error traces." },
-      { "text": "What if we could compute which parts of a failing trace actually matter? Error invariants!" },
-      { "text": "Grab the papers lying around campus. Your thesis isn't going to write itself." }
+      {
+        "text": "The Mercedes made it all the way from Saarbrücken. The heater is still stuck. It's a feature now."
+      },
+      {
+        "text": "High school, university, and now a PhD in the same group. At this point I'm following you, or you're following me."
+      },
+      {
+        "text": "Brunch in Boetzingen on Sunday? The wine hill is right there. We'll just look at it."
+      },
+      {
+        "text": "I've been thinking: when a program fails, which parts of the trace actually matter? One day I'll turn that into a paper."
+      }
     ]
   },
-  "zhiming": {
-    "sprite": "zhiming",
+  "byron": {
+    "sprite": "byron",
+    "name": "Byron",
+    "cycle": true,
     "dialogue": [
-      { "text": "Martin! I read your paper on doomed program points." },
-      { "text": "We do similar work at UNU-IIST in Macau. Come visit. The exit is that way." }
+      {
+        "text": "(A visitor is scribbling termination proofs with Andreas. He nods at you and keeps writing.)"
+      },
+      {
+        "text": "Hm? Oh, hi. Sorry, busy. We're proving this loop terminates. It's been three days."
+      },
+      {
+        "text": "(He waves vaguely. You won't really talk until New York, many years from now.)"
+      }
     ]
   }
 }

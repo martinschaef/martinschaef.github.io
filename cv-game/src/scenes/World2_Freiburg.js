@@ -5,7 +5,7 @@ export class World2_Freiburg extends BaseScene {
 
     preload() {
         this.loadLevelAssets(2);
-        this.loadNPCSprites(['podelski_dog','byron','byron2','dejan','evren','john','stephan','zhiming']);
+        this.loadNPCSprites(['podelski_dog','byron','evren','stephan']);
         this.loadAudio('music2');
     }
 

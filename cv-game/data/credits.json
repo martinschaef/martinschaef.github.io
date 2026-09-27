@@ -51,19 +51,19 @@
     "sprite": "podelski",
     "fw": 76,
     "name": "Prof. Podelski",
-    "text": "PhD advisor and mentor."
+    "text": "PhD advisor and mentor, with a Chair at the old Freiburg Flugplatz."
   },
   "podelski_dog": {
     "sprite": "podelski_dog",
     "fw": 145,
-    "name": "Podelski's Dog",
-    "text": "The real boss of the research group."
+    "name": "Balzac",
+    "text": "Podelski's dog and the toughest reviewer in the group."
   },
   "byron": {
     "sprite": "byron",
     "fw": 60,
     "name": "Byron",
-    "text": "Colleague and debugging partner."
+    "text": "Podelski's termination-proof collaborator. We only really talked years later, in New York."
   },
   "byron2": {
     "sprite": "byron2",
@@ -93,7 +93,7 @@
     "sprite": "stephan",
     "fw": 82,
     "name": "Stephan",
-    "text": "Research partner from Freiburg days."
+    "text": "Fellow PhD student in Freiburg, and followed me to Macau."
   },
   "zhiming": {
     "sprite": "zhiming",

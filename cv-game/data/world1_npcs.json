@@ -1,6 +1,7 @@
 {
   "mom": {
     "sprite": "doris",
+    "name": "Mom",
     "states": [
       {
         "if": "has_diploma",
@@ -43,6 +44,7 @@
   },
   "dad": {
     "sprite": "father",
+    "name": "Dad",
     "dialogue": [
       {
         "text": "The world is big, Martin."
@@ -72,6 +74,7 @@
   },
   "wolfgang": {
     "sprite": "wolfgang",
+    "name": "Wolfgang",
     "cycle": true,
     "dialogue": [
       {
@@ -99,6 +102,7 @@
   },
   "monika": {
     "sprite": "monika",
+    "name": "Monika",
     "dialogue": [
       {
         "text": "I was nine when you were born. I've been cleaning up after you ever since."
@@ -113,6 +117,7 @@
   },
   "christine": {
     "sprite": "christine",
+    "name": "Christine",
     "dialogue": [
       {
         "text": "Ten years older than you, and I still remember changing your diapers."
@@ -142,6 +147,7 @@
   },
   "evren": {
     "sprite": "evren",
+    "name": "Evren",
     "dialogue": [
       {
         "text": "Get in, the Mercedes is warmed up. Well, it's warm. It's always warm. The heater is stuck."
@@ -171,6 +177,7 @@
   },
   "podelski": {
     "sprite": "podelski",
+    "name": "Prof. Podelski",
     "states": [
       {
         "if": "phd_yes",
@@ -222,6 +229,7 @@
   },
   "valentin": {
     "sprite": "valentin",
+    "name": "Valentin",
     "states": [
       {
         "if": "stairs_done",
@@ -314,6 +322,7 @@
   },
   "ben": {
     "sprite": "ben",
+    "name": "Ben",
     "states": [
       {
         "if": "stairs_done",
@@ -401,6 +410,7 @@
   },
   "tobert": {
     "sprite": "tobert",
+    "name": "Tobert",
     "states": [
       {
         "if": "beer_had",
