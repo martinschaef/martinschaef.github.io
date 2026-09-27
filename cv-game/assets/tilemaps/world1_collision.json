@@ -12304,16 +12304,9 @@
     },
     {
       "id": "diploma",
-      "x": 552,
-      "y": 636
+      "x": 405,
+      "y": 614
     }
   ],
-  "harmless_enemies": true,
-  "signs": [
-    {
-      "x": 552,
-      "y": 556,
-      "text": "OTTO-HAHN-GYMNASIUM"
-    }
-  ]
+  "harmless_enemies": true
 }

@@ -6,7 +6,7 @@
         "if": "has_diploma",
         "dialogue": [
           {
-            "text": "You got your Abitur! I knew you'd find it."
+            "text": "Your master's degree! I always knew you'd finish. Eventually."
           },
           {
             "text": "So... are you really leaving us?",
@@ -34,10 +34,10 @@
     ],
     "dialogue": [
       {
-        "text": "Martin! You forgot your Abitur again, didn't you?"
+        "text": "Martin! Did you pick up your master's degree yet?"
       },
       {
-        "text": "It's still at the Otto-Hahn-Gymnasium, over by the university. Go get it before someone frames it."
+        "text": "It's waiting for you at the main building of the university. Go get it before someone frames it."
       }
     ]
   },
@@ -179,11 +179,22 @@
             "text": "Freiburg. Chair of Software Engineering. Bring your proofs, and a warm jacket."
           }
         ]
+      },
+      {
+        "if": "!has_diploma",
+        "dialogue": [
+          {
+            "text": "Hello, Martin. I hear you like making computers do what they're told."
+          },
+          {
+            "text": "Come back when you have your master's degree. Then we can talk about the next step."
+          }
+        ]
       }
     ],
     "dialogue": [
       {
-        "text": "Hello, Martin. I hear you like making computers do what they're told."
+        "text": "Ah, a fresh master's degree. And you like making computers do what they're told."
       },
       {
         "text": "If you want to get out of here, you have to do a PhD.",
@@ -325,10 +336,13 @@
         ]
       },
       {
-        "if": "stairs_asked",
+        "if": [
+          "stairs_asked",
+          "has_laptop"
+        ],
         "dialogue": [
           {
-            "text": "Valentin wants software that shows his stairs in 3D? Before anyone builds them?"
+            "text": "You brought the laptop! OK, stairs in 3D, before anyone builds them. I'm listening."
           },
           {
             "text": "It's 2003. Nobody has done that for a stair shop. We'd be pioneers. Pioneers of stairs.",
@@ -351,6 +365,17 @@
           {
             "id": "no",
             "text": "Exams are forever. Stairs are also forever. Tough call."
+          }
+        ]
+      },
+      {
+        "if": "stairs_asked",
+        "dialogue": [
+          {
+            "text": "Valentin wants software that shows his stairs in 3D? Cool."
+          },
+          {
+            "text": "But my PC weighs thirty kilos. We need your laptop to demo it at his shop. Didn't you leave it south of the old town?"
           }
         ]
       }

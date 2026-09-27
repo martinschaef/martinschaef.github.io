@@ -1,7 +1,7 @@
 {
   "diploma": {
-    "name": "Abitur",
-    "description": "Your Abitur from the Otto-Hahn-Gymnasium. Proof you survived school.",
+    "name": "Master's Degree",
+    "description": "Your master's degree in computer science from Saarland University. Time for the next level.",
     "frame": 0,
     "type": "quest",
     "stages": [1]
