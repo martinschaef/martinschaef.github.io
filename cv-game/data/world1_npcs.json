@@ -1,156 +1,445 @@
 {
   "mom": {
     "sprite": "doris",
+    "states": [
+      {
+        "if": "has_diploma",
+        "dialogue": [
+          {
+            "text": "You got your Abitur! I knew you'd find it."
+          },
+          {
+            "text": "So... are you really leaving us?",
+            "choices": [
+              {
+                "text": "Yes, it's time.",
+                "next": "farewell"
+              },
+              {
+                "text": "Not yet.",
+                "next": "stay"
+              }
+            ]
+          },
+          {
+            "id": "farewell",
+            "text": "Good luck out there, son. Make us proud."
+          },
+          {
+            "id": "stay",
+            "text": "Take your time, dear. We'll be here."
+          }
+        ]
+      }
+    ],
     "dialogue": [
-      { "text": "Martin! Don't forget your Abitur scroll!" },
-      { "text": "Are you really leaving us?", "choices": [
-        { "text": "Yes, it's time.", "next": "farewell" },
-        { "text": "Not yet.", "next": "stay" }
-      ]},
-      { "id": "farewell", "text": "Good luck out there, son. Make us proud." },
-      { "id": "stay", "text": "Take your time, dear. We'll be here." }
+      {
+        "text": "Martin! You forgot your Abitur again, didn't you?"
+      },
+      {
+        "text": "It's still at the Otto-Hahn-Gymnasium, over by the university. Go get it before someone frames it."
+      }
     ]
   },
   "dad": {
     "sprite": "father",
     "dialogue": [
-      { "text": "The world is big, Martin." },
-      { "text": "Where will you go first?", "choices": [
-        { "text": "Freiburg, to study.", "next": "freiburg" },
-        { "text": "I'm not sure yet.", "next": "unsure" }
-      ]},
-      { "id": "freiburg", "text": "Good choice. The Black Forest will treat you well." },
-      { "id": "unsure", "text": "You'll figure it out. You always do." }
+      {
+        "text": "The world is big, Martin."
+      },
+      {
+        "text": "Where will you go first?",
+        "choices": [
+          {
+            "text": "Freiburg, to study.",
+            "next": "freiburg"
+          },
+          {
+            "text": "I'm not sure yet.",
+            "next": "unsure"
+          }
+        ]
+      },
+      {
+        "id": "freiburg",
+        "text": "Good choice. The Black Forest will treat you well."
+      },
+      {
+        "id": "unsure",
+        "text": "You'll figure it out. You always do."
+      }
     ]
   },
   "wolfgang": {
     "sprite": "wolfgang",
     "cycle": true,
     "dialogue": [
-      { "text": "Little brother! Four years younger and still can't bench your own laptop." },
-      { "text": "Deadlines? I only know deadlifts." },
-      { "text": "I'd tell you a lifting joke, but it's too heavy for you." },
-      { "text": "Your code needs more core strength. Get it? Core?" },
-      { "text": "Squat. Bench. Commit. In that order." },
-      { "text": "Moving to Freiburg? Don't worry, I'll carry the boxes. It counts as cardio." },
-      { "text": "Rest days are for people who finished their reps." }
+      {
+        "text": "Little brother! Four years younger and still can't bench your own laptop."
+      },
+      {
+        "text": "Deadlines? I only know deadlifts."
+      },
+      {
+        "text": "I'd tell you a lifting joke, but it's too heavy for you."
+      },
+      {
+        "text": "Your code needs more core strength. Get it? Core?"
+      },
+      {
+        "text": "Squat. Bench. Commit. In that order."
+      },
+      {
+        "text": "Moving to Freiburg? Don't worry, I'll carry the boxes. It counts as cardio."
+      },
+      {
+        "text": "Rest days are for people who finished their reps."
+      }
     ]
   },
   "monika": {
     "sprite": "monika",
     "dialogue": [
-      { "text": "I was nine when you were born. I've been cleaning up after you ever since." },
-      { "text": "Now you're the one taking computers apart. At least you put them back together these days." },
-      { "text": "Go. Study. Call Mom on Sundays." }
+      {
+        "text": "I was nine when you were born. I've been cleaning up after you ever since."
+      },
+      {
+        "text": "Now you're the one taking computers apart. At least you put them back together these days."
+      },
+      {
+        "text": "Go. Study. Call Mom on Sundays."
+      }
     ]
   },
   "christine": {
     "sprite": "christine",
     "dialogue": [
-      { "text": "Ten years older than you, and I still remember changing your diapers." },
-      { "text": "And now you're leaving. Promise you'll write?", "choices": [
-        { "text": "Every week.", "next": "promise" },
-        { "text": "I'll try.", "next": "try" }
-      ]},
-      { "id": "promise", "text": "You better! I'll hold you to it." },
-      { "id": "try", "text": "That's not very reassuring..." }
+      {
+        "text": "Ten years older than you, and I still remember changing your diapers."
+      },
+      {
+        "text": "And now you're leaving. Promise you'll write?",
+        "choices": [
+          {
+            "text": "Every week.",
+            "next": "promise"
+          },
+          {
+            "text": "I'll try.",
+            "next": "try"
+          }
+        ]
+      },
+      {
+        "id": "promise",
+        "text": "You better! I'll hold you to it."
+      },
+      {
+        "id": "try",
+        "text": "That's not very reassuring..."
+      }
     ]
   },
   "evren": {
     "sprite": "evren",
     "dialogue": [
-      { "text": "Get in, the Mercedes is warmed up. Well, it's warm. It's always warm. The heater is stuck." },
-      { "text": "So, what's the plan this morning?", "choices": [
-        { "text": "Lecture. We have to go.", "next": "lecture" },
-        { "text": "Brunch.", "next": "brunch" }
-      ]},
-      { "id": "lecture", "text": "Sure, sure. We'll drive past the café on the way. Just to look." },
-      { "id": "brunch", "text": "The correct answer. Lectures get recorded in our hearts." }
+      {
+        "text": "Get in, the Mercedes is warmed up. Well, it's warm. It's always warm. The heater is stuck."
+      },
+      {
+        "text": "So, what's the plan this morning?",
+        "choices": [
+          {
+            "text": "Lecture. We have to go.",
+            "next": "lecture"
+          },
+          {
+            "text": "Brunch.",
+            "next": "brunch"
+          }
+        ]
+      },
+      {
+        "id": "lecture",
+        "text": "Sure, sure. We'll drive past the café on the way. Just to look."
+      },
+      {
+        "id": "brunch",
+        "text": "The correct answer. Lectures get recorded in our hearts."
+      }
     ]
   },
   "podelski": {
     "sprite": "podelski",
     "states": [
-      { "if": "phd_yes", "dialogue": [
-        { "text": "Freiburg. Chair of Software Engineering. Bring your proofs, and a warm jacket." }
-      ]}
+      {
+        "if": "phd_yes",
+        "dialogue": [
+          {
+            "text": "Freiburg. Chair of Software Engineering. Bring your proofs, and a warm jacket."
+          }
+        ]
+      }
     ],
     "dialogue": [
-      { "text": "Hello, Martin. I hear you like making computers do what they're told." },
-      { "text": "If you want to get out of here, you have to do a PhD.", "choices": [
-        { "text": "Yes. Let's do it.", "next": "yes" },
-        { "text": "No, I'm good here.", "next": "no" }
-      ]},
-      { "id": "yes", "text": "Excellent. Come to Freiburg. We will prove programs correct. Or at least doomed.", "set": "phd_yes" },
-      { "id": "no", "text": "Then enjoy Saarbrücken. The door isn't going anywhere. Neither are you." }
+      {
+        "text": "Hello, Martin. I hear you like making computers do what they're told."
+      },
+      {
+        "text": "If you want to get out of here, you have to do a PhD.",
+        "choices": [
+          {
+            "text": "Yes. Let's do it.",
+            "next": "yes"
+          },
+          {
+            "text": "No, I'm good here.",
+            "next": "no"
+          }
+        ]
+      },
+      {
+        "id": "yes",
+        "text": "Excellent. Come to Freiburg. We will prove programs correct. Or at least doomed.",
+        "set": "phd_yes"
+      },
+      {
+        "id": "no",
+        "text": "Then enjoy Saarbrücken. The door isn't going anywhere. Neither are you."
+      }
     ]
   },
   "valentin": {
     "sprite": "valentin",
     "states": [
-      { "if": "stairs_done", "cycle": true, "dialogue": [
-        { "text": "Customers now look at stairs on a screen and nod. I have never been so respected." },
-        { "text": "A woman asked if the software also does ladders. I told her ladders are just stairs with commitment issues." },
-        { "text": "Your program is the only software I have ever understood. I do not understand it, but I respect it." }
-      ]},
-      { "if": "ben_agreed", "dialogue": [
-        { "text": "Is that it? The stairs... on the screen... turning?" },
-        { "text": "People will see their stairs before they climb them. That is almost philosophy." },
-        { "text": "Here. Your first paid software job. Spend it on something with a railing.", "reward": "extra_heart", "set": "stairs_done" }
-      ]},
-      { "if": "stairs_asked", "dialogue": [
-        { "text": "The stairs are waiting. They are very patient, but they are not getting any younger. Did you talk to Ben?" }
-      ]},
-      { "if": "talks>=4", "dialogue": [
-        { "text": "Martin. Serious question, for once." },
-        { "text": "I sell stairs at Bickelmann. Beautiful stairs. But nobody can imagine them before they're built." },
-        { "text": "You do computers. Could you write a program that shows people their staircase?", "choices": [
-          { "text": "Sure, I'm in.", "next": "yes" },
-          { "text": "Stairs? Not my thing.", "next": "no" }
-        ]},
-        { "id": "yes", "text": "Wonderful. You'll need help. Doesn't your friend Ben do 3D?", "set": "stairs_asked" },
-        { "id": "no", "text": "Pity. The stairs will remain unimaginable. Like most things." }
-      ]}
+      {
+        "if": "stairs_done",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Customers now look at stairs on a screen and nod. I have never been so respected."
+          },
+          {
+            "text": "A woman asked if the software also does ladders. I told her ladders are just stairs with commitment issues."
+          },
+          {
+            "text": "Your program is the only software I have ever understood. I do not understand it, but I respect it."
+          }
+        ]
+      },
+      {
+        "if": "ben_agreed",
+        "dialogue": [
+          {
+            "text": "Is that it? The stairs... on the screen... turning?"
+          },
+          {
+            "text": "People will see their stairs before they climb them. That is almost philosophy."
+          },
+          {
+            "text": "Here. Your first paid software job. Spend it on something with a railing.",
+            "reward": "extra_heart",
+            "set": "stairs_done"
+          }
+        ]
+      },
+      {
+        "if": "stairs_asked",
+        "dialogue": [
+          {
+            "text": "The stairs are waiting. They are very patient, but they are not getting any younger. Did you talk to Ben?"
+          }
+        ]
+      },
+      {
+        "if": "talks>=4",
+        "dialogue": [
+          {
+            "text": "Martin. Serious question, for once."
+          },
+          {
+            "text": "I sell stairs at Bickelmann. Beautiful stairs. But nobody can imagine them before they're built."
+          },
+          {
+            "text": "You do computers. Could you write a program that shows people their staircase?",
+            "choices": [
+              {
+                "text": "Sure, I'm in.",
+                "next": "yes"
+              },
+              {
+                "text": "Stairs? Not my thing.",
+                "next": "no"
+              }
+            ]
+          },
+          {
+            "id": "yes",
+            "text": "Wonderful. You'll need help. Doesn't your friend Ben do 3D?",
+            "set": "stairs_asked"
+          },
+          {
+            "id": "no",
+            "text": "Pity. The stairs will remain unimaginable. Like most things."
+          }
+        ]
+      }
     ],
     "cycle": true,
     "dialogue": [
-      { "text": "I've decided to only eat food whose name works backwards. Yesterday I had a Semmel. Lemmes. Very good." },
-      { "text": "Do you think staircases get lonely at night? Nobody goes up at three in the morning. Only down." },
-      { "text": "A man on the bus told me a cardigan is just a jacket that has something to confess. I believe him." },
-      { "text": "I once sorted my socks alphabetically. Then I learned socks don't have names. It was a difficult week." }
+      {
+        "text": "I've decided to only eat food whose name works backwards. Yesterday I had a Semmel. Lemmes. Very good."
+      },
+      {
+        "text": "Do you think staircases get lonely at night? Nobody goes up at three in the morning. Only down."
+      },
+      {
+        "text": "A man on the bus told me a cardigan is just a jacket that has something to confess. I believe him."
+      },
+      {
+        "text": "I once sorted my socks alphabetically. Then I learned socks don't have names. It was a difficult week."
+      }
     ]
   },
   "ben": {
     "sprite": "ben",
     "states": [
-      { "if": "stairs_done", "cycle": true, "dialogue": [
-        { "text": "We shipped software to a real customer. We should put that on a business card." },
-        { "text": "Valentin paid us and then told me a story about a sad umbrella for twenty minutes. Worth it." }
-      ]},
-      { "if": "ben_agreed", "dialogue": [
-        { "text": "Rendering is done. Spiral staircases look amazing, the straight ones look... straight. Go show Valentin." }
-      ]},
-      { "if": "stairs_asked", "dialogue": [
-        { "text": "Valentin wants software that shows his stairs in 3D? Before anyone builds them?" },
-        { "text": "It's 2003. Nobody has done that for a stair shop. We'd be pioneers. Pioneers of stairs.", "choices": [
-          { "text": "Let's build it.", "next": "yes" },
-          { "text": "Maybe after the exams.", "next": "no" }
-        ]},
-        { "id": "yes", "text": "Deal. I'll do the rendering, you do the logic. Meet you back at Valentin's.", "set": "ben_agreed" },
-        { "id": "no", "text": "Exams are forever. Stairs are also forever. Tough call." }
-      ]}
+      {
+        "if": "stairs_done",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "We shipped software to a real customer. We should put that on a business card."
+          },
+          {
+            "text": "Valentin paid us and then told me a story about a sad umbrella for twenty minutes. Worth it."
+          }
+        ]
+      },
+      {
+        "if": "ben_agreed",
+        "dialogue": [
+          {
+            "text": "Rendering is done. Spiral staircases look amazing, the straight ones look... straight. Go show Valentin."
+          }
+        ]
+      },
+      {
+        "if": "stairs_asked",
+        "dialogue": [
+          {
+            "text": "Valentin wants software that shows his stairs in 3D? Before anyone builds them?"
+          },
+          {
+            "text": "It's 2003. Nobody has done that for a stair shop. We'd be pioneers. Pioneers of stairs.",
+            "choices": [
+              {
+                "text": "Let's build it.",
+                "next": "yes"
+              },
+              {
+                "text": "Maybe after the exams.",
+                "next": "no"
+              }
+            ]
+          },
+          {
+            "id": "yes",
+            "text": "Deal. I'll do the rendering, you do the logic. Meet you back at Valentin's.",
+            "set": "ben_agreed"
+          },
+          {
+            "id": "no",
+            "text": "Exams are forever. Stairs are also forever. Tough call."
+          }
+        ]
+      }
     ],
     "random": true,
     "dialogue": [
-      { "text": "You missed the Operating Systems class this morning. Again." },
-      { "text": "Did you finish the compiler construction assignment? My parser rejects everything, including itself." },
-      { "text": "The Mensa has schnitzel today. That's the whole announcement." },
-      { "text": "The exam is on Thursday. Or Tuesday. It's definitely on a day." },
-      { "text": "Can I copy your lecture notes? Oh right. You were at brunch with Evren." }
+      {
+        "text": "You missed the Operating Systems class this morning. Again."
+      },
+      {
+        "text": "Did you finish the compiler construction assignment? My parser rejects everything, including itself."
+      },
+      {
+        "text": "The Mensa has schnitzel today. That's the whole announcement."
+      },
+      {
+        "text": "The exam is on Thursday. Or Tuesday. It's definitely on a day."
+      },
+      {
+        "text": "Can I copy your lecture notes? Oh right. You were at brunch with Evren."
+      }
     ]
   },
   "tobert": {
     "sprite": "tobert",
-    "dialogue": [{ "text": "..." }]
+    "states": [
+      {
+        "if": "beer_had",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Another one? Better not. You've got a train to catch eventually."
+          },
+          {
+            "text": "Best bug-hunting team in the Saarland. Put it on your CV."
+          }
+        ]
+      },
+      {
+        "if": "bugs_cleared_w1",
+        "dialogue": [
+          {
+            "text": "You got all of them! My apartment is bug-free for the first time since... ever."
+          },
+          {
+            "text": "That calls for a beer. Karlsberg?",
+            "choices": [
+              {
+                "text": "Prost!",
+                "next": "yes"
+              },
+              {
+                "text": "Maybe later.",
+                "next": "no"
+              }
+            ]
+          },
+          {
+            "id": "yes",
+            "text": "Prost! (The Saarland gets a little wobbly.)",
+            "reward": "beer",
+            "set": "beer_had"
+          },
+          {
+            "id": "no",
+            "text": "More for me. Offer stands."
+          }
+        ]
+      },
+      {
+        "if": "tobert_asked",
+        "dialogue": [
+          {
+            "text": "{bugsLeft} {bugsNoun} still on the loose. Last seen near the university and the steelworks."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin! Some bugs escaped from my apartment. They don't bite. They're just... everywhere."
+      },
+      {
+        "text": "Can you squash them? Walk up to one and press Z (or tap the Z button) to swing.",
+        "set": "tobert_asked"
+      },
+      {
+        "text": "There are {bugsLeft} of them. Get them all and I'll buy you a beer."
+      }
+    ]
   }
 }

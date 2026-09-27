@@ -12301,6 +12301,19 @@
       "id": "laptop",
       "x": 1106,
       "y": 715
+    },
+    {
+      "id": "diploma",
+      "x": 552,
+      "y": 636
+    }
+  ],
+  "harmless_enemies": true,
+  "signs": [
+    {
+      "x": 552,
+      "y": 556,
+      "text": "OTTO-HAHN-GYMNASIUM"
     }
   ]
 }

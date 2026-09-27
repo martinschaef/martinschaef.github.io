@@ -70,6 +70,8 @@ export class BaseScene extends Phaser.Scene {
         // Scene instances are reused across restarts; clear stale per-run state
         this._transitioning = false;
         this._dialogueActive = false;
+        this._worldNum = worldNum;
+        this._harmless = !!col.harmless_enemies;
 
         // Background
         this.add.image(0, 0, `world${worldNum}_bg`).setOrigin(0).setScale(S).setDepth(0);
@@ -108,6 +110,9 @@ export class BaseScene extends Phaser.Scene {
         // Items
         this._setupItems(col, S);
 
+        // Map signs (building names added on top of the painted map)
+        this._setupSigns(col, S);
+
         // Auto-spawn publication papers
         this._setupPapers(worldNum, col, S);
 
@@ -119,6 +124,7 @@ export class BaseScene extends Phaser.Scene {
         this.physics.add.collider(this.player.sprite, this.enemyGroup);
         this.physics.add.collider(this.enemyGroup, this.walls);
         this.physics.add.overlap(this.player.sprite, this.enemyGroup, (_, enemy) => {
+            if (this._harmless) return;
             this.player.takeDamage(enemy.enemyCfg.damage);
             this._updateHearts();
         });
@@ -312,6 +318,15 @@ export class BaseScene extends Phaser.Scene {
         });
     }
 
+    _setupSigns(col, S) {
+        (col.signs || []).forEach(sg => {
+            this.add.text(sg.x * S, sg.y * S, sg.text, {
+                fontSize: '13px', fontFamily: 'monospace', color: '#000000', fontStyle: 'bold',
+                backgroundColor: '#f2eee0', padding: { x: 6, y: 3 }
+            }).setOrigin(0.5).setDepth(6);
+        });
+    }
+
     _setupItems(col, S) {
         this.itemSprites = [];
         if (!col.items || !col.items.length) return;
@@ -332,6 +347,9 @@ export class BaseScene extends Phaser.Scene {
             this.physics.add.overlap(this.player.sprite, z, () => {
                 if (spr.active) {
                     this.sfx('pickup', { volume: 0.3 });
+                    this.setFlag('has_' + it.id);
+                    const info = itemData[it.id];
+                    if (info) { this._currentNPC = null; this.showMessage(`Got: ${info.name}!\n\n${info.description}`); }
                     spr.destroy();
                     z.destroy();
                     const idx = this.itemSprites.indexOf(spr);
@@ -621,7 +639,15 @@ export class BaseScene extends Phaser.Scene {
         if (index >= nodes.length) { this.hideMessage(); this._currentNPC = null; return; }
         this._dialogueNode = index;
         this._applyEffects(nodes[index]);
-        this.showMessage(nodes[index].text, nodes[index].choices || null);
+        this.showMessage(this._fillTemplate(nodes[index].text), nodes[index].choices || null);
+    }
+
+    // Live values usable in dialogue text, e.g. "{bugsLeft} bugs to go"
+    _fillTemplate(text) {
+        const left = (this.enemies || []).length;
+        return text
+            .replace(/\{bugsLeft\}/g, String(left))
+            .replace(/\{bugsNoun\}/g, left === 1 ? 'bug' : 'bugs');
     }
 
     _findNode(id) {
@@ -672,6 +698,7 @@ export class BaseScene extends Phaser.Scene {
         const idx = this.enemies.indexOf(enemy);
         if (idx >= 0) this.enemies.splice(idx, 1);
         this.registry.set('bugsSquashed', (this.registry.get('bugsSquashed') || 0) + 1);
+        if (this.enemies.length === 0) this.setFlag(`bugs_cleared_w${this._worldNum}`);
         // Stop it from hurting the player while it dies
         enemy.body.enable = false;
         enemy.setVelocity(0);
@@ -758,6 +785,15 @@ export class BaseScene extends Phaser.Scene {
     _grantReward(kind) {
         if (this.getFlag('reward:' + kind)) return;
         this.setFlag('reward:' + kind);
+        if (kind === 'beer') {
+            // A friendly Saarland beer: the world sways for a few seconds
+            const cam = this.cameras.main;
+            this.tweens.add({ targets: cam, rotation: 0.035, duration: 700, yoyo: true, repeat: 3, ease: 'Sine.easeInOut',
+                onComplete: () => cam.setRotation(0) });
+            this.tweens.add({ targets: cam, zoom: 1.04, duration: 1400, yoyo: true, ease: 'Sine.easeInOut' });
+            this.sfx('confirm', { volume: 0.4 });
+            return;
+        }
         if (kind === 'extra_heart') {
             const max = (this.registry.get('maxHp') || 3) + 1;
             this.registry.set('maxHp', max);

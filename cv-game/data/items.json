@@ -1,7 +1,7 @@
 {
   "diploma": {
-    "name": "Diploma",
-    "description": "Your Abitur diploma. Proof you survived school.",
+    "name": "Abitur",
+    "description": "Your Abitur from the Otto-Hahn-Gymnasium. Proof you survived school.",
     "frame": 0,
     "type": "quest",
     "stages": [1]
