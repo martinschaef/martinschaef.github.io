@@ -51,6 +51,7 @@ export class TitleScreen extends Phaser.Scene {
         this.registry.set('bugsSquashed', 0);
         this.registry.set('flags', {});
         this.registry.set('maxHp', 3);
+        this.registry.set('chips', 0);
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start(key));
     }

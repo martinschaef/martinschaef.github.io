@@ -21367,14 +21367,19 @@
       "y": 2039
     },
     {
-      "id": "willem",
+      "id": "evren",
+      "x": 523,
+      "y": 1346
+    },
+    {
+      "id": "paul",
       "x": 417,
       "y": 2004
     },
     {
-      "id": "evren",
-      "x": 523,
-      "y": 1346
+      "id": "ben",
+      "x": 560,
+      "y": 600
     }
   ],
   "doors": [
@@ -21382,7 +21387,12 @@
       "x": 1174,
       "y": 1860,
       "target": "World4_SanFrancisco",
-      "label": "→ San Francisco"
+      "label": "⛴ → San Francisco",
+      "requires": [
+        "postdoc_done",
+        "has_passport"
+      ],
+      "locked_text": "The ferry to Hong Kong airport. You'll need a job offer from America, and your passport."
     }
   ],
   "enemies": [
@@ -21390,11 +21400,6 @@
       "type": "bug",
       "x": 891,
       "y": 1287
-    },
-    {
-      "type": "bug",
-      "x": 931,
-      "y": 1222
     },
     {
       "type": "bug",
@@ -21408,33 +21413,13 @@
     },
     {
       "type": "bug",
-      "x": 969,
-      "y": 288
-    },
-    {
-      "type": "bug",
-      "x": 1021,
-      "y": 282
-    },
-    {
-      "type": "bug",
       "x": 866,
       "y": 371
     },
     {
       "type": "bug",
-      "x": 1092,
-      "y": 1872
-    },
-    {
-      "type": "bug",
       "x": 1117,
       "y": 1841
-    },
-    {
-      "type": "bug",
-      "x": 1163,
-      "y": 1795
     }
   ],
   "items": [

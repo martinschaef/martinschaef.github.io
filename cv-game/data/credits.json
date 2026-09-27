@@ -45,7 +45,7 @@
     "sprite": "ben",
     "fw": 81,
     "name": "Ben",
-    "text": "University friend, 3D wizard, and co-author of the stair software."
+    "text": "University friend, 3D wizard, co-author of the stair software, and later of Laxino's casino games."
   },
   "podelski": {
     "sprite": "podelski",
@@ -99,7 +99,7 @@
     "sprite": "zhiming",
     "fw": 71,
     "name": "Zhiming",
-    "text": "The Macau connection."
+    "text": "Postdoc host at UNU-IIST in Macau."
   },
   "lauren": {
     "sprite": "lauren",
@@ -112,5 +112,11 @@
     "fw": 116,
     "name": "Willem",
     "text": "Model-checking legend, collaborator, and eventually the boss."
+  },
+  "paul": {
+    "sprite": "paul",
+    "fw": 76,
+    "name": "Paul",
+    "text": "Laxino's man in Macau. Business meetings at the gym or the bar."
   }
 }

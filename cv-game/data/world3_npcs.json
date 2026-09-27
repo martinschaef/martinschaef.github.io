@@ -2,55 +2,132 @@
   "zhiming": {
     "sprite": "zhiming",
     "name": "Zhiming",
+    "states": [
+      { "if": "postdoc_done", "cycle": true, "dialogue": [
+        { "text": "Menlo Park! You'll like it. It's like Macau, but with fewer casinos and more venture capital." },
+        { "text": "The ferry to the Hong Kong airport leaves from the terminal. Don't forget your passport." }
+      ]},
+      { "if": ["zhiming_intro", "papers_w3>=3"], "dialogue": [
+        { "text": "{papersHere} papers already. Your postdoc is going very well, Martin." },
+        { "text": "A letter arrived for you. SRI International in Menlo Park. They want someone who can find bugs with formal methods." },
+        { "text": "I'll be sad to lose you, but this is a good step. Go.", "set": "postdoc_done" }
+      ]},
+      { "if": "zhiming_intro", "dialogue": [
+        { "text": "How is the research going? I count {papersHere} papers from Macau so far. Three would make a very good postdoc." },
+        { "text": "Papers here tend to hide in odd places. Casinos. Markets. Guia Hill." }
+      ]}
+    ],
     "dialogue": [
-      {
-        "text": "Welcome to Macau, Martin! Welcome to UNU-IIST."
-      },
-      {
-        "text": "Here we turn requirements into prototypes automatically. Mostly automatically."
-      },
-      {
-        "text": "Careful out there. The bugs in Macau gamble with your memory."
-      }
+      { "text": "Welcome to UNU-IIST, Martin! The United Nations University, right here next to Guia Hill." },
+      { "text": "Your postdoc starts now. We need to find infeasible code, the parts of a program that can never run." },
+      { "text": "Publish three papers and come back. And try not to spend all your salary in the casinos.", "set": "zhiming_intro" }
     ]
   },
   "stephan": {
     "sprite": "stephan",
     "name": "Stephan",
+    "cycle": true,
     "dialogue": [
-      {
-        "text": "Told you Joogie was a good name. It got into CAV!"
-      },
-      {
-        "text": "Next up: infeasible code detection at scale. Also, the egg tarts here are dangerous."
-      }
-    ]
-  },
-  "willem": {
-    "sprite": "willem",
-    "name": "Willem",
-    "dialogue": [
-      {
-        "text": "Hi, I'm Willem. I once wrote a model checker called Java PathFinder."
-      },
-      {
-        "text": "Your infeasible-code work is interesting. Maybe we work together some day."
-      },
-      {
-        "text": "Some day may take a while. Keep walking."
-      }
+      { "text": "Told you I'd follow you. Macau has great GUIs. The slot machines alone have thousands of buttons." },
+      { "text": "Joogie: Java into Boogie, find the code that can never run. It's going to CAV. The name stays." },
+      { "text": "I've eaten eleven egg tarts today. For science." },
+      { "text": "If you leave for America, I'm not following you there. Probably. Ask me again in a year." }
     ]
   },
   "evren": {
     "sprite": "evren",
     "name": "Evren",
+    "cycle": true,
     "dialogue": [
-      {
-        "text": "Error invariants got into FM! Now let's make fault localization flow-sensitive."
-      },
-      {
-        "text": "I'll handle the interpolants. You handle the jet lag."
-      }
+      { "text": "Surprise! Just visiting for a week. The Mercedes couldn't make this trip, so I flew." },
+      { "text": "Error invariants got into FM! I came all the way here to tell you in person. And for the dim sum." },
+      { "text": "I fly back to Freiburg on Sunday. Brunch before the airport? Obviously." }
+    ]
+  },
+  "paul": {
+    "sprite": "paul",
+    "name": "Paul",
+    "states": [
+      { "if": "paid_tanks", "cycle": true, "dialogue": [
+        { "text": "Roulette, poker, racing, tanks. Laxino owes you and Ben a lot. Well. They paid you. So now it's even." },
+        { "text": "Gym tomorrow at seven? Then the bar at nine? The usual board meeting." }
+      ]},
+      { "if": "built_tanks", "dialogue": [
+        { "text": "Tank Wars! Players shoot each other and the house still wins. Beautiful." },
+        { "text": "That's the whole catalog. Here's the final payment, and a thank-you from the boss.", "reward": "chips:5000", "set": "paid_tanks" },
+        { "text": "Honestly, you and Ben built a small casino company's entire game line. Take care of yourself.", "reward": "extra_heart:laxino" }
+      ]},
+      { "if": "order_tanks", "dialogue": [
+        { "text": "Tank Wars. Ben is on it? Good. I'll be at the bar, stress-testing the drinks." }
+      ]},
+      { "if": "built_racing", "dialogue": [
+        { "text": "The racing game! People bet on cars that don't exist. That's the future." },
+        { "text": "Here's your cut.", "reward": "chips:2000", "set": "paid_racing" },
+        { "text": "One more. Tanks. Two tanks, a maze, and a lot of explosions. Can Ben do it?", "set": "order_tanks" }
+      ]},
+      { "if": "order_racing", "dialogue": [
+        { "text": "Racing game, arcade style. Talk to Ben. I'll be on the treadmill." }
+      ]},
+      { "if": "built_poker", "dialogue": [
+        { "text": "The poker game works, and the AI bluffs better than I do. Good job." },
+        { "text": "Your payment.", "reward": "chips:1500", "set": "paid_poker" },
+        { "text": "Next: something fast for the arcade floor. A racing game. Go tell Ben.", "set": "order_racing" }
+      ]},
+      { "if": "order_poker", "dialogue": [
+        { "text": "Poker next. Remember: the house always wins, but it should look fair." }
+      ]},
+      { "if": "built_roulette", "dialogue": [
+        { "text": "The roulette works! The ball even looks like it's rolling. Laxino is happy." },
+        { "text": "Your payment, as promised.", "reward": "chips:1000", "set": "paid_roulette" },
+        { "text": "Now we need a poker game. Ben does the pretty part, you make it correct?", "set": "order_poker" }
+      ]},
+      { "if": "order_roulette", "dialogue": [
+        { "text": "Roulette. Talk to your friend Ben. I'll wait here. Bench day." }
+      ]}
+    ],
+    "dialogue": [
+      { "text": "(Between two sets on the bench press, a man in a very good suit introduces himself.)" },
+      { "text": "Paul. I work for Laxino. We make casino games. I hear you and your friend Ben write software." },
+      { "text": "We need house games. Start with a roulette. Interested?", "choices": [
+        { "text": "Deal.", "next": "yes" },
+        { "text": "I'm here for the science.", "next": "no" }
+      ]},
+      { "id": "yes", "text": "Great. Let's meet at the bar when it's done. Ben does the graphics?", "set": "order_roulette" },
+      { "id": "no", "text": "Science doesn't pay for the egg tarts. Think about it." }
+    ]
+  },
+  "ben": {
+    "sprite": "ben",
+    "name": "Ben (on Skype)",
+    "states": [
+      { "if": "paid_tanks", "cycle": true, "dialogue": [
+        { "text": "Four games shipped. From Saarbrücken stairs to Macau casinos. What's next, a spaceship?" },
+        { "text": "Tell Paul I'm available for sequels." }
+      ]},
+      { "if": ["order_tanks", "!built_tanks"], "dialogue": [
+        { "text": "Tank Wars! Two tanks, one maze. I'll do the explosions, you do the collision detection." },
+        { "text": "...Done. The tanks can't drive through walls anymore. Mostly.", "set": "built_tanks" }
+      ]},
+      { "if": ["order_racing", "!built_racing"], "dialogue": [
+        { "text": "A racing game? I've always wanted to render a car. It's basically a staircase with wheels." },
+        { "text": "...Done. Tell Paul the cars go fast. Don't tell him they're all the same car in different colors.", "set": "built_racing" }
+      ]},
+      { "if": ["order_poker", "!built_poker"], "dialogue": [
+        { "text": "Poker. OK. I'll draw the cards, you write the logic that knows who won." },
+        { "text": "...Done. It took three nights and a lot of Skype. Send it to Paul.", "set": "built_poker" }
+      ]},
+      { "if": ["order_roulette", "!built_roulette"], "dialogue": [
+        { "text": "Paul from the gym wants a roulette game? I'm in. I'll render the wheel, you make sure the math is right." },
+        { "text": "...Done. The ball lands on 17 slightly too often. Just kidding. Probably. Show it to Paul.", "set": "built_roulette" }
+      ]},
+      { "if": "order_roulette", "dialogue": [
+        { "text": "We sent it. Let's see what Paul says." }
+      ]}
+    ],
+    "cycle": true,
+    "dialogue": [
+      { "text": "(Skype rings.) Martin! How's Macau? It's 4 a.m. here. I'm fine. Everything is fine." },
+      { "text": "Remember Valentin's stairs? I still dream in 3D. If you find another gig over there, call me." }
     ]
   }
 }

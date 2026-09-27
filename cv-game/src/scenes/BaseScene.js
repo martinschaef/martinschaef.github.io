@@ -299,8 +299,9 @@ export class BaseScene extends Phaser.Scene {
                 if (!this._cond(d.requires)) {
                     // Locked: bounce the player back out and explain, at most every few seconds
                     const p = this.player, ang = Phaser.Math.Angle.Between(x, y, p.sprite.x, p.sprite.y);
-                    p.sprite.setVelocity(Math.cos(ang) * 200, Math.sin(ang) * 200);
-                    p._lungeUntil = this.time.now + 180;
+                    const out = Math.max(z.width, z.height) / 2 + 24;
+                    p.sprite.setPosition(x + Math.cos(ang) * out, y + Math.sin(ang) * out);
+                    p.sprite.setVelocity(0);
                     if (!this.dialogueActive && this.time.now > (this._lockedMsgUntil || 0)) {
                         this._lockedMsgUntil = this.time.now + 2500;
                         this._currentNPC = null;
@@ -793,9 +794,25 @@ export class BaseScene extends Phaser.Scene {
         if (obj.reward) this._grantReward(obj.reward);
     }
 
-    _grantReward(kind) {
-        if (this.getFlag('reward:' + kind)) return;
-        this.setFlag('reward:' + kind);
+    _toast(msg) {
+        const t = this.add.text(this.cameras.main.width / 2, 60, msg, {
+            fontSize: '16px', fontFamily: 'monospace', color: '#f4e842', stroke: '#000', strokeThickness: 4
+        }).setOrigin(0.5).setScrollFactor(0).setDepth(150);
+        this.tweens.add({ targets: t, y: 90, alpha: 0, delay: 1200, duration: 800, onComplete: () => t.destroy() });
+    }
+
+    // reward: "beer", "extra_heart" or "extra_heart:<tag>" (each tag once), "chips:<amount>" (repeatable)
+    _grantReward(reward) {
+        const [kind, arg] = reward.split(':');
+        if (kind === 'chips') {
+            const n = Number(arg) || 1000;
+            this.registry.set('chips', (this.registry.get('chips') || 0) + n);
+            this.sfx('pickup', { volume: 0.4 });
+            this._toast(`🎰 +${n.toLocaleString('en-US')} Laxino chips`);
+            return;
+        }
+        if (this.getFlag('reward:' + reward)) return;
+        this.setFlag('reward:' + reward);
         if (kind === 'beer') {
             // A friendly Saarland beer: the world sways for a few seconds
             const cam = this.cameras.main;
@@ -813,10 +830,7 @@ export class BaseScene extends Phaser.Scene {
             this._buildHearts();
             this.sfx('pickup', { volume: 0.4 });
             this.cameras.main.flash(250, 244, 232, 66);
-            const t = this.add.text(this.cameras.main.width / 2, 60, '❤️ +1 max heart', {
-                fontSize: '16px', fontFamily: 'monospace', color: '#f4e842', stroke: '#000', strokeThickness: 4
-            }).setOrigin(0.5).setScrollFactor(0).setDepth(150);
-            this.tweens.add({ targets: t, y: 90, alpha: 0, delay: 1200, duration: 800, onComplete: () => t.destroy() });
+            this._toast('❤️ +1 max heart');
         }
     }
 
@@ -859,7 +873,7 @@ export class BaseScene extends Phaser.Scene {
             christine: { w: 77 }, valentin: { w: 69 }, tobert: { w: 93 }, ben: { w: 81 },
             podelski: { w: 76 }, podelski_dog: { w: 145 }, byron: { w: 60 }, byron2: { w: 57 }, dejan: { w: 80 },
             evren: { w: 115 }, john: { w: 72 }, stephan: { w: 82 }, zhiming: { w: 71 },
-            lauren: { w: 118 }, willem: { w: 116 }
+            lauren: { w: 118 }, willem: { w: 116 }, paul: { w: 76 }
         };
         npcIds.forEach(id => {
             const s = knownSprites[id];

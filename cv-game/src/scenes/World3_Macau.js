@@ -5,7 +5,7 @@ export class World3_Macau extends BaseScene {
 
     preload() {
         this.loadLevelAssets(3);
-        this.loadNPCSprites(['zhiming','stephan','willem','evren']);
+        this.loadNPCSprites(['zhiming','stephan','evren','paul','ben']);
         this.loadAudio('music3');
     }
 

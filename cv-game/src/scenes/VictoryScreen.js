@@ -5,8 +5,8 @@ import { LEVELS } from '../config/levels.js';
 const CHAPTERS = [
     { title: 'Chapter I — Saarbrücken',  cast: ['doris', 'father', 'wolfgang', 'monika', 'christine', 'evren', 'valentin', 'tobert', 'ben'] },
     { title: 'Chapter II — Freiburg',    cast: ['podelski', 'podelski_dog', 'stephan', 'byron'] },
-    { title: 'Chapter III — Macau',      cast: ['zhiming', 'willem'] },
-    { title: 'Chapter IV — San Francisco', cast: ['john', 'dejan'] },
+    { title: 'Chapter III — Macau',      cast: ['zhiming', 'paul'] },
+    { title: 'Chapter IV — San Francisco', cast: ['john', 'dejan', 'willem'] },
     { title: 'Chapter V — New York City', cast: ['byron2', 'lauren'] },
 ];
 
@@ -95,6 +95,7 @@ export class VictoryScreen extends Phaser.Scene {
         const pubs = this.cache.json.get('publications') || [];
         const found = this.registry.get('papersFound') || 0;
         const bugs = this.registry.get('bugsSquashed') || 0;
+        const chips = this.registry.get('chips') || 0;
         const first = LEVELS[0].years[0];
 
         const items = [];
@@ -121,6 +122,7 @@ export class VictoryScreen extends Phaser.Scene {
             [`${first} – ${new Date().getFullYear()}  ·  5 cities  ·  3 continents`, LIGHT],
             [pubs.length ? `📄 Papers collected: ${Math.min(found, pubs.length)} / ${pubs.length}` : `📄 Papers collected: ${found}`, '#42f4a6'],
             [`🐛 Bugs squashed: ${bugs}`, '#e94560'],
+            ...(chips ? [[`🎰 Laxino chips: ${chips.toLocaleString('en-US')}`, '#f4a742']] : []),
             ['', LIGHT],
             ['Martin Schaef', YELLOW],
             ['Principal Applied Scientist · AWS Automated Reasoning', LIGHT],
