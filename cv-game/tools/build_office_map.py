@@ -159,7 +159,8 @@ col = {
         {'id': 'numair', 'x': 230, 'y': 680},
         {'id': 'emmi2', 'x': 1180, 'y': 500},
     ],
-    'doors': [{'x': 800, 'y': STREET_Y + 100, 'w': 80, 'h': 20, 'target': 'World5_NYC', 'label': '← Back to the streets'}],
+    'doors': [{'x': 800, 'y': STREET_Y + 100, 'w': 80, 'h': 20, 'target': 'World5_NYC', 'label': '← Back to the streets',
+               'spawn': {'x': 423, 'y': 720}}],
     'enemies': [], 'items': [],
     'signs': [
         {'x': 800, 'y': STREET_Y - 100, 'text': 'AWS · MIDTOWN'},

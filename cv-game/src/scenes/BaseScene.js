@@ -98,7 +98,8 @@ export class BaseScene extends Phaser.Scene {
         }
 
         // Player
-        const sp = col.player_spawn || { x: 350, y: 400 };
+        // A door can hand over a spawn point (e.g. coming back out of a building)
+        const sp = this.scene.settings.data?.spawn || col.player_spawn || { x: 350, y: 400 };
         this.player = new Player(this, sp.x * S, sp.y * S);
         this.physics.add.collider(this.player.sprite, this.walls);
 
@@ -328,7 +329,7 @@ export class BaseScene extends Phaser.Scene {
                 if (doorSpr && this.textures.exists('door_open')) {
                     doorSpr.setTexture('door_open');
                 }
-                this.transitionTo(d.target);
+                this.transitionTo(d.target, d.spawn ? { spawn: d.spawn } : undefined);
             });
         });
     }
@@ -956,11 +957,11 @@ export class BaseScene extends Phaser.Scene {
         });
     }
 
-    transitionTo(sceneKey) {
+    transitionTo(sceneKey, data) {
         this.sfx('doorOpen', { volume: 0.3 });
         this.stopMusic();
         this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start(sceneKey));
+        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start(sceneKey, data));
     }
 
     // ── Helper: load NPC spritesheets from sprites.json ──
