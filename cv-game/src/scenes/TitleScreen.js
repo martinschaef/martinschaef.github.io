@@ -106,7 +106,13 @@ export class TitleScreen extends Phaser.Scene {
             this.tweens.add({ targets: this._music, volume: 0.45, duration: 2000 });
         };
         // Browsers block audio until the first user gesture; Phaser unlocks on it.
-        if (this.sound.locked) this.sound.once('unlocked', play); else play();
+        if (!this.sound.locked) { play(); return; }
+        const w = this.cameras.main.width;
+        const hint = this.add.text(w / 2, 46, '🔈 click or press any key for sound', {
+            fontSize: '13px', fontFamily: 'monospace', color: '#f4e842', stroke: '#000', strokeThickness: 3
+        }).setOrigin(0.5).setDepth(60);
+        this.tweens.add({ targets: hint, alpha: 0.35, duration: 700, yoyo: true, repeat: -1 });
+        this.sound.once('unlocked', () => { hint.destroy(); play(); });
     }
 
     _toggleMute() {
