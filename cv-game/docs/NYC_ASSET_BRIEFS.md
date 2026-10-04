@@ -93,11 +93,11 @@ in `src/scenes/BaseScene.js`.
    door gap at y 640 → 720 on its right wall.
 8. **Lounge, bottom-right** (x 1250 → 1500, y 660 → 790): red sofa facing a low
    wooden coffee table, a floor lamp, a tall plant.
-9. Decorations: an AWS-orange accent stripe on one wall, a framed "Dokimos → Aletheia →
-   CDA" diagram, a bookshelf, a server-rack-shaped mini fridge. No people in the map.
+9. Decorations: an AWS-orange accent stripe on one wall, a framed "contract → bill → proof?"
+   diagram, a bookshelf, a server-rack-shaped mini fridge. No people in the map.
 
 ### Labels (optional; the game overlays its own signs)
-"AWS · JFK14" over the entrance, "KITCHEN", "SORRY" on the meeting room.
+"AWS · MIDTOWN" over the entrance, "KITCHEN", "SORRY" on the meeting room.
 
 ### After generating
 1. Save as `assets/tilemaps/world6_bg.png` (1600×1200).

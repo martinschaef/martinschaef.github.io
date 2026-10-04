@@ -122,7 +122,7 @@ for x in (140, 200, 260, 300):
     px_rect(x, 92, x + 26, 112, (40, 40, 48)); px_rect(x, 228, x + 26, 248, (40, 40, 48))
 px_rect(IX0 + 10, IY0 + 8, 380, IY0 + 60, (245, 245, 245), (120, 120, 120))          # whiteboard
 d.text((70, IY0 + 14), 'TODO: fix prod   ∅ sorry', fill=(200, 30, 30))
-d.text((70, IY0 + 36), 'Dokimos → Aletheia → CDA', fill=(30, 30, 160))
+d.text((70, IY0 + 36), 'contract → bill → proof?', fill=(30, 30, 160))
 block(IX0, IY0, 380, IY0 + 60)
 
 # ── Kitchen, bottom-left ──────────────────────────────────────
@@ -162,7 +162,7 @@ col = {
     'doors': [{'x': 800, 'y': STREET_Y + 100, 'w': 80, 'h': 20, 'target': 'World5_NYC', 'label': '← Back to the streets'}],
     'enemies': [], 'items': [],
     'signs': [
-        {'x': 800, 'y': STREET_Y - 100, 'text': 'AWS · JFK14'},
+        {'x': 800, 'y': STREET_Y - 100, 'text': 'AWS · MIDTOWN'},
         {'x': 235, 'y': 350, 'text': 'MEETING ROOM "SORRY"'},
         {'x': 200, 'y': 560, 'text': 'KITCHEN'},
         {'x': 1390, 'y': 316, 'text': "BYRON'S OFFICE"},

@@ -122,7 +122,7 @@
   "tancrede": {
     "sprite": "tancrede",
     "fw": 69,
-    "name": "Tancr\u00e8de",
+    "name": "Tancrède",
     "text": "SRI, then AWS. Cryptographer, co-author, and the groom at one of the weddings Martin officiated."
   },
   "emmi": {
@@ -141,6 +141,6 @@
     "sprite": "numair",
     "fw": 72,
     "name": "Numair",
-    "text": "Billing Science. CDM, contract drafting, and a reliable reminder to go have brunch."
+    "text": "Co-author on delta debugging and the region paper, and a reliable reminder to go have brunch."
   }
 }

@@ -7,23 +7,23 @@
         "if": "talks>=1",
         "dialogue": [
           {
-            "text": "Dokimos, Aletheia, PPAL, the drafting agent. Contract to bill, every stage checked. It's a nice story when you draw it on a whiteboard."
+            "text": "Pricing agreements in, invoices out, and a validator in between that doesn't trust either. It's a nice story when you draw it on a whiteboard."
           },
           {
-            "text": "Byron's in the corner office. Say hi to Numair first, he has CDM news. There is always CDM news."
+            "text": "Byron's in the corner office. Say hi to Numair first, he has news. There is always news."
           }
         ]
       }
     ],
     "dialogue": [
       {
-        "text": "Martin. New York suits you. Billing Science, Applied Science... whatever we're called this quarter."
+        "text": "Martin. New York suits you. Applied science on billing. Not glamorous, very expensive when it's wrong."
       },
       {
-        "text": "Dokimos is finding real billing bugs now. Black-box validation of invoices against contracts. ASE accepted the paper."
+        "text": "The pricing-agreement validator is finding real bugs now. Safe Validation of Pricing Agreements, ICSE '25. Reviewers asked how much money. We couldn't say."
       },
       {
-        "text": "And Aletheia is auditing contracts for Controllership. SOX without the spreadsheets. Mostly.",
+        "text": "And the bill explainer learned its rules from documentation. 'Why Is This on My Bill?', ICSE '26. Finally a title my mother understands.",
         "set": "met_willem"
       },
       {
@@ -46,13 +46,13 @@
     ],
     "dialogue": [
       {
-        "text": "Martin! 😄 CDM broke again. Not my fault. Well. Partly my fault."
+        "text": "Martin! 😄 The contract parser broke again. Not my fault. Well. Partly my fault."
       },
       {
-        "text": "The Contract Drafting Agent is composing real drafts now. Strands, CDM composition, Legal wants a review step on everything."
+        "text": "The delta debugging paper got in! ICSE '26. Shrink an LLM pipeline failure down to the one input that breaks it. Very satisfying. Very slow."
       },
       {
-        "text": "Oh, and the delta debugging paper got in. Shrinking LLM failures down to the one prompt that breaks everything.",
+        "text": "And the region paper with Tancrède and Liana: turn a yes/no question over a rule engine into a region and let a solver answer it. NeSy liked it.",
         "set": "met_numair"
       },
       {
@@ -68,10 +68,10 @@
         "text": "Office Michael is different from street Michael. Office Michael has a standing desk."
       },
       {
-        "text": "Rapid became CodeGuru checks. Static analysis for everyone. The CodeGuru days were good days."
+        "text": "Rapid became the API-usage checks in CodeGuru Reviewer. Static analysis for everyone, in the cloud, with a paper to prove it."
       },
       {
-        "text": "Kiro, CodeWhisperer, CodeGuru. We built a lot of developer tools before the whole 'reasoning about agents' thing. Byron's office is top right."
+        "text": "CodeGuru, CodeWhisperer, Kiro. We built a lot of developer tools before the whole 'reasoning about agents' thing. Byron's office is top right."
       }
     ]
   },
@@ -86,13 +86,13 @@
         ],
         "dialogue": [
           {
-            "text": "Martin. You've met the team. Dokimos, Aletheia, the drafting agent. Billing was the warm-up."
+            "text": "Martin. You've met the team. Pricing agreements, bill explanations, agents voting on agents. Billing was the warm-up."
           },
           {
             "text": "Here's the thing. I need someone who's seen the whole stack, from loops in Freiburg to invoices in Manhattan."
           },
           {
-            "text": "Advise me. Shadow me. Help me run Automated Reasoning across AWS. Moog, Strata, Lean, all of it.",
+            "text": "Advise me. Shadow me. Help me run Automated Reasoning across AWS. Proofs, Lean, agents, all of it.",
             "choices": [
               {
                 "text": "Let's prove it.",
