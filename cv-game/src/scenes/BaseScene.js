@@ -165,6 +165,15 @@ export class BaseScene extends Phaser.Scene {
         this._hudMute.on('pointerdown', () => this._toggleMute());
         this.input.keyboard.on('keydown-M', () => this._toggleMute());
 
+        // Desktop: translucent controls legend, bottom-left
+        if (this.sys.game.device.os.desktop) {
+            this._hudControls = this.add.text(10, cam.height - 10,
+                'WASD / ←↑↓→  move\nE / SPACE    talk\nZ / click    attack\nM            mute', {
+                fontSize: '11px', fontFamily: 'monospace', color: '#ffffff',
+                backgroundColor: '#000000', padding: { x: 8, y: 6 }, lineSpacing: 2
+            }).setOrigin(0, 1).setScrollFactor(0).setDepth(100).setAlpha(0.55);
+        }
+
         // Resize handler
         this._ww = ww; this._wh = wh;
         this.scale.on('resize', (gs) => {
@@ -172,6 +181,7 @@ export class BaseScene extends Phaser.Scene {
             this.cameras.main.setBounds(0, 0, this._ww, this._wh);
             this._hudBar.setPosition(gs.width / 2, barH / 2).setSize(gs.width, barH);
             this._hudMute.setPosition(gs.width - 8, barH / 2);
+            if (this._hudControls) this._hudControls.setPosition(10, gs.height - 10);
         });
 
         this.cameras.main.fadeIn(500);

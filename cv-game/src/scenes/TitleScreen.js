@@ -2,7 +2,7 @@ import { LEVELS } from '../config/levels.js';
 import { AUDIO } from '../config/audio.js';
 
 // Pixel-art portraits across the decades (built by tools/build_title_portraits.py)
-const PORTRAIT_YEARS = ['1983', '1987', '1994', '1998', '2006', '2011', '2018', '2025'];
+const PORTRAIT_YEARS = ['1994', '1998', '2006', '2011', '2018', '2025'];
 const PORTRAIT_W = 384, PORTRAIT_H = 480;
 
 export class TitleScreen extends Phaser.Scene {
