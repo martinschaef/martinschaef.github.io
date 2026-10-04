@@ -118,5 +118,29 @@
     "fw": 76,
     "name": "Paul",
     "text": "Laxino's man in Macau. Business meetings at the gym or the bar."
+  },
+  "tancrede": {
+    "sprite": "tancrede",
+    "fw": 69,
+    "name": "Tancr\u00e8de",
+    "text": "SRI, then AWS. Cryptographer, co-author, and the groom at one of the weddings Martin officiated."
+  },
+  "emmi": {
+    "sprite": "emmi",
+    "fw": 81,
+    "name": "Michael",
+    "text": "SRI, then AWS. Built Rapid together. Martin officiated his wedding too; nobody objected."
+  },
+  "ioannis": {
+    "sprite": "ioannis",
+    "fw": 177,
+    "name": "Ioannis",
+    "text": "SRI, then AWS. Thai boxing partner after work. Still owes Martin a round."
+  },
+  "numair": {
+    "sprite": "numair",
+    "fw": 72,
+    "name": "Numair",
+    "text": "Billing Science. CDM, contract drafting, and a reliable reminder to go have brunch."
   }
 }

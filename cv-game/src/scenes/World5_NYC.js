@@ -5,7 +5,7 @@ export class World5_NYC extends BaseScene {
 
     preload() {
         this.loadLevelAssets(5);
-        this.loadNPCSprites(['dejan', 'lauren', 'byron2']);
+        this.loadNPCSprites(['dejan', 'lauren', 'emmi', 'tancrede', 'ioannis']);
         this.loadAudio('music5');
     }
 

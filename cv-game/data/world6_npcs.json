@@ -1,0 +1,125 @@
+{
+  "willem2": {
+    "sprite": "willem",
+    "name": "Willem",
+    "states": [
+      {
+        "if": "talks>=1",
+        "dialogue": [
+          {
+            "text": "Dokimos, Aletheia, PPAL, the drafting agent. Contract to bill, every stage checked. It's a nice story when you draw it on a whiteboard."
+          },
+          {
+            "text": "Byron's in the corner office. Say hi to Numair first, he has CDM news. There is always CDM news."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin. New York suits you. Billing Science, Applied Science... whatever we're called this quarter."
+      },
+      {
+        "text": "Dokimos is finding real billing bugs now. Black-box validation of invoices against contracts. ASE accepted the paper."
+      },
+      {
+        "text": "And Aletheia is auditing contracts for Controllership. SOX without the spreadsheets. Mostly.",
+        "set": "met_willem"
+      },
+      {
+        "text": "Byron wants you in his office. Talk to the team first; they'll want to show off."
+      }
+    ]
+  },
+  "numair": {
+    "sprite": "numair",
+    "name": "Numair",
+    "states": [
+      {
+        "if": "talks>=1",
+        "dialogue": [
+          {
+            "text": "Go talk to Byron! And then go have brunch with Lauren. It's the weekend. Probably."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin! 😄 CDM broke again. Not my fault. Well. Partly my fault."
+      },
+      {
+        "text": "The Contract Drafting Agent is composing real drafts now. Strands, CDM composition, Legal wants a review step on everything."
+      },
+      {
+        "text": "Oh, and the delta debugging paper got in. Shrinking LLM failures down to the one prompt that breaks everything.",
+        "set": "met_numair"
+      },
+      {
+        "text": "Now go see Byron. He's been pacing."
+      }
+    ]
+  },
+  "emmi2": {
+    "sprite": "emmi",
+    "name": "Michael",
+    "dialogue": [
+      {
+        "text": "Office Michael is different from street Michael. Office Michael has a standing desk."
+      },
+      {
+        "text": "Rapid became CodeGuru checks. Static analysis for everyone. The CodeGuru days were good days."
+      },
+      {
+        "text": "Kiro, CodeWhisperer, CodeGuru. We built a lot of developer tools before the whole 'reasoning about agents' thing. Byron's office is top right."
+      }
+    ]
+  },
+  "byron3": {
+    "sprite": "byron2",
+    "name": "Byron",
+    "states": [
+      {
+        "if": [
+          "met_willem",
+          "met_numair"
+        ],
+        "dialogue": [
+          {
+            "text": "Martin. You've met the team. Dokimos, Aletheia, the drafting agent. Billing was the warm-up."
+          },
+          {
+            "text": "Here's the thing. I need someone who's seen the whole stack, from loops in Freiburg to invoices in Manhattan."
+          },
+          {
+            "text": "Advise me. Shadow me. Help me run Automated Reasoning across AWS. Moog, Strata, Lean, all of it.",
+            "choices": [
+              {
+                "text": "Let's prove it.",
+                "next": "yes"
+              },
+              {
+                "text": "Give me a minute.",
+                "next": "wait"
+              }
+            ]
+          },
+          {
+            "id": "yes",
+            "text": "That's the spirit. Welcome to the next chapter.",
+            "goto": "VictoryScreen"
+          },
+          {
+            "id": "wait",
+            "text": "Take your time. There are still papers lying around the office."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin! Good, you found the place. Go say hi to Willem and Numair first. Then we talk."
+      }
+    ]
+  }
+}

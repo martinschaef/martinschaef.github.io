@@ -4,5 +4,6 @@ export const LEVELS = [
     { key: 'World2_Freiburg',     name: 'Freiburg',     subtitle: 'The PhD',           years: [2006, 2011] },
     { key: 'World3_Macau',        name: 'Macau',         subtitle: 'The Far East',     years: [2011, 2013] },
     { key: 'World4_SanFrancisco', name: 'San Francisco', subtitle: 'The Valley',       years: [2013, 2017] },
-    { key: 'World5_NYC',          name: 'New York City', subtitle: 'The Big Apple',    years: [2017, 2100] },
+    { key: 'World5_NYC',          name: 'New York City', subtitle: 'The Big Apple',    years: [2017, 2021] },
+    { key: 'World6_Office',       name: 'New York City', subtitle: 'The Office',       years: [2021, 2100] },
 ];

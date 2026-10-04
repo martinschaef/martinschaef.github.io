@@ -7,8 +7,9 @@ const CHAPTERS = [
     { title: 'Chapter I — Saarbrücken',  cast: ['doris', 'father', 'wolfgang', 'monika', 'christine', 'evren', 'valentin', 'tobert', 'ben'] },
     { title: 'Chapter II — Freiburg',    cast: ['podelski', 'podelski_dog', 'stephan', 'byron'] },
     { title: 'Chapter III — Macau',      cast: ['zhiming', 'paul'] },
-    { title: 'Chapter IV — San Francisco', cast: ['john', 'dejan', 'willem'] },
-    { title: 'Chapter V — New York City', cast: ['byron2', 'lauren'] },
+    { title: 'Chapter IV — San Francisco', cast: ['john'] },
+    { title: 'Chapter V — New York City', cast: ['dejan', 'tancrede', 'emmi', 'ioannis', 'lauren'] },
+    { title: 'Chapter VI — The Office',   cast: ['willem', 'numair', 'byron2'] },
 ];
 
 const SCROLL_SPEED = 38;     // px per second
@@ -130,7 +131,7 @@ export class VictoryScreen extends Phaser.Scene {
         }
 
         const lines = [
-            [`${first} – ${new Date().getFullYear()}  ·  5 cities  ·  3 continents`, LIGHT],
+            [`${first} – ${new Date().getFullYear()}  ·  5 cities  ·  3 continents  ·  1 office`, LIGHT],
             [pubs.length ? `📄 Papers collected: ${Math.min(found, pubs.length)} / ${pubs.length}` : `📄 Papers collected: ${found}`, '#42f4a6'],
             [`🐛 Bugs squashed: ${bugs}`, '#e94560'],
             ...(chips ? [[`🎰 Laxino chips: ${chips.toLocaleString('en-US')}`, '#f4a742']] : []),

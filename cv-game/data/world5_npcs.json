@@ -2,18 +2,42 @@
   "dejan": {
     "sprite": "dejan",
     "name": "Dejan",
+    "states": [
+      {
+        "if": "drinks_set",
+        "dialogue": [
+          {
+            "text": "You got Michael, Tancrède, AND Ioannis to agree on a time? Same bar, same night?"
+          },
+          {
+            "text": "That is the hardest scheduling problem in New York. Put it on your CV."
+          },
+          {
+            "text": "Byron is waiting at the office. Empire State Building, the entrance is on the plaza."
+          }
+        ]
+      },
+      {
+        "if": "talks>=1",
+        "dialogue": [
+          {
+            "text": "The office entrance is on the Empire State plaza, up in Midtown. Byron's expecting you."
+          },
+          {
+            "text": "And if you see the SRI crowd on the way, try to get them out for a drink. Good luck with that."
+          }
+        ]
+      }
+    ],
     "dialogue": [
       {
         "text": "Martin! Welcome to New York. The city never sleeps, and neither do our deployments."
       },
       {
-        "text": "We've been pushing the boundaries of automated reasoning here. It's a whole new scale."
+        "text": "Remember SRI? Half the old crew ended up here too. Michael, Tancrède, Ioannis. They're around."
       },
       {
-        "text": "Remember SRI? We thought that was intense. It was just the warm-up."
-      },
-      {
-        "text": "Byron's waiting for you. Go talk to him."
+        "text": "Byron is waiting for you at the office. Empire State Building, Midtown. The entrance is on the plaza."
       }
     ]
   },
@@ -28,40 +52,178 @@
       {
         "text": "I'm coming!",
         "flee": true
+      },
+      {
+        "text": "If you're going out with the SRI boys, you're taking the train home."
       }
     ]
   },
-  "byron2": {
-    "sprite": "byron2",
-    "name": "Byron",
-    "dialogue": [
+  "emmi": {
+    "sprite": "emmi",
+    "name": "Michael",
+    "states": [
       {
-        "text": "Martin! I remember you. The quiet one in Andreas's group in Freiburg. We never really talked, did we?"
-      },
-      {
-        "text": "Let's fix that. Back then I was proving that one loop terminates. Now we're running proofs on the whole cloud."
-      },
-      {
-        "text": "Automated reasoning, at AWS scale. Ready to join the team?",
-        "choices": [
+        "if": "drinks_set",
+        "dialogue": [
           {
-            "text": "Let's prove it.",
-            "next": "yes"
-          },
-          {
-            "text": "Give me a minute.",
-            "next": "wait"
+            "text": "Friday, 9:30, the usual place. I set an alarm. Three alarms."
           }
         ]
       },
       {
-        "id": "yes",
-        "text": "That's the spirit. Welcome aboard.",
-        "goto": "VictoryScreen"
+        "if": "drinks_io",
+        "dialogue": [
+          {
+            "text": "Ioannis said WHAT time? 9:30? On a Friday? I have a toddler, Martin."
+          },
+          {
+            "text": "...Fine. Friday 9:30. For you. And because you officiated my wedding and I still owe you one."
+          },
+          {
+            "text": "Three flaky scientists, one calendar invite. Your finest piece of coordination.",
+            "set": "drinks_set",
+            "reward": "beer"
+          }
+        ]
       },
       {
-        "id": "wait",
-        "text": "Take your time. There are still papers lying around the city."
+        "if": "drinks_mike",
+        "dialogue": [
+          {
+            "text": "Did Tancrède say yes to Thursday? No? Of course not. Let me know what the others say."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin! Still proving things? I'm still proving things. Mostly that API misuse checkers scale."
+      },
+      {
+        "text": "Remember Rapid? Checking API usage for the cloud, in the cloud. Reviewers loved the title at least."
+      },
+      {
+        "text": "Drinks with the old SRI crew? Sure. Thursday works for me.",
+        "choices": [
+          {
+            "text": "I'll ask the others.",
+            "next": "ask",
+            "set": "drinks_mike"
+          },
+          {
+            "text": "Maybe later.",
+            "next": "later"
+          }
+        ]
+      },
+      {
+        "id": "ask",
+        "text": "Tancrède will say Thursday is bad. Tancrède always says Thursday is bad."
+      },
+      {
+        "id": "later",
+        "text": "Sure, sure. The calendar isn't going anywhere."
+      }
+    ]
+  },
+  "tancrede": {
+    "sprite": "tancrede",
+    "name": "Tancrède",
+    "states": [
+      {
+        "if": "drinks_set",
+        "dialogue": [
+          {
+            "text": "Friday 9:30, c'est noté. I'll bring the lattice-based small talk."
+          }
+        ]
+      },
+      {
+        "if": "drinks_tanc",
+        "dialogue": [
+          {
+            "text": "Friday. Tell Ioannis. He'll say he has training. He always has training."
+          }
+        ]
+      },
+      {
+        "if": "drinks_mike",
+        "dialogue": [
+          {
+            "text": "Michael said Thursday? Thursday I'm giving a talk. On agents voting about agents. Proof-of-Policy, remember?"
+          },
+          {
+            "text": "Friday. Friday I can do.",
+            "set": "drinks_tanc"
+          },
+          {
+            "text": "Also: you officiated my wedding and you still haven't let me buy you a drink. Friday fixes that."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin! You're in the city. Did you read the NeSy reviews? Reviewer 2 was almost kind."
+      },
+      {
+        "text": "SRI to AWS, same as you. The commute got shorter, the theorems got longer."
+      },
+      {
+        "text": "If you're rounding up the crew for drinks, talk to Michael first. He thinks he keeps the calendar."
+      }
+    ]
+  },
+  "ioannis": {
+    "sprite": "ioannis",
+    "name": "Ioannis",
+    "states": [
+      {
+        "if": "drinks_set",
+        "dialogue": [
+          {
+            "text": "Friday after sparring. First round is on me. I know, I know, I said that last time too."
+          }
+        ]
+      },
+      {
+        "if": "drinks_io",
+        "dialogue": [
+          {
+            "text": "Go tell Michael it's 9:30. Watch his face. Then come back and tell me about his face."
+          }
+        ]
+      },
+      {
+        "if": "drinks_tanc",
+        "dialogue": [
+          {
+            "text": "Friday? Friday is sparring until nine. You should come. You used to come."
+          },
+          {
+            "text": "We go after. 9:30, the usual bar. Tell Michael, he'll complain about bedtime.",
+            "set": "drinks_io"
+          }
+        ]
+      },
+      {
+        "if": "drinks_mike",
+        "dialogue": [
+          {
+            "text": "Thursday? Thursday is Thai boxing. Every day is Thai boxing. Ask Tancrède what works for him."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin! You stopped coming to Thai boxing. The coach asks about you. Mostly to laugh."
+      },
+      {
+        "text": "SRI, AWS, and now what, another startup? We'll see. Security never gets boring."
+      },
+      {
+        "text": "Drinks with everyone? I'm flexible. Totally flexible. Ask the others first."
       }
     ]
   }
