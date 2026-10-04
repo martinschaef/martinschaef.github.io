@@ -1,5 +1,5 @@
 import { WALK } from '../entities/Player.js';
-import { AUDIO } from '../config/audio.js';
+import { AUDIO, ASSET_VERSION } from '../config/audio.js';
 import { LEVELS } from '../config/levels.js';
 
 // Cast grouped by career chapter; ids refer to data/credits.json
@@ -20,11 +20,11 @@ export class VictoryScreen extends Phaser.Scene {
     constructor() { super('VictoryScreen'); }
 
     preload() {
-        this.load.json('credits', 'data/credits.json');
+        this.load.json('credits', `data/credits.json?v=${ASSET_VERSION}`);
         this.load.json('publications', '../publications.json');
         if (!this.textures.exists('martin'))
-            this.load.spritesheet('martin', 'assets/sprites/martin.png?v=6', { frameWidth: 112, frameHeight: 183 });
-        if (!this.cache.audio.exists('musicEnding')) this.load.audio('musicEnding', AUDIO.musicEnding);
+            this.load.spritesheet('martin', `assets/sprites/martin.png?v=${ASSET_VERSION}`, { frameWidth: 112, frameHeight: 183 });
+        if (!this.cache.audio.exists('musicEnding')) this.load.audio('musicEnding', `${AUDIO.musicEnding}?v=${ASSET_VERSION}`);
         this.load.on('loaderror', (f) => console.warn('VictoryScreen asset missing (skipped):', f.key));
     }
 

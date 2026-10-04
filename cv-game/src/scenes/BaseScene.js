@@ -1,4 +1,4 @@
-import { AUDIO } from '../config/audio.js';
+import { AUDIO, ASSET_VERSION } from '../config/audio.js';
 import { LEVELS } from '../config/levels.js';
 import { Player } from '../entities/Player.js';
 
@@ -9,7 +9,7 @@ export class BaseScene extends Phaser.Scene {
     loadAudio(...musicKeys) {
         for (const [key, path] of Object.entries(AUDIO)) {
             if (key.startsWith('music') && !musicKeys.includes(key)) continue;
-            this.load.audio(key, path);
+            this.load.audio(key, `${path}?v=${ASSET_VERSION}`);
         }
         this.load.on('loaderror', (file) => {
             console.warn('Audio not found (skipped):', file.key);
@@ -44,14 +44,15 @@ export class BaseScene extends Phaser.Scene {
     // ── Level asset loading (call in preload) ─────────────
 
     loadLevelAssets(worldNum) {
-        this.load.spritesheet('martin', 'assets/sprites/martin.png?v=6', { frameWidth: 112, frameHeight: 183 });
-        this.load.image(`world${worldNum}_bg`, `assets/tilemaps/world${worldNum}_bg.png`);
-        this.load.json(`world${worldNum}_collision`, `assets/tilemaps/world${worldNum}_collision.json`);
-        this.load.json('spriteData', 'data/sprites.json');
-        this.load.json('enemyData', 'data/enemies.json');
-        this.load.json(`npcData_w${worldNum}`, `data/world${worldNum}_npcs.json`);
-        this.load.json('itemData', 'data/items.json');
-        this.load.json('publications', '../publications.json');
+        const v = `?v=${ASSET_VERSION}`;
+        this.load.spritesheet('martin', `assets/sprites/martin.png${v}`, { frameWidth: 112, frameHeight: 183 });
+        this.load.image(`world${worldNum}_bg`, `assets/tilemaps/world${worldNum}_bg.png${v}`);
+        this.load.json(`world${worldNum}_collision`, `assets/tilemaps/world${worldNum}_collision.json${v}`);
+        this.load.json('spriteData', `data/sprites.json${v}`);
+        this.load.json('enemyData', `data/enemies.json${v}`);
+        this.load.json(`npcData_w${worldNum}`, `data/world${worldNum}_npcs.json${v}`);
+        this.load.json('itemData', `data/items.json${v}`);
+        this.load.json('publications', `../publications.json${v}`);
         this.load.once('loaderror', (file) => {
             if (file.key === 'publications') console.warn('publications.json not found — serve from the repo root (see README), otherwise no papers spawn.');
         });

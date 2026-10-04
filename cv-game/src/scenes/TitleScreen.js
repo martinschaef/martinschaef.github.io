@@ -1,5 +1,5 @@
 import { LEVELS } from '../config/levels.js';
-import { AUDIO } from '../config/audio.js';
+import { AUDIO, ASSET_VERSION } from '../config/audio.js';
 
 // Pixel-art portraits across the decades (built by tools/build_title_portraits.py)
 const PORTRAIT_YEARS = ['1994', '1998', '2006', '2011', '2018', '2025'];
@@ -12,7 +12,7 @@ export class TitleScreen extends Phaser.Scene {
 
     preload() {
         PORTRAIT_YEARS.forEach(y => this.load.image('portrait_' + y, `assets/title/portrait_${y}.png`));
-        if (!this.cache.audio.exists('musicTitle')) this.load.audio('musicTitle', AUDIO.musicTitle);
+        if (!this.cache.audio.exists('musicTitle')) this.load.audio('musicTitle', `${AUDIO.musicTitle}?v=${ASSET_VERSION}`);
         this.load.on('loaderror', (file) => console.warn('Title asset not found (skipped):', file.key));
     }
 
