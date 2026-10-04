@@ -48,7 +48,7 @@ export class TitleScreen extends Phaser.Scene {
 
         this._createButton(cx, h * 0.38, 'START GAME', () => this._start());
         this._createButton(cx, h * 0.50, 'LEVEL SELECT ▾', () => this._toggleLevelSelect());
-        this._createButton(cx, h * 0.62, 'CREDITS', () => this._leave('CreditsScreen'));
+        this._createButton(cx, h * 0.62, 'CREDITS', () => this._leave('VictoryScreen', { creditsOnly: true }));
         this._createButton(cx, h * 0.74, 'ABOUT', () => this._showAbout());
 
         const prompt = this.add.text(cx, h - 28, 'Press ENTER or tap START', {
@@ -87,12 +87,12 @@ export class TitleScreen extends Phaser.Scene {
         this._leave(key);
     }
 
-    _leave(key) {
+    _leave(key, data) {
         if (this._leaving) return;
         this._leaving = true;
         if (this._music) this.tweens.add({ targets: this._music, volume: 0, duration: 450 });
         this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start(key));
+        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start(key, data));
     }
 
     // ── Audio ──────────────────────────────────────────────

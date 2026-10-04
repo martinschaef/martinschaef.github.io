@@ -28,6 +28,11 @@ export class VictoryScreen extends Phaser.Scene {
         this.load.on('loaderror', (f) => console.warn('VictoryScreen asset missing (skipped):', f.key));
     }
 
+    init(data) {
+        // From the title screen's CREDITS button: skip the victory card and roll immediately
+        this._creditsOnly = !!(data && data.creditsOnly);
+    }
+
     create() {
         const credits = this.cache.json.get('credits') || {};
         // Credit sprites need per-sprite frame widths from credits.json, so load them now
@@ -58,9 +63,14 @@ export class VictoryScreen extends Phaser.Scene {
             this.tweens.add({ targets: this._music, volume: 0.5, duration: 1500 });
         }
 
-        this._buildVictory();
         this._rollRoot = this._buildRoll(credits);
-        this._rollRoot.setVisible(false);
+        if (this._creditsOnly) {
+            this._phase = 'roll';
+            this._victoryItems = [];
+        } else {
+            this._buildVictory();
+            this._rollRoot.setVisible(false);
+        }
 
         // Input
         const kb = this.input.keyboard;
@@ -71,7 +81,7 @@ export class VictoryScreen extends Phaser.Scene {
         this.input.on('pointerdown', () => { if (this._phase === 'victory') this._advance(); });
 
         // Victory card rolls into the credits by itself
-        this._autoRoll = this.time.delayedCall(7000, () => this._advance());
+        if (!this._creditsOnly) this._autoRoll = this.time.delayedCall(7000, () => this._advance());
 
         this.scale.on('resize', this._onResize, this);
         this.events.once('shutdown', () => this.scale.off('resize', this._onResize, this));
