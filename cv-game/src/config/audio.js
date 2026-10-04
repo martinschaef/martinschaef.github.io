@@ -1,6 +1,6 @@
 // Audio registry — drop MP3 files into assets/audio/ matching these names
 // Bump ASSET_VERSION whenever a shipped asset (map, audio, data) changes so browsers refetch it.
-export const ASSET_VERSION = 13;
+export const ASSET_VERSION = 14;
 export const AUDIO = {
     // UI & dialogue
     blip:       'assets/audio/blip.mp3',        // per-character typewriter sound

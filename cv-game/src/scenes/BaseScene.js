@@ -73,6 +73,7 @@ export class BaseScene extends Phaser.Scene {
         const ww = col.world_width * S, wh = col.world_height * S;
         // Scene instances are reused across restarts; clear stale per-run state
         this._transitioning = false;
+        this._hiddenDoors = [];
         this._dialogueActive = false;
         this._worldNum = worldNum;
         this._harmless = !!col.harmless_enemies;
@@ -305,12 +306,24 @@ export class BaseScene extends Phaser.Scene {
             // Glow
             const glow = this.add.rectangle(x, y, (d.w || 48) * S, (d.h || 48) * S, 0xf4e842, 0.2).setDepth(1);
             this.tweens.add({ targets: glow, alpha: 0.05, duration: 1200, yoyo: true, repeat: -1 });
-            this.add.text(x, y - 36, d.label || 'Exit', {
+            const label = this.add.text(x, y - 36, d.label || 'Exit', {
                 fontSize: '12px', fontFamily: 'monospace', color: '#f4e842',
                 stroke: '#000', strokeThickness: 3
             }).setOrigin(0.5).setDepth(5);
+            // "hidden": the door does not exist until its condition holds, then fades in
+            const parts = [doorSpr, glow, label].filter(Boolean);
+            const door = { parts, revealed: !d.hidden || this._cond(d.requires) };
+            if (!door.revealed) parts.forEach(o => o.setAlpha(0));
+            door.check = () => {
+                if (door.revealed || !this._cond(d.requires)) return;
+                door.revealed = true;
+                this.sfx('confirm', { volume: 0.3 });
+                parts.forEach(o => this.tweens.add({ targets: o, alpha: o === glow ? 0.2 : 1, duration: 600 }));
+            };
+            this._hiddenDoors.push(door);
             this.physics.add.overlap(this.player.sprite, z, () => {
                 if (this._transitioning) return;
+                if (d.hidden && !door.revealed) return;
                 if (!this._cond(d.requires)) {
                     // Locked: bounce the player back out and explain, at most every few seconds
                     const p = this.player, ang = Phaser.Math.Angle.Between(x, y, p.sprite.x, p.sprite.y);
@@ -564,6 +577,7 @@ export class BaseScene extends Phaser.Scene {
 
     updateLevel() {
         this.player.update();
+        if (this._hiddenDoors) this._hiddenDoors.forEach(d => d.check());
 
         // Dialogue navigation
         if (this.dialogueActive) {

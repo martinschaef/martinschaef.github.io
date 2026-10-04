@@ -172,6 +172,7 @@ Quest state is a set of flags in the game registry, reset on START GAME.
 - Text can use `{bugsLeft}` and `{bugsNoun}`.
 - Doors in the collision JSON accept `"requires"` (a condition), `"locked_text"`, and an optional
   `"spawn": {"x","y"}` that places the player in the target scene (e.g. back outside the building you left).
+  `"hidden": true` makes a door invisible and inert until its `requires` condition holds; it then fades in.
 - `"harmless_enemies": true` in a collision JSON makes that world's enemies deal no damage.
 
 ### Collision JSON (`assets/tilemaps/*_collision.json`)

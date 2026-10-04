@@ -13,7 +13,7 @@
             "text": "That is the hardest scheduling problem in New York. Put it on your CV."
           },
           {
-            "text": "Byron is waiting at the office. Empire State Building, the entrance is on the plaza."
+            "text": "Byron is waiting on the Empire State plaza, up in Midtown."
           }
         ]
       },
@@ -21,7 +21,7 @@
         "if": "talks>=1",
         "dialogue": [
           {
-            "text": "The office entrance is on the Empire State plaza, up in Midtown. Byron's expecting you."
+            "text": "Byron's on the Empire State plaza, up in Midtown. He's expecting you."
           },
           {
             "text": "And if you see the SRI crowd on the way, try to get them out for a drink. Good luck with that."
@@ -37,7 +37,7 @@
         "text": "Remember SRI? Half the old crew ended up here too. Michael, Tancrède, Ioannis. They're around."
       },
       {
-        "text": "Byron is waiting for you at the office. Empire State Building, Midtown. The entrance is on the plaza."
+        "text": "Byron is waiting for you on the Empire State plaza, Midtown. Cross the bridge and keep going north."
       }
     ]
   },
@@ -52,9 +52,6 @@
       {
         "text": "I'm coming!",
         "flee": true
-      },
-      {
-        "text": "If you're going out with the SRI boys, you're taking the train home."
       }
     ]
   },
@@ -224,6 +221,32 @@
       },
       {
         "text": "Drinks with everyone? I'm flexible. Totally flexible. Ask the others first."
+      }
+    ]
+  },
+  "byron2": {
+    "sprite": "byron2",
+    "name": "Byron",
+    "states": [
+      {
+        "if": "met_byron_nyc",
+        "dialogue": [
+          {
+            "text": "The office is right there, under the sign. Come up, meet the team."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin! I remember you. The quiet one in Andreas's group in Freiburg. We never really talked, did we?"
+      },
+      {
+        "text": "Let's fix that. Back then I was proving that one loop terminates. Now we're running proofs on the whole cloud."
+      },
+      {
+        "text": "Come up to the office. I want you to meet some people before we talk about what's next.",
+        "set": "met_byron_nyc"
       }
     ]
   }
