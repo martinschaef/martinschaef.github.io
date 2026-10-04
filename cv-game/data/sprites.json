@@ -154,25 +154,25 @@
     },
     "tancrede": {
       "path": "assets/sprites/tancrede.png",
-      "frameWidth": 69,
+      "frameWidth": 85,
       "frameHeight": 188,
       "scale": 0.4
     },
     "emmi": {
       "path": "assets/sprites/emmi.png",
-      "frameWidth": 81,
+      "frameWidth": 71,
       "frameHeight": 188,
       "scale": 0.4
     },
     "ioannis": {
       "path": "assets/sprites/ioannis.png",
-      "frameWidth": 177,
+      "frameWidth": 90,
       "frameHeight": 188,
       "scale": 0.4
     },
     "numair": {
       "path": "assets/sprites/numair.png",
-      "frameWidth": 72,
+      "frameWidth": 78,
       "frameHeight": 188,
       "scale": 0.4
     }

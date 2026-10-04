@@ -40,7 +40,7 @@ export class VictoryScreen extends Phaser.Scene {
         let pending = 0;
         for (const c of Object.values(credits)) {
             if (!this.textures.exists(c.sprite)) {
-                this.load.spritesheet(c.sprite, `assets/sprites/${c.sprite}.png`, { frameWidth: c.fw, frameHeight: 188 });
+                this.load.spritesheet(c.sprite, `assets/sprites/${c.sprite}.png?v=${ASSET_VERSION}`, { frameWidth: c.fw, frameHeight: 188 });
                 pending++;
             }
         }

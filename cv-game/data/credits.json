@@ -121,25 +121,25 @@
   },
   "tancrede": {
     "sprite": "tancrede",
-    "fw": 69,
+    "fw": 85,
     "name": "Tancrède",
     "text": "SRI, then AWS. Cryptographer, co-author, and the groom at one of the weddings Martin officiated."
   },
   "emmi": {
     "sprite": "emmi",
-    "fw": 81,
+    "fw": 71,
     "name": "Michael",
     "text": "SRI, then AWS. Built Rapid together. Martin officiated his wedding too; nobody objected."
   },
   "ioannis": {
     "sprite": "ioannis",
-    "fw": 177,
+    "fw": 90,
     "name": "Ioannis",
     "text": "SRI, then AWS. Thai boxing partner after work. Still owes Martin a round."
   },
   "numair": {
     "sprite": "numair",
-    "fw": 72,
+    "fw": 78,
     "name": "Numair",
     "text": "Co-author on delta debugging and the region paper, and a reliable reminder to go have brunch."
   }

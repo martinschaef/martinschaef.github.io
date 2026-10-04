@@ -990,11 +990,11 @@ export class BaseScene extends Phaser.Scene {
             podelski: { w: 76 }, podelski_dog: { w: 145 }, byron: { w: 60 }, byron2: { w: 57 }, dejan: { w: 80 },
             evren: { w: 115 }, john: { w: 72 }, stephan: { w: 82 }, zhiming: { w: 71 },
             lauren: { w: 118 }, willem: { w: 116 }, paul: { w: 76 },
-            tancrede: { w: 69 }, emmi: { w: 81 }, ioannis: { w: 177 }, numair: { w: 72 }
+            tancrede: { w: 85 }, emmi: { w: 71 }, ioannis: { w: 90 }, numair: { w: 78 }
         };
         npcIds.forEach(id => {
             const s = knownSprites[id];
-            if (s) this.load.spritesheet(id, `assets/sprites/${id}.png`, { frameWidth: s.w, frameHeight: 188 });
+            if (s) this.load.spritesheet(id, `assets/sprites/${id}.png?v=${ASSET_VERSION}`, { frameWidth: s.w, frameHeight: 188 });
         });
         // Bug enemy
         this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 101, frameHeight: 94 });
