@@ -990,7 +990,7 @@ export class BaseScene extends Phaser.Scene {
             podelski: { w: 76 }, podelski_dog: { w: 145 }, byron: { w: 60 }, byron2: { w: 57 }, dejan: { w: 80 },
             evren: { w: 115 }, john: { w: 72 }, stephan: { w: 82 }, zhiming: { w: 71 },
             lauren: { w: 118 }, willem: { w: 116 }, paul: { w: 76 },
-            tancrede: { w: 85 }, emmi: { w: 71 }, ioannis: { w: 90 }, numair: { w: 78 }
+            tancrede: { w: 85 }, tancrede2: { w: 85 }, emmi: { w: 71 }, ioannis: { w: 90 }, numair: { w: 78 }
         };
         npcIds.forEach(id => {
             const s = knownSprites[id];

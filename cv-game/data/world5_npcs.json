@@ -63,7 +63,7 @@
         "if": "drinks_set",
         "dialogue": [
           {
-            "text": "Friday, 9:30, the usual place. I set an alarm. Three alarms."
+            "text": "Friday, 9:30, the usual place. I'll run there. Obviously."
           }
         ]
       },
@@ -71,10 +71,10 @@
         "if": "drinks_io",
         "dialogue": [
           {
-            "text": "Ioannis said WHAT time? 9:30? On a Friday? I have a toddler, Martin."
+            "text": "9:30? Because Ioannis spars until nine. Late, but it's a Friday. Nobody runs on a Friday night. Well, I don't."
           },
           {
-            "text": "...Fine. Friday 9:30. For you. And because you officiated my wedding and I still owe you one."
+            "text": "Fine. Friday 9:30. For you. You officiated my wedding and I still owe you one."
           },
           {
             "text": "Three flaky scientists, one calendar invite. Your finest piece of coordination.",
@@ -87,7 +87,7 @@
         "if": "drinks_mike",
         "dialogue": [
           {
-            "text": "Did Tancrède say yes to Thursday? No? Of course not. Let me know what the others say."
+            "text": "Did they agree to Friday yet? I'll do a loop of the park while you ask around."
           }
         ]
       }
@@ -100,7 +100,7 @@
         "text": "Remember Rapid? Checking API usage for the cloud, in the cloud. Reviewers loved the title at least."
       },
       {
-        "text": "Drinks with the old SRI crew? Sure. Thursday works for me.",
+        "text": "Drinks with the old SRI crew? Friday. It has to be Friday. Weekdays after work I run.",
         "choices": [
           {
             "text": "I'll ask the others.",
@@ -115,11 +115,11 @@
       },
       {
         "id": "ask",
-        "text": "Tancrède will say Thursday is bad. Tancrède always says Thursday is bad."
+        "text": "And don't let anyone talk you into a Tuesday. Tuesday is intervals. Wednesday is the long loop. Thursday is tempo."
       },
       {
         "id": "later",
-        "text": "Sure, sure. The calendar isn't going anywhere."
+        "text": "Sure. I'll be out running anyway."
       }
     ]
   },
@@ -147,10 +147,10 @@
         "if": "drinks_mike",
         "dialogue": [
           {
-            "text": "Michael said Thursday? Thursday I'm giving a talk. On agents voting about agents. Proof-of-Policy, remember?"
+            "text": "Michael wants Friday? I wanted Wednesday. But on Wednesday he runs. On every weekday he runs."
           },
           {
-            "text": "Friday. Friday I can do.",
+            "text": "Fine. Friday. Friday I can do.",
             "set": "drinks_tanc"
           },
           {
@@ -198,7 +198,7 @@
             "text": "Friday? Friday is sparring until nine. You should come. You used to come."
           },
           {
-            "text": "We go after. 9:30, the usual bar. Tell Michael, he'll complain about bedtime.",
+            "text": "We go after. 9:30, the usual bar. Tell Michael. He'll ask if he can jog there.",
             "set": "drinks_io"
           }
         ]
@@ -207,7 +207,7 @@
         "if": "drinks_mike",
         "dialogue": [
           {
-            "text": "Thursday? Thursday is Thai boxing. Every day is Thai boxing. Ask Tancrède what works for him."
+            "text": "Friday? Don't ask me first. Ask Tancrède, he won't commit to anything without a proof."
           }
         ]
       }

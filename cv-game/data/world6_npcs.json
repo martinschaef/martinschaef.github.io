@@ -10,14 +10,14 @@
             "text": "Pricing agreements in, invoices out, and a validator in between that doesn't trust either. It's a nice story when you draw it on a whiteboard."
           },
           {
-            "text": "Byron's in the corner office. Say hi to Numair first, he has news. There is always news."
+            "text": "Byron's in the management office, top right. Say hi to Numair first, he came all the way from Berlin. With news. There is always news."
           }
         ]
       }
     ],
     "dialogue": [
       {
-        "text": "Martin. New York suits you. Applied science on billing. Not glamorous, very expensive when it's wrong."
+        "text": "Martin. I flew in from Seattle for this. New York suits you. Applied science on billing: not glamorous, very expensive when it's wrong."
       },
       {
         "text": "The pricing-agreement validator is finding real bugs now. Safe Validation of Pricing Agreements, ICSE '25. Reviewers asked how much money. We couldn't say."
@@ -39,14 +39,14 @@
         "if": "talks>=1",
         "dialogue": [
           {
-            "text": "Go talk to Byron! And then go have brunch with Lauren. It's the weekend. Probably."
+            "text": "Go talk to Byron! And then go have brunch with Lauren. I'm back in Berlin on Tuesday, so brunch is your problem."
           }
         ]
       }
     ],
     "dialogue": [
       {
-        "text": "Martin! 😄 The contract parser broke again. Not my fault. Well. Partly my fault."
+        "text": "Martin! 😄 Just flew in from Berlin. The contract parser broke on the plane. Not my fault. Well. Partly my fault."
       },
       {
         "text": "The delta debugging paper got in! ICSE '26. Shrink an LLM pipeline failure down to the one input that breaks it. Very satisfying. Very slow."
@@ -66,6 +66,9 @@
     "dialogue": [
       {
         "text": "Office Michael is different from street Michael. Office Michael has a standing desk."
+      },
+      {
+        "text": "I ran here from Queens. It's a weekday, so obviously I ran."
       },
       {
         "text": "Rapid became the API-usage checks in CodeGuru Reviewer. Static analysis for everyone, in the cloud, with a paper to prove it."
@@ -119,6 +122,40 @@
     "dialogue": [
       {
         "text": "Martin! Good, you found the place. Go say hi to Willem and Numair first. Then we talk."
+      }
+    ]
+  },
+  "tancrede2": {
+    "sprite": "tancrede2",
+    "name": "Tancrède",
+    "cycle": true,
+    "dialogue": [
+      {
+        "text": "I could tell you what I'm working on. Or I could prove I know it without telling you anything. Guess which one I prefer."
+      },
+      {
+        "text": "My manager asked for a status update. I sent a zero-knowledge proof. He's fully convinced and learned absolutely nothing."
+      },
+      {
+        "text": "Where's the coffee? I can prove it exists without revealing its location. Okay, fine. Kitchen. Top left."
+      },
+      {
+        "text": "I'm the prover, Byron is the verifier, and Willem is the simulator: indistinguishable from someone who knows the billing system."
+      },
+      {
+        "text": "Getting Michael to the bar is an interactive proof. Three rounds, and the soundness error is still about one half."
+      },
+      {
+        "text": "Completeness, soundness, zero knowledge. You get all three. Unlike deadlines, where you pick one."
+      },
+      {
+        "text": "Ali Baba's cave, but it's Meeting Room A and nobody remembers which door they came in through."
+      },
+      {
+        "text": "This conversation was zero-knowledge. You can't prove we had it. Nobody can."
+      },
+      {
+        "text": "I don't walk in circles. I'm sampling the office uniformly at random. Totally different."
       }
     ]
   }

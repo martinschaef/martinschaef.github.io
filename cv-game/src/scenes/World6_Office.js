@@ -5,7 +5,7 @@ export class World6_Office extends BaseScene {
 
     preload() {
         this.loadLevelAssets(6);
-        this.loadNPCSprites(['willem', 'numair', 'emmi', 'byron2']);
+        this.loadNPCSprites(['willem', 'numair', 'emmi', 'byron2', 'tancrede2']);
         this.loadAudio('music5');
     }
 

@@ -43,14 +43,24 @@ export class TitleScreen extends Phaser.Scene {
             if (this._music) { this._music.stop(); this._music = null; }
         });
 
-        this.add.text(cx, h * 0.12, 'CAREER QUEST', {
+        this.add.text(cx, h * 0.145, 'CAREER QUEST', {
             fontSize: '48px', fontFamily: 'monospace', color: '#f4e842',
             stroke: '#000', strokeThickness: 6
         }).setOrigin(0.5);
 
-        this.add.text(cx, h * 0.22, 'The Martin Schaef Story', {
+        this.add.text(cx, h * 0.235, 'The Martin Schaef Story', {
             fontSize: '18px', fontFamily: 'monospace', color: '#cbdbfc'
         }).setOrigin(0.5);
+
+        // Disclaimer banner across the top
+        const disc = this.add.text(cx, 5,
+            '⚠ DISCLAIMER: this game is 100% AI slop, no human ingenuity involved. ⚠\n' +
+            'Code & dialogue: various Claude and GPT models · Art: GPT, Nova, and Gemini · Sound: Suno and Gemini', {
+            fontSize: w < 600 ? '9px' : '11px', fontFamily: 'monospace', color: '#ffffff', fontStyle: 'bold',
+            align: 'center', wordWrap: { width: w - 50 }
+        }).setOrigin(0.5, 0).setDepth(21);
+        this.add.rectangle(0, 0, w, disc.height + 10, 0xb31b1b).setOrigin(0).setDepth(20)
+            .setStrokeStyle(2, 0x5c0a0a);
 
         this._createButton(cx, h * 0.38, 'START GAME', () => this._start());
         this._createButton(cx, h * 0.50, 'LEVEL SELECT ▾', () => this._toggleLevelSelect());
@@ -114,7 +124,7 @@ export class TitleScreen extends Phaser.Scene {
         // Browsers block audio until the first user gesture; Phaser unlocks on it.
         if (!this.sound.locked) { play(); return; }
         const w = this.cameras.main.width;
-        const hint = this.add.text(w / 2, 46, '🔈 click or press any key for sound', {
+        const hint = this.add.text(w / 2, 52, '🔈 click or press any key for sound', {
             fontSize: '13px', fontFamily: 'monospace', color: '#f4e842', stroke: '#000', strokeThickness: 3
         }).setOrigin(0.5).setDepth(60);
         this.tweens.add({ targets: hint, alpha: 0.35, duration: 700, yoyo: true, repeat: -1 });
