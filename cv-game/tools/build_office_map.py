@@ -5,7 +5,8 @@ Layout (map pixels, 1600x1200): office interior on top (y < 880), a strip of
 Midtown sidewalk + street at the bottom. Everything drawn here is also written
 as blocked tiles so the collision stays in sync with the picture.
 """
-import json, random
+import json, random, sys
+COLLISION_ONLY = "--collision-only" in sys.argv   # keep a hand-made world6_bg.png, only rewrite the JSON
 from PIL import Image, ImageDraw
 
 W, H = 1600, 1200
@@ -145,7 +146,8 @@ px_rect(1250, 740, 1500, 790, (160, 60, 70), (90, 30, 40)); block(1250, 740, 150
 px_rect(1300, 660, 1450, 700, (120, 82, 50), (70, 45, 25)); block(1300, 660, 1450, 700)   # coffee table
 
 # ── Export ────────────────────────────────────────────────────
-im.save('assets/tilemaps/world6_bg.png', optimize=True)
+if not COLLISION_ONLY:
+    im.save('assets/tilemaps/world6_bg.png', optimize=True)
 col = {
     'world_width': W, 'world_height': H, 'block_size': B, 'tile_size': 60, 'display_scale': 1.2,
     'water_rects': [], 'border_rects': [],
