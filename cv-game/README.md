@@ -7,9 +7,11 @@ A browser-based Phaser 3 RPG that serves as a playable CV for Martin Schaef. The
 ## Quick Start
 
 ```bash
-cd cv-game
+# Serve from the REPO ROOT, not cv-game/: the game loads ../publications.json
+# from the site root to spawn paper pickups.
+cd martinschaef.github.io
 python3 -m http.server 8080
-# open http://localhost:8080
+# open http://localhost:8080/cv-game/
 
 # Kill & restart if already running:
 lsof -ti:8080 | xargs kill; python3 -m http.server 8080

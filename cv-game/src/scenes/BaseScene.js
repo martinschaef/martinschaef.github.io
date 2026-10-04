@@ -52,6 +52,9 @@ export class BaseScene extends Phaser.Scene {
         this.load.json(`npcData_w${worldNum}`, `data/world${worldNum}_npcs.json`);
         this.load.json('itemData', 'data/items.json');
         this.load.json('publications', '../publications.json');
+        this.load.once('loaderror', (file) => {
+            if (file.key === 'publications') console.warn('publications.json not found — serve from the repo root (see README), otherwise no papers spawn.');
+        });
         this.load.spritesheet('items', 'assets/sprites/items.png', { frameWidth: 121, frameHeight: 100 });
         this.load.image('door_closed', 'assets/sprites/door_closed.png');
         this.load.image('door_open', 'assets/sprites/door_open.png');
