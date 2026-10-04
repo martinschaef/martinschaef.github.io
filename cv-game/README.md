@@ -31,7 +31,7 @@ cv-game/
 │   │   └── audio.js            # Audio registry (SFX + music key→path map)
 │   ├── scenes/
 │   │   ├── BaseScene.js        # Shared level logic (see below)
-│   │   ├── TitleScreen.js      # Main menu + level select
+│   │   ├── TitleScreen.js      # Main menu + level select (CREDITS rolls VictoryScreen)
 │   │   ├── World1_Saarbruecken.js  # Tutorial level
 │   │   ├── World2_Freiburg.js      # University level
 │   │   └── World3_Macau.js         # Far East level

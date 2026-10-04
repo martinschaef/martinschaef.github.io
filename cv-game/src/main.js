@@ -1,5 +1,4 @@
 import { TitleScreen } from './scenes/TitleScreen.js';
-import { CreditsScreen } from './scenes/CreditsScreen.js';
 import { World1_Saarbruecken } from './scenes/World1_Saarbruecken.js';
 import { World2_Freiburg } from './scenes/World2_Freiburg.js';
 import { World3_Macau } from './scenes/World3_Macau.js';
@@ -22,7 +21,7 @@ const config = {
     input: {
         activePointers: 2
     },
-    scene: [TitleScreen, CreditsScreen, World1_Saarbruecken, World2_Freiburg, World3_Macau, World4_SanFrancisco, World5_NYC, VictoryScreen]
+    scene: [TitleScreen, World1_Saarbruecken, World2_Freiburg, World3_Macau, World4_SanFrancisco, World5_NYC, VictoryScreen]
 };
 
 new Phaser.Game(config);
