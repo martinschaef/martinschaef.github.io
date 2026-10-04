@@ -4,41 +4,48 @@
     "description": "Your master's degree in computer science from Saarland University. Time for the next level.",
     "frame": 0,
     "type": "quest",
-    "stages": [1]
+    "stages": [
+      1
+    ]
   },
   "accepted_paper": {
     "name": "Accepted Paper",
     "description": "A published research paper. Career fuel.",
     "frame": 1,
     "type": "quest",
-    "stages": [2, 3, 4, 5]
+    "stages": [
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "laptop": {
     "name": "Laptop",
     "description": "Your trusty coding machine.",
     "frame": 2,
     "type": "quest",
-    "stages": [1]
-  },
-  "journal": {
-    "name": "Journal",
-    "description": "A published science journal.",
-    "frame": 3,
-    "type": "quest",
-    "stages": [2, 3, 4, 5]
+    "stages": [
+      1
+    ]
   },
   "passport": {
     "name": "Passport",
     "description": "Your ticket to the world.",
-    "frame": 4,
+    "frame": 3,
     "type": "quest",
-    "stages": [2, 3]
+    "stages": [
+      2,
+      3
+    ]
   },
   "hat": {
     "name": "Graduation Hat",
     "description": "Toss it in the air!",
-    "frame": 5,
+    "frame": 4,
     "type": "quest",
-    "stages": [1]
+    "stages": [
+      1
+    ]
   }
 }
