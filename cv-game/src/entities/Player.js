@@ -1,18 +1,18 @@
 const SPEED = 160;
 const SCALE = 0.4;
 
-// martin.png: 112x183 frames, 8 cols x 4 rows
+// martin.png: 112x183 frames, 8 cols x 4 rows (built by tools/build_walk_cycle.py)
 // Row 0: idle — 0:south, 1:west, 2:north, 3:east
-// Row 1: walk_south (7f: 8-14)
-// Row 2: walk_north (6f: 16-21)
-// Row 3: walk_west (8f: 24-31) — flipX for east
+// Row 1: walk_south (4f: 8-11)   contact / pass / contact / pass
+// Row 2: walk_north (4f: 16-19)
+// Row 3: walk_east  (4f: 24-27) — flipX for west
 const IDLE = { down: 0, left: 1, up: 2, right: 3 };
 
-const WALK = {
-    down:  { frames: [8, 9, 10, 11, 12, 13, 14], rate: 8 },
-    left:  { frames: [24, 25, 26, 27, 28, 29, 30, 31], rate: 8 },
-    right: { frames: [24, 25, 26, 27, 28, 29, 30, 31], rate: 8 },
-    up:    { frames: [16, 17, 18, 19, 20, 21], rate: 8 },
+export const WALK = {
+    down:  { frames: [8, 9, 10, 11], rate: 9 },
+    left:  { frames: [24, 25, 26, 27], rate: 9 },
+    right: { frames: [24, 25, 26, 27], rate: 9 },
+    up:    { frames: [16, 17, 18, 19], rate: 9 },
 };
 
 export class Player {

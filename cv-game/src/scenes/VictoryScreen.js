@@ -1,3 +1,4 @@
+import { WALK } from '../entities/Player.js';
 import { AUDIO } from '../config/audio.js';
 import { LEVELS } from '../config/levels.js';
 
@@ -22,7 +23,7 @@ export class VictoryScreen extends Phaser.Scene {
         this.load.json('credits', 'data/credits.json');
         this.load.json('publications', '../publications.json');
         if (!this.textures.exists('martin'))
-            this.load.spritesheet('martin', 'assets/sprites/martin.png?v=5', { frameWidth: 112, frameHeight: 183 });
+            this.load.spritesheet('martin', 'assets/sprites/martin.png?v=6', { frameWidth: 112, frameHeight: 183 });
         if (!this.cache.audio.exists('musicEnding')) this.load.audio('musicEnding', AUDIO.musicEnding);
         this.load.on('loaderror', (f) => console.warn('VictoryScreen asset missing (skipped):', f.key));
     }
@@ -109,7 +110,7 @@ export class VictoryScreen extends Phaser.Scene {
         // Martin, celebrating
         if (this.textures.exists('martin')) {
             if (!this.anims.exists('martin_walk_down')) {
-                this.anims.create({ key: 'martin_walk_down', frames: [8, 9, 10, 11, 12, 13, 14].map(f => ({ key: 'martin', frame: f })), frameRate: 8, repeat: -1 });
+                this.anims.create({ key: 'martin_walk_down', frames: WALK.down.frames.map(f => ({ key: 'martin', frame: f })), frameRate: WALK.down.rate, repeat: -1 });
             }
             const m = this.add.sprite(cx, h * 0.36, 'martin', 0).setScale(0.6);
             m.play('martin_walk_down');
