@@ -17,6 +17,7 @@ export const AUDIO = {
     doorOpen:   'assets/audio/door_open.mp3',    // level transition
 
     // Music (per world)
+    musicTitle: 'assets/audio/music_opening.mp3',   // title screen montage
     music1:     'assets/audio/music_saarbruecken.mp3',
     music2:     'assets/audio/music_freiburg.mp3',
     music3:     'assets/audio/music_macau.mp3',
