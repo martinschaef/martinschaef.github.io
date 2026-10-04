@@ -17,6 +17,12 @@ export class TitleScreen extends Phaser.Scene {
     }
 
     create() {
+        // Scene instances are reused by Phaser; reset per-visit state
+        this._leaving = false;
+        this._music = null;
+        this._levelPanel = null;
+        this._aboutBox = null;
+
         const w = this.cameras.main.width, h = this.cameras.main.height;
         const cx = w/2;
 
