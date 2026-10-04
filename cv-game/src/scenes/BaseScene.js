@@ -418,24 +418,7 @@ export class BaseScene extends Phaser.Scene {
         const placed = [];
         const PAPER_FRAME = 1; // accepted_paper frame in items.png
 
-        const snark = [
-            "Another one for the CV!",
-            "Reviewer #2 hated this one.",
-            "Surprisingly, no bugs were found writing this.",
-            "Fueled entirely by coffee.",
-            "The deadline was yesterday.",
-            "This one almost didn't make it.",
-            "Peer review is just organized suffering.",
-            "Written between midnight and regret.",
-            "The abstract was the hardest part.",
-            "At least someone cited it... right?",
-            "LaTeX crashed twice during submission.",
-            "The experiments worked on the first try. Just kidding.",
-            "Camera-ready was submitted 3 minutes before the deadline.",
-            "This paper exists because of a whiteboard argument.",
-            "Proof by intimidation.",
-            "The related work section took longer than the research.",
-        ];
+        const commentFor = this._paperCommenter();
 
         papers.forEach((paper, i) => {
             // Find random walkable position
@@ -466,10 +449,114 @@ export class BaseScene extends Phaser.Scene {
                 spr.destroy(); glow.destroy(); z.destroy();
                 this.registry.set('papersFound', (this.registry.get('papersFound') || 0) + 1);
                 this.setFlag(`papers_w${worldNum}`, (this.getFlag(`papers_w${worldNum}`) || 0) + 1);
-                const comment = snark[Math.floor(rand() * snark.length)];
+                const comment = commentFor(paper);
                 this.showMessage(`📄 "${paper.title}" (${paper.year})\n\n${comment}`);
             });
         });
+    }
+
+
+    // Builds a comment generator for paper pickups: puns, co-author shoutouts, and
+    // venue nods. Each pool is dealt without repeats until it is exhausted.
+    _paperCommenter() {
+        const PUNS = [
+            "Another one for the CV!",
+            "Reviewer #2 hated this one.",
+            "Surprisingly, no bugs were found writing this.",
+            "Fueled entirely by coffee.",
+            "The deadline was yesterday.",
+            "This one almost didn't make it.",
+            "Peer review is just organized suffering.",
+            "Written between midnight and regret.",
+            "The abstract was the hardest part.",
+            "At least someone cited it... right?",
+            "LaTeX crashed twice during submission.",
+            "The experiments worked on the first try. Just kidding.",
+            "Camera-ready was submitted 3 minutes before the deadline.",
+            "This paper exists because of a whiteboard argument.",
+            "Proof by intimidation.",
+            "The related work section took longer than the research.",
+            "Figure 3 was drawn in PowerPoint. Nobody noticed.",
+            "Reviewer #1 asked for more experiments. Reviewer #3 asked for fewer.",
+            "The title went through 14 revisions. The proof went through 2.",
+            "Shepherded. Which is a polite word for 'rewritten'.",
+            "The rebuttal was longer than the paper.",
+            "Section 5 is where the honesty lives.",
+            "Submitted at 23:59 AoE. Anywhere on Earth is a lifestyle.",
+            "Theorem 2 is true. Theorem 3 is true in the appendix.",
+            "'Future work' is academic for 'we ran out of time'.",
+            "The benchmark suite was 60% one stubborn program.",
+            "Accepted with minor revisions. There is no such thing.",
+            "This one was presented with a cold and a borrowed laptop.",
+            "The bibliography has more entries than the paper has pages.",
+            "Sound, complete, and submitted late.",
+            "The reviewers 'enjoyed reading it'. Strong accept energy.",
+            "Written in a hotel lobby during a different conference.",
+            "The artifact evaluation committee found a typo. In the README.",
+            "Every lemma here was once a bug.",
+            "The tool has since been renamed twice.",
+            "'Novel' appears 11 times. Reviewers counted.",
+            "Someone, somewhere, implemented this. Probably wrong.",
+            "The 'simple' example took three days to construct.",
+            "It compiles. That is the main result.",
+            "The talk ran long. The questions ran longer.",
+        ];
+        const SHOUTOUTS = [
+            (a) => `Co-written with ${a}, who did the hard part.`,
+            (a) => `${a} fixed the proof the night before the deadline. Hero.`,
+            (a) => `Shoutout to ${a} for surviving the rebuttal.`,
+            (a) => `${a} drew the figures. They are the best part.`,
+            (a) => `Thanks to ${a} for saying 'that can't be right' at the right moment.`,
+            (a) => `${a} ran the experiments. Twice. Reviewers wanted a third run.`,
+            (a) => `Co-author ${a} still has the whiteboard photo.`,
+            (a) => `${a} and I argued about one definition for a week. ${a} was right.`,
+            (a) => `Written with ${a}, who read the related work so nobody else had to.`,
+            (a) => `${a} caught the off-by-one in Lemma 4. Lemma 4 is now Lemma 3.`,
+            (a) => `${a} presented this one while I hid in the audience.`,
+            (a) => `Big thanks to ${a}. The coffee was on me, the ideas were theirs.`,
+            (a, all) => `${all.length + 1} authors, one Overleaf project, zero merge conflicts. Thanks ${a}.`,
+        ];
+        const VENUE = [
+            (v) => `Presented at ${v}. The coffee there was fine.`,
+            (v) => `Accepted at ${v}. Nobody asked a hostile question. Suspicious.`,
+            (v) => `${v}: good talks, better hallway conversations.`,
+            (v) => `Flew across an ocean to present at ${v} for 20 minutes.`,
+        ];
+
+        const deal = (pool, rnd) => {
+            let deck = [];
+            return () => {
+                if (!deck.length) {
+                    deck = pool.slice();
+                    for (let i = deck.length - 1; i > 0; i--) {
+                        const j = Math.floor(rnd() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]];
+                    }
+                }
+                return deck.pop();
+            };
+        };
+        const rnd = Math.random;
+        const nextPun = deal(PUNS, rnd), nextShout = deal(SHOUTOUTS, rnd), nextVenue = deal(VENUE, rnd);
+
+        const coauthors = (paper) => String(paper.authors || '')
+            .split(/,\s*|\s+and\s+/).map(a => a.trim().replace(/^and\s+/, '').replace(/\s*\(.*?\)\s*$/, ''))
+            .filter(a => a && !/sch[aä]e?f/i.test(a));
+        const shortVenue = (paper) => {
+            const m = /\(([A-Za-z&+\- ]{2,12})\)/.exec(paper.venue || '');
+            return m ? m[1] : null;
+        };
+
+        return (paper) => {
+            const roll = rnd();
+            const others = coauthors(paper);
+            if (roll < 0.4 && others.length) {
+                const a = others[Math.floor(rnd() * others.length)];
+                return nextShout()(a, others);
+            }
+            const v = shortVenue(paper);
+            if (roll < 0.55 && v) return nextVenue()(v);
+            return nextPun();
+        };
     }
 
     // ── Level update (call in update) ─────────────────────
