@@ -248,6 +248,65 @@ h4 {
   margin-bottom: 8px;
 }
 
+/* ── Playable CV callout ── */
+.cv-game-callout {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--indigo-light);
+  border-radius: var(--radius);
+  background: var(--indigo-bg);
+  color: var(--indigo-dark);
+  text-align: left;
+  text-decoration: none;
+  transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.cv-game-callout:hover {
+  background: var(--indigo-bg-hover);
+  color: var(--indigo-dark);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+.cv-game-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--indigo);
+  color: #fff;
+  font-size: 11px;
+}
+.cv-game-copy {
+  min-width: 0;
+}
+.cv-game-copy strong,
+.cv-game-copy small {
+  display: block;
+}
+.cv-game-copy strong {
+  font-size: 14px;
+  line-height: 1.3;
+}
+.cv-game-copy small {
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.3;
+}
+.cv-game-arrow {
+  flex: 0 0 auto;
+  margin-left: 4px;
+  color: var(--indigo);
+  font-weight: 700;
+}
+
 /* ── Social links ── */
 .social-links {
   display: flex;
@@ -1488,6 +1547,8 @@ a.pub-title:hover {
 /* Static final state for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .cv-game-callout { transition: none; }
+  .cv-game-callout:hover { transform: none; }
   .trace-inv { opacity: 1; }
   .trace-step.trace-fold, .trace-inv.trace-fold { height: 0; opacity: 0; border-width: 0; margin: 0; padding: 0; }
   .trace-folded { height: 26px; opacity: 1; border-color: #c4b5fd; }
@@ -1569,7 +1630,7 @@ footer a { color: var(--text-muted); }
     --accent: #333;
   }
   body { font-size: 12pt; background: #fff; }
-  nav, .skip-link, .social-links, .cta-row { display: none; }
+  nav, .skip-link, .social-links, .cta-row, .cv-game-callout, .site-footer { display: none; }
   .hero { margin-top: 0; }
   .hero-photo img { width: 100px; height: 100px; box-shadow: none; }
   main { padding: 0; }
@@ -1625,8 +1686,10 @@ footer a { color: var(--text-muted); }
   .positioning { font-size: 1rem; }
   .social-links { justify-content: center; }
   .cta-row { justify-content: center; }
+  .cv-game-callout { width: min(100%, 420px); }
 
   main { padding: 0 20px 60px; }
+  .site-footer { padding: 24px 20px 32px; }
 
   .theme-cards { grid-template-columns: 1fr; }
   .card-header { flex-direction: column; gap: 2px; }
