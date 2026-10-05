@@ -917,7 +917,7 @@ export class BaseScene extends Phaser.Scene {
         this.tweens.add({ targets: t, y: 90, alpha: 0, delay: 1200, duration: 800, onComplete: () => t.destroy() });
     }
 
-    // reward: "beer", "extra_heart" or "extra_heart:<tag>" (each tag once), "chips:<amount>" (repeatable)
+    // reward: "beer", "extra_heart" or "extra_heart:<tag>" (each tag once), "chips:<amount>" and "heal" (repeatable)
     _grantReward(reward) {
         const [kind, arg] = reward.split(':');
         if (kind === 'chips') {
@@ -925,6 +925,14 @@ export class BaseScene extends Phaser.Scene {
             this.registry.set('chips', (this.registry.get('chips') || 0) + n);
             this.sfx('pickup', { volume: 0.4 });
             this._toast(`🎰 +${n.toLocaleString('en-US')} Laxino chips`);
+            return;
+        }
+        if (kind === 'heal') {
+            this.player.hp = this.player.maxHp;
+            this._buildHearts();
+            this.sfx('pickup', { volume: 0.4 });
+            this.cameras.main.flash(250, 255, 120, 160);
+            this._toast('💖 Hearts restored');
             return;
         }
         if (this.getFlag('reward:' + reward)) return;

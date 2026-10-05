@@ -162,7 +162,7 @@ Zelda-style branching dialogue trees:
 
 Quest state is a set of flags in the game registry, reset on START GAME.
 
-- A node or choice can `"set": "flag"` (or a list) and grant a `"reward"` (`extra_heart`, `beer`).
+- A node or choice can `"set": "flag"` (or a list) and grant a `"reward"` (`extra_heart`, `beer`, `heal` to refill hearts, `chips:N`).
 - `"goto": "SceneKey"` on a node jumps to another scene when the node ends.
 - An NPC can have `"states": [{ "if": ..., "dialogue": [...] }]`. The first state whose
   condition holds is used; the top-level `dialogue` is the fallback.

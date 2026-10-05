@@ -50,6 +50,10 @@
         "text": "I have two bears."
       },
       {
+        "text": "Let's recharge.",
+        "reward": "heal"
+      },
+      {
         "text": "I'm coming!",
         "flee": true
       }
