@@ -328,7 +328,7 @@ export class TitleScreen extends Phaser.Scene {
             .setStrokeStyle(2, 0xf4e842).setDepth(50);
         this._aboutText = this.add.text(w/2, h/2,
             'Career Quest is a stylized walkthrough of Martin Schaef\'s CV.\n' +
-            'Explore 5 worlds representing career chapters, talk to NPCs,\n' +
+            'Explore ' + LEVELS.length + ' worlds representing career chapters, talk to NPCs,\n' +
             'collect publications, and fight bugs along the way.\n\n' +
             '── Controls ──\n' +
             'Move:  Arrow Keys / WASD\n' +

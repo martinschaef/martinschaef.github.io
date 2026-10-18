@@ -102,6 +102,12 @@
       "frameHeight": 188,
       "scale": 0.4
     },
+    "paul": {
+      "path": "assets/sprites/paul.png",
+      "frameWidth": 76,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
     "lauren": {
       "path": "assets/sprites/lauren.png",
       "frameWidth": 118,

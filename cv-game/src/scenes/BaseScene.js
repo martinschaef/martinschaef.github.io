@@ -56,9 +56,9 @@ export class BaseScene extends Phaser.Scene {
         this.load.once('loaderror', (file) => {
             if (file.key === 'publications') console.warn('publications.json not found — serve from the repo root (see README), otherwise no papers spawn.');
         });
-        this.load.spritesheet('items', 'assets/sprites/items.png', { frameWidth: 121, frameHeight: 100 });
-        this.load.image('door_closed', 'assets/sprites/door_closed.png');
-        this.load.image('door_open', 'assets/sprites/door_open.png');
+        this.load.spritesheet('items', `assets/sprites/items.png${v}`, { frameWidth: 121, frameHeight: 100 });
+        this.load.image('door_closed', `assets/sprites/door_closed.png${v}`);
+        this.load.image('door_open', `assets/sprites/door_open.png${v}`);
     }
 
     // ── Level creation (call in create) ───────────────────
@@ -180,15 +180,19 @@ export class BaseScene extends Phaser.Scene {
             }).setOrigin(0, 1).setScrollFactor(0).setDepth(100).setAlpha(0.55);
         }
 
-        // Resize handler
+        // Resize handler. The scale manager is game-wide, so detach on shutdown or
+        // handlers from earlier visits pile up and touch destroyed objects.
         this._ww = ww; this._wh = wh;
-        this.scale.on('resize', (gs) => {
+        this._onResize = (gs) => {
             this.cameras.main.setSize(gs.width, gs.height);
             this.cameras.main.setBounds(0, 0, this._ww, this._wh);
             this._hudBar.setPosition(gs.width / 2, barH / 2).setSize(gs.width, barH);
             this._hudMute.setPosition(gs.width - 8, barH / 2);
             if (this._hudControls) this._hudControls.setPosition(10, gs.height - 10);
-        });
+            this._buildHearts();
+        };
+        this.scale.on('resize', this._onResize, this);
+        this.events.once('shutdown', () => this.scale.off('resize', this._onResize, this));
 
         this.cameras.main.fadeIn(500);
         if (musicKey) this.playMusic(musicKey);
@@ -988,23 +992,22 @@ export class BaseScene extends Phaser.Scene {
 
     // ── Helper: load NPC spritesheets from sprites.json ──
 
+    // Frame sizes come from data/sprites.json, the single source of truth. Call after loadLevelAssets:
+    // on the first level the JSON is still loading, so the sheets are queued once it arrives
+    // (Phaser loads files added during the same load pass).
     loadNPCSprites(npcIds) {
-        // Load sprites.json first, then in create we'll have it
-        // For preload, we need to load the spritesheets directly
-        // This reads the JSON synchronously if already cached, otherwise we load all known sprites
-        const knownSprites = {
-            doris: { w: 76 }, father: { w: 76 }, wolfgang: { w: 177 }, monika: { w: 75 },
-            christine: { w: 77 }, valentin: { w: 69 }, tobert: { w: 93 }, ben: { w: 81 },
-            podelski: { w: 76 }, podelski_dog: { w: 145 }, byron: { w: 60 }, byron2: { w: 57 }, dejan: { w: 80 },
-            evren: { w: 115 }, john: { w: 72 }, stephan: { w: 82 }, zhiming: { w: 71 },
-            lauren: { w: 118 }, willem: { w: 116 }, paul: { w: 76 },
-            tancrede: { w: 85 }, tancrede2: { w: 85 }, emmi: { w: 71 }, ioannis: { w: 90 }, numair: { w: 78 }
+        const v = `?v=${ASSET_VERSION}`;
+        const queue = (data) => {
+            npcIds.forEach(id => {
+                const s = data.sprites?.[id];
+                if (!s) { console.warn('No sprites.json entry for NPC sprite:', id); return; }
+                this.load.spritesheet(id, `${s.path}${v}`, { frameWidth: s.frameWidth, frameHeight: s.frameHeight });
+            });
+            const bug = data.enemies?.bug;
+            if (bug) this.load.spritesheet('bug', `${bug.path}${v}`, { frameWidth: bug.frameWidth, frameHeight: bug.frameHeight });
         };
-        npcIds.forEach(id => {
-            const s = knownSprites[id];
-            if (s) this.load.spritesheet(id, `assets/sprites/${id}.png?v=${ASSET_VERSION}`, { frameWidth: s.w, frameHeight: 188 });
-        });
-        // Bug enemy
-        this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 101, frameHeight: 94 });
+        const cached = this.cache.json.get('spriteData');
+        if (cached) queue(cached);
+        else this.load.once('filecomplete-json-spriteData', (key, type, data) => queue(data));
     }
 }

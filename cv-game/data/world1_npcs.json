@@ -103,15 +103,25 @@
   "monika": {
     "sprite": "monika",
     "name": "Monika",
+    "cycle": true,
     "dialogue": [
       {
-        "text": "I was nine when you were born. I've been cleaning up after you ever since."
+        "text": "I was nine when you were born. Hold that thought, a Snorlax just spawned by the Schloss."
       },
       {
-        "text": "Now you're the one taking computers apart. At least you put them back together these days."
+        "text": "Off to study? Then walk past every PokéStop on the way and spin them for me."
       },
       {
-        "text": "Go. Study. Call Mom on Sundays."
+        "text": "You take computers apart, I hatch 10 km eggs. We both walk a lot for our hobbies."
+      },
+      {
+        "text": "Raid at the Johanneskirche in five minutes. You're coming. Bring a power bank."
+      },
+      {
+        "text": "Call Mom on Sundays. Community Day is also on Sundays. Plan accordingly."
+      },
+      {
+        "text": "Still no shiny. Ask me again after the next ten thousand steps."
       }
     ]
   },
