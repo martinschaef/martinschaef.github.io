@@ -421,6 +421,12 @@ export class BaseScene extends Phaser.Scene {
         const gridW = Math.ceil(col.world_width / bs), gridH = Math.ceil(col.world_height / bs);
         for (let x = 0; x < gridW; x++) { blocked.add(x+',0'); blocked.add(x+','+(gridH-1)); }
         for (let y = 0; y < gridH; y++) { blocked.add('0,'+y); blocked.add((gridW-1)+','+y); }
+
+        // Open is not the same as reachable: a pocket sealed off by water or walls is open
+        // but the player can never get there. Flood-fill from the spawn over tiles where the
+        // player's collision box fits, and only place papers inside that region.
+        const reachable = this._reachableTiles(col, blocked, gridW, gridH, S);
+
         // Block tiles occupied by entities (NPCs, enemies, doors, items, player spawn)
         const blockPoint = (px, py) => { blocked.add(Math.floor(px/bs)+','+Math.floor(py/bs)); };
         (col.npcs || []).forEach(n => blockPoint(n.x, n.y));
@@ -445,7 +451,7 @@ export class BaseScene extends Phaser.Scene {
                 tx = 2 + Math.floor(rand() * (gridW - 4));
                 ty = 2 + Math.floor(rand() * (gridH - 4));
                 attempts++;
-            } while (attempts < 200 && (blocked.has(tx+','+ty) || placed.some(p => Math.abs(p[0]-tx) + Math.abs(p[1]-ty) < 3)));
+            } while (attempts < 200 && (blocked.has(tx+','+ty) || !reachable.has(tx+','+ty) || placed.some(p => Math.abs(p[0]-tx) + Math.abs(p[1]-ty) < 3)));
             if (attempts >= 200) return;
             placed.push([tx, ty]);
 
@@ -473,6 +479,33 @@ export class BaseScene extends Phaser.Scene {
         });
     }
 
+
+    // Tiles the player can stand on, starting from the map's spawn point. `walls` holds
+    // "tx,ty" keys of impassable tiles. The player's collision box can span more than one
+    // tile on fine-grained maps, so a position counts only if the whole box fits.
+    _reachableTiles(col, walls, gridW, gridH, S) {
+        const bs = col.block_size, tile = bs * S;
+        const body = this.player.sprite.body;
+        const fw = Math.max(1, Math.ceil(body.width / tile)), fh = Math.max(1, Math.ceil(body.height / tile));
+        const fits = (x, y) => {
+            if (x < 0 || y < 0 || x + fw > gridW || y + fh > gridH) return false;
+            for (let j = 0; j < fh; j++) for (let i = 0; i < fw; i++) if (walls.has((x+i)+','+(y+j))) return false;
+            return true;
+        };
+        const sp = col.player_spawn || { x: 350, y: 400 };
+        const start = [Math.floor(sp.x / bs), Math.floor(sp.y / bs)];
+        const seen = new Set([start.join(',')]), stack = [start], reach = new Set();
+        while (stack.length) {
+            const [x, y] = stack.pop();
+            for (let j = 0; j < fh; j++) for (let i = 0; i < fw; i++) reach.add((x+i)+','+(y+j));
+            for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+                const nx = x + dx, ny = y + dy, k = nx+','+ny;
+                if (seen.has(k) || !fits(nx, ny)) continue;
+                seen.add(k); stack.push([nx, ny]);
+            }
+        }
+        return reach;
+    }
 
     // Builds a comment generator for paper pickups: puns, co-author shoutouts, and
     // venue nods. Each pool is dealt without repeats until it is exhausted.
