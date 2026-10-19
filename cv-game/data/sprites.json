@@ -210,7 +210,7 @@
     },
     "jorge": {
       "path": "assets/sprites/jorge.png",
-      "frameWidth": 89,
+      "frameWidth": 75,
       "frameHeight": 188,
       "scale": 0.4
     },
@@ -240,7 +240,7 @@
     },
     "thomas": {
       "path": "assets/sprites/thomas.png",
-      "frameWidth": 72,
+      "frameWidth": 73,
       "frameHeight": 188,
       "scale": 0.4
     }

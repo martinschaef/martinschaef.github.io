@@ -61,7 +61,7 @@
   },
   "thomas": {
     "sprite": "thomas",
-    "fw": 72,
+    "fw": 73,
     "name": "Thomas",
     "text": "Shape analysis, eleven papers together, and strictly below 14th Street."
   },
@@ -157,7 +157,7 @@
   },
   "jorge": {
     "sprite": "jorge",
-    "fw": 89,
+    "fw": 75,
     "name": "Jorge",
     "text": "Abstract interpreters and SeaHorn. Precisely, approximately right."
   },
