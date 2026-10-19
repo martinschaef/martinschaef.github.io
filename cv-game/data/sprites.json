@@ -201,6 +201,48 @@
           "rate": 6
         }
       }
+    },
+    "teme": {
+      "path": "assets/sprites/teme.png",
+      "frameWidth": 75,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "jorge": {
+      "path": "assets/sprites/jorge.png",
+      "frameWidth": 79,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "liana": {
+      "path": "assets/sprites/liana.png",
+      "frameWidth": 80,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "tim": {
+      "path": "assets/sprites/tim.png",
+      "frameWidth": 78,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "stephane": {
+      "path": "assets/sprites/stephane.png",
+      "frameWidth": 77,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "claire": {
+      "path": "assets/sprites/claire.png",
+      "frameWidth": 80,
+      "frameHeight": 188,
+      "scale": 0.4
+    },
+    "rody": {
+      "path": "assets/sprites/rody.png",
+      "frameWidth": 77,
+      "frameHeight": 188,
+      "scale": 0.4
     }
   },
   "enemies": {

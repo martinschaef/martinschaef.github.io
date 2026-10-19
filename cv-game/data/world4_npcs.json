@@ -2,6 +2,94 @@
   "john": {
     "sprite": "john",
     "name": "John",
+    "states": [
+      {
+        "if": "timesheet_done",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Travel is approved. SFO is east of here, past Palo Alto. Bring sunscreen and a poster tube."
+          },
+          {
+            "text": "Nobody will ever make a video game about formal methods research. Right?"
+          }
+        ]
+      },
+      {
+        "if": "fiji_accepted",
+        "dialogue": [
+          {
+            "text": "Fiji, huh? Congratulations. I'll sign the travel form the moment your time sheet is in. Let's do it together."
+          },
+          {
+            "text": "Monday: fixing a Yices bug for the DARPA project. Which charge code?",
+            "choices": [
+              {
+                "text": "The DARPA project code.",
+                "next": "q2"
+              },
+              {
+                "text": "Overhead.",
+                "next": "wrong"
+              },
+              {
+                "text": "Fiji.",
+                "next": "wrong_fiji"
+              }
+            ]
+          },
+          {
+            "id": "wrong",
+            "text": "Rejected. Finance sent it back with a very polite, very angry email. Come back and try again."
+          },
+          {
+            "id": "wrong_fiji",
+            "text": "There is no charge code called Fiji. I checked. Twice. Come back and try again."
+          },
+          {
+            "id": "q2",
+            "text": "Wednesday: writing the LPAR paper with NASA, Dejan, and the related work. Which code?",
+            "choices": [
+              {
+                "text": "Internal research.",
+                "next": "q3"
+              },
+              {
+                "text": "The DARPA project code. Again.",
+                "next": "wrong"
+              },
+              {
+                "text": "Vacation, technically.",
+                "next": "wrong_fiji"
+              }
+            ]
+          },
+          {
+            "id": "q3",
+            "text": "Friday night: 'formal drinking' in Palo Alto. Which code?",
+            "choices": [
+              {
+                "text": "Internal research. It was very productive.",
+                "next": "wrong_drinks"
+              },
+              {
+                "text": "Please don't put that on a time sheet.",
+                "next": "pass"
+              }
+            ]
+          },
+          {
+            "id": "wrong_drinks",
+            "text": "It was productive. It is also not billable. Come back and try again."
+          },
+          {
+            "id": "pass",
+            "text": "Correct. Time sheet submitted, travel approved. SFO is east of Palo Alto. Go present.",
+            "set": "timesheet_done"
+          }
+        ]
+      }
+    ],
     "dialogue": [
       {
         "text": "Welcome to SRI, Martin! Grab a whiteboard marker."
@@ -17,15 +105,80 @@
   "dejan": {
     "sprite": "dejan",
     "name": "Dejan",
+    "states": [
+      {
+        "if": "fiji_done",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Fiji was worth every Horn clause. Also every time sheet."
+          },
+          {
+            "text": "Have you seen JayHorn? Horn clauses for Java. It's going to CAV."
+          }
+        ]
+      },
+      {
+        "if": "fiji_accepted",
+        "dialogue": [
+          {
+            "text": "Accepted is accepted. But no travel without a time sheet. John is waiting for yours."
+          }
+        ]
+      },
+      {
+        "if": "fiji_drafted",
+        "dialogue": [
+          {
+            "text": "Notification just came in. 'Finding Inconsistencies in Programs with Loops': accepted. LPAR, Suva, Fiji!"
+          },
+          {
+            "text": "Now the hard part. John won't sign any travel until your SRI time sheet is in. Go see him.",
+            "set": "fiji_accepted"
+          }
+        ]
+      },
+      {
+        "if": "fiji_quest",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Teme and Jorge are at NASA Ames, south of here. Teme has the outline, but he needs the related work first."
+          },
+          {
+            "text": "Liana is up the line toward the city, near Coverity. Tim is in Palo Alto. Stéphane is right here at SRI."
+          },
+          {
+            "text": "Once everyone is in, formal drinking in Palo Alto. That's where LPAR papers come from."
+          }
+        ]
+      }
+    ],
     "dialogue": [
       {
         "text": "Hey Martin. Yices is fast, but your loops are still inconsistent."
       },
       {
-        "text": "Let's find the inconsistencies before the reviewers do."
+        "text": "LPAR is in Fiji this year. Nobody goes to Fiji without a paper. Teme, Jorge and I have an idea: inconsistent code, with loops this time.",
+        "choices": [
+          {
+            "text": "Let's write it.",
+            "next": "yes"
+          },
+          {
+            "text": "Fiji is far.",
+            "next": "no"
+          }
+        ]
       },
       {
-        "text": "Also, have you seen JayHorn? Horn clauses for Java. It's going to CAV."
+        "id": "yes",
+        "text": "Great. Round up the crew: Teme and Jorge at NASA Ames, Liana, Tim, and Stéphane. Then formal drinking.",
+        "set": "fiji_quest"
+      },
+      {
+        "id": "no",
+        "text": "Fiji is far. That is the point. Ask me again."
       }
     ]
   },
@@ -38,6 +191,282 @@
       },
       {
         "text": "Rumor has it Amazon is hiring people who prove things. New York, I hear."
+      }
+    ]
+  },
+  "teme": {
+    "sprite": "teme",
+    "name": "Teme",
+    "states": [
+      {
+        "if": "fiji_drafted",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "The napkin is in the paper now. Section 3. Reviewers will never know."
+          },
+          {
+            "text": "Next LPAR is in Botswana, I hear. Rody and I should write something about heaps."
+          }
+        ]
+      },
+      {
+        "if": "fiji_teme",
+        "dialogue": [
+          {
+            "text": "Related work is done. Jorge is setting up SeaHorn. Talk to him, then round up the others."
+          }
+        ]
+      },
+      {
+        "if": [
+          "fiji_quest",
+          "cite:explaining",
+          "cite:bixie",
+          "cite:doomed09",
+          "cite:doomed10",
+          "cite:infeasible",
+          "cite:errinv"
+        ],
+        "dialogue": [
+          {
+            "text": "Explaining Inconsistent Code, Bixie... and you even brought the doomed-code papers from Freiburg and the Macau ones."
+          },
+          {
+            "text": "That's the whole related-work section. Six of your own citations. Reviewers will call it 'a coherent research program'.",
+            "set": "fiji_teme",
+            "reward": "heal"
+          },
+          {
+            "text": "Jorge is setting up SeaHorn for the loops. Talk to him next."
+          }
+        ]
+      },
+      {
+        "if": [
+          "fiji_quest",
+          "cite:explaining",
+          "cite:bixie"
+        ],
+        "dialogue": [
+          {
+            "text": "Explaining Inconsistent Code and Bixie. That's the related work. Now we can say what's new: loops."
+          },
+          {
+            "text": "Jorge is setting up SeaHorn for the loops. Talk to him next.",
+            "set": "fiji_teme"
+          }
+        ]
+      },
+      {
+        "if": "fiji_quest",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Dejan sent you? Good. But I can't write a word until the related work is in: your 'Explaining Inconsistent Code' and 'Bixie' papers."
+          },
+          {
+            "text": "'Explaining Inconsistent Code' and 'Bixie' are lying around the Bay Area somewhere. Bring them and we start. (Bonus if you also bring the older ones they cite.)"
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Martin! Teme, NASA Ames. Welcome to the wind tunnel. We verify flight software. And Horn clauses."
+      },
+      {
+        "text": "Everything is a Horn clause if you squint. Ask Jorge."
+      }
+    ]
+  },
+  "jorge": {
+    "sprite": "jorge",
+    "name": "Jorge",
+    "states": [
+      {
+        "if": "fiji_jorge",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "SeaHorn found the inconsistency in loop 3. Loop 3 is in our own benchmark harness. We don't talk about loop 3."
+          },
+          {
+            "text": "See you at formal drinking. I'll bring the abstract domains."
+          }
+        ]
+      },
+      {
+        "if": "fiji_teme",
+        "dialogue": [
+          {
+            "text": "Teme has the related work? Then SeaHorn does the rest. LLVM in, Horn clauses out, inconsistencies found."
+          },
+          {
+            "text": "I'm in. Count me in for formal drinking too.",
+            "set": "fiji_jorge"
+          }
+        ]
+      },
+      {
+        "if": "fiji_quest",
+        "dialogue": [
+          {
+            "text": "Talk to Teme first. He won't let anyone touch SeaHorn until the related work exists."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Hi Martin. Jorge, NASA Ames. I build abstract interpreters. They are very precise about being approximately right."
+      }
+    ]
+  },
+  "liana": {
+    "sprite": "liana",
+    "name": "Liana",
+    "states": [
+      {
+        "if": "fiji_liana",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Bit-vectors, fine-grained proofs, and a beach. That's a good November."
+          },
+          {
+            "text": "Rody says he'll have a paper at the next LPAR. He says that about every conference."
+          }
+        ]
+      },
+      {
+        "if": "fiji_quest",
+        "dialogue": [
+          {
+            "text": "LPAR in Fiji? I have a paper there myself: fine-grained SMT proofs for the theory of fixed-width bit-vectors."
+          },
+          {
+            "text": "So yes, I'm going. And yes, I'm coming to formal drinking. Coverity can spare me for an evening.",
+            "set": "fiji_liana"
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Hi Martin! Liana, from Coverity in the city. We find bugs for a living. Mostly other people's."
+      },
+      {
+        "text": "If you ever need an SMT solver to explain itself, I'm your person. Bit by bit."
+      }
+    ]
+  },
+  "rody": {
+    "sprite": "rody",
+    "name": "Rody",
+    "cycle": true,
+    "dialogue": [
+      {
+        "text": "Rody, Coverity. Liana's colleague. I'm only here for the formal drinking. I'll have a paper at the next one."
+      },
+      {
+        "text": "LPAR 2017 is in Botswana. Teme and I will have a paper there. Quantified heap invariants. Mark my words."
+      },
+      {
+        "text": "I read your Bixie paper. Java inconsistencies? We should talk. Preferably at a bar."
+      }
+    ]
+  },
+  "tim": {
+    "sprite": "tim",
+    "name": "Tim",
+    "states": [
+      {
+        "if": "fiji_tim",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "I brought a hard SMT query to formal drinking. Nobody solved it. It was a great evening."
+          },
+          {
+            "text": "Some DPLL(T) proofs have to be exponentially long. So do some conference dinners."
+          }
+        ]
+      },
+      {
+        "if": "fiji_quest",
+        "dialogue": [
+          {
+            "text": "Formal drinking? I'll bring a hard SMT query. Liana and I just showed some DPLL(T) proofs have to be exponentially long."
+          },
+          {
+            "text": "Fiji should be exponentially relaxing. Count me in.",
+            "set": "fiji_tim"
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Hey Martin. Tim, Google. My thesis was decision procedures for linear arithmetic. I still dream in simplex tableaux."
+      }
+    ]
+  },
+  "stephane": {
+    "sprite": "stephane",
+    "name": "Stéphane",
+    "states": [
+      {
+        "if": "fiji_stephane",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "No paper, no talk, no session to chair. This is the best conference I will ever attend."
+          },
+          {
+            "text": "Claire has already planned three snorkelling trips. I have planned zero proofs."
+          }
+        ]
+      },
+      {
+        "if": "fiji_quest",
+        "dialogue": [
+          {
+            "text": "LPAR in Fiji? I don't have a paper there. Does that matter?"
+          },
+          {
+            "text": "No, it does not. Claire and I are coming anyway. And of course I'm coming to formal drinking.",
+            "set": "fiji_stephane"
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Bonjour Martin. Stéphane, SRI. Proof theory, focusing, and very strong opinions about sequent calculus."
+      }
+    ]
+  },
+  "claire": {
+    "sprite": "claire",
+    "name": "Claire",
+    "states": [
+      {
+        "if": "fiji_stephane",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Stéphane said 'conference'. I heard 'Fiji'. I packed the same day."
+          },
+          {
+            "text": "You'll be in the talks. We'll be on the reef. We can compare notes at dinner."
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "text": "Hi Martin! I'm Claire. Stéphane talks about proofs, I talk about where we go on holiday. It works."
       }
     ]
   }

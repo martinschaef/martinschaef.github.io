@@ -142,5 +142,47 @@
     "fw": 78,
     "name": "Numair",
     "text": "Co-author on delta debugging and the region paper, and a reliable reminder to go have brunch."
+  },
+  "teme": {
+    "sprite": "teme",
+    "fw": 75,
+    "name": "Teme",
+    "text": "NASA Ames, Horn clauses, and the outline of the Fiji paper."
+  },
+  "jorge": {
+    "sprite": "jorge",
+    "fw": 79,
+    "name": "Jorge",
+    "text": "Abstract interpreters and SeaHorn. Precisely, approximately right."
+  },
+  "liana": {
+    "sprite": "liana",
+    "fw": 80,
+    "name": "Liana",
+    "text": "Coverity, fine-grained bit-vector proofs, and her own LPAR paper in Fiji."
+  },
+  "tim": {
+    "sprite": "tim",
+    "fw": 78,
+    "name": "Tim",
+    "text": "Google, simplex tableaux, and the hardest SMT query at formal drinking."
+  },
+  "stephane": {
+    "sprite": "stephane",
+    "fw": 77,
+    "name": "Stéphane",
+    "text": "SRI proof theorist. No paper in Fiji, and the best time there."
+  },
+  "claire": {
+    "sprite": "claire",
+    "fw": 80,
+    "name": "Claire",
+    "text": "Heard \"Fiji\", packed the same day."
+  },
+  "rody": {
+    "sprite": "rody",
+    "fw": 77,
+    "name": "Rody",
+    "text": "Coverity. Promised a paper at the next LPAR. Delivered it in Botswana."
   }
 }

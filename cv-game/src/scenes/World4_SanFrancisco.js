@@ -5,7 +5,7 @@ export class World4_SanFrancisco extends BaseScene {
 
     preload() {
         this.loadLevelAssets(4);
-        this.loadNPCSprites(['john', 'dejan', 'willem']);
+        this.loadNPCSprites(['john', 'dejan', 'willem', 'teme', 'jorge', 'liana', 'tim', 'stephane', 'claire', 'rody']);
         this.loadAudio('music4');
     }
 

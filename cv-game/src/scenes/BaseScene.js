@@ -1,6 +1,7 @@
 import { AUDIO, ASSET_VERSION } from '../config/audio.js';
 import { LEVELS } from '../config/levels.js';
 import { writeSave } from '../config/save.js';
+import { PAPER_TAGS } from '../config/quests.js';
 import { Player } from '../entities/Player.js';
 
 export class BaseScene extends Phaser.Scene {
@@ -480,6 +481,7 @@ export class BaseScene extends Phaser.Scene {
             y = (ty * bs + bs/2) * S;
 
             const spr = this.add.sprite(x, y, 'items', PAPER_FRAME).setScale(0.4).setDepth(5);
+            spr._paper = paper;
             this.tweens.add({ targets: spr, y: y - 6, duration: 800 + i * 50, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
             // Subtle glow
@@ -496,10 +498,12 @@ export class BaseScene extends Phaser.Scene {
                 this._papersFoundHere++;
                 this._updatePaperCounter();
                 this.setFlag(paperKey);
+                const tagged = PAPER_TAGS[paper.title];
+                if (tagged) this.setFlag('cite:' + tagged.tag);
                 this.setFlag(`papers_w${worldNum}`, (this.getFlag(`papers_w${worldNum}`) || 0) + 1);
                 const comment = commentFor(paper);
                 const allHere = this._papersFoundHere === this._papersTotal ? `\n\n✨ That's every paper in this world!` : '';
-                this.showMessage(`📄 "${paper.title}" (${paper.year})\n\n${comment}${allHere}`);
+                this.showMessage(`📄 "${paper.title}" (${paper.year})\n\n${tagged ? tagged.note : comment}${allHere}`);
             });
         });
     }
