@@ -210,7 +210,7 @@
     },
     "jorge": {
       "path": "assets/sprites/jorge.png",
-      "frameWidth": 75,
+      "frameWidth": 76,
       "frameHeight": 188,
       "scale": 0.4
     },
