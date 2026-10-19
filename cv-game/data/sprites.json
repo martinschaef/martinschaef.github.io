@@ -210,43 +210,37 @@
     },
     "jorge": {
       "path": "assets/sprites/jorge.png",
-      "frameWidth": 79,
+      "frameWidth": 75,
       "frameHeight": 188,
       "scale": 0.4
     },
     "liana": {
       "path": "assets/sprites/liana.png",
-      "frameWidth": 80,
+      "frameWidth": 67,
       "frameHeight": 188,
       "scale": 0.4
     },
     "tim": {
       "path": "assets/sprites/tim.png",
-      "frameWidth": 78,
+      "frameWidth": 73,
       "frameHeight": 188,
       "scale": 0.4
     },
     "stephane": {
       "path": "assets/sprites/stephane.png",
-      "frameWidth": 77,
-      "frameHeight": 188,
-      "scale": 0.4
-    },
-    "claire": {
-      "path": "assets/sprites/claire.png",
-      "frameWidth": 80,
+      "frameWidth": 72,
       "frameHeight": 188,
       "scale": 0.4
     },
     "rody": {
       "path": "assets/sprites/rody.png",
-      "frameWidth": 77,
+      "frameWidth": 76,
       "frameHeight": 188,
       "scale": 0.4
     },
     "thomas": {
       "path": "assets/sprites/thomas.png",
-      "frameWidth": 78,
+      "frameWidth": 74,
       "frameHeight": 188,
       "scale": 0.4
     }

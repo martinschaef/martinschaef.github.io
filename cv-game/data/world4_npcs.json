@@ -424,7 +424,7 @@
             "text": "No paper, no talk, no session to chair. This is the best conference I will ever attend."
           },
           {
-            "text": "Claire has already planned three snorkelling trips. I have planned zero proofs."
+            "text": "I have already planned three snorkelling trips. I have planned zero proofs."
           }
         ]
       },
@@ -435,7 +435,7 @@
             "text": "LPAR in Fiji? I don't have a paper there. Does that matter?"
           },
           {
-            "text": "No, it does not. Claire and I are coming anyway. And of course I'm coming to formal drinking.",
+            "text": "No, it does not. I am coming anyway. And of course I'm coming to formal drinking.",
             "set": "fiji_stephane"
           }
         ]
@@ -444,29 +444,6 @@
     "dialogue": [
       {
         "text": "Bonjour Martin. Stéphane, SRI. Proof theory, focusing, and very strong opinions about sequent calculus."
-      }
-    ]
-  },
-  "claire": {
-    "sprite": "claire",
-    "name": "Claire",
-    "states": [
-      {
-        "if": "fiji_stephane",
-        "cycle": true,
-        "dialogue": [
-          {
-            "text": "Stéphane said 'conference'. I heard 'Fiji'. I packed the same day."
-          },
-          {
-            "text": "You'll be in the talks. We'll be on the reef. We can compare notes at dinner."
-          }
-        ]
-      }
-    ],
-    "dialogue": [
-      {
-        "text": "Hi Martin! I'm Claire. Stéphane talks about proofs, I talk about where we go on holiday. It works."
       }
     ]
   }

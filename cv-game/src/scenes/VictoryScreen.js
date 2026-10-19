@@ -9,7 +9,7 @@ const CHAPTERS = [
     { title: 'Chapter I — Saarbrücken',  cast: ['doris', 'father', 'wolfgang', 'monika', 'christine', 'evren', 'valentin', 'tobert', 'ben'] },
     { title: 'Chapter II — Freiburg',    cast: ['podelski', 'podelski_dog', 'stephan', 'byron'] },
     { title: 'Chapter III — Macau',      cast: ['zhiming', 'paul'] },
-    { title: 'Chapter IV — San Francisco', cast: ['john', 'dejan', 'teme', 'jorge', 'liana', 'tim', 'stephane', 'claire', 'rody'] },
+    { title: 'Chapter IV — San Francisco', cast: ['john', 'dejan', 'teme', 'jorge', 'liana', 'tim', 'stephane', 'rody'] },
     { title: 'Chapter V — New York City', cast: ['dejan', 'tancrede', 'emmi', 'ioannis', 'lauren'] },
     { title: 'Chapter VI — The Office',   cast: ['willem', 'numair', 'byron2'] },
 ];

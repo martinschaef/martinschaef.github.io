@@ -43,7 +43,7 @@ def base_canvas(base):
     return base64.b64encode(buf.getvalue()).decode()
 
 
-def generate(name, desc, n, base=None, strength=0.75, neg='', seed0=1000):
+def generate(name, desc, n, base=None, strength=0.75, neg='', seed0=1000, subject='man'):
     os.makedirs(GEN_DIR, exist_ok=True)
     init = base_canvas(base) if base else None
     for i in range(n):
@@ -51,12 +51,12 @@ def generate(name, desc, n, base=None, strength=0.75, neg='', seed0=1000):
             model = 'stability.sd3-5-large-v1:0'
             body = {"prompt": "pixel art RPG character sprite, exactly the same art style, outline, "
                               "proportions and pose as the input image, plain white background. "
-                              "The man: " + desc,
+                              "The " + subject + ": " + desc,
                     "negative_prompt": NEG + (", " + neg if neg else ""), "mode": "image-to-image", "image": init,
                     "strength": strength, "output_format": "png", "seed": seed0 + i * 7919}
         else:
             model = 'stability.stable-image-ultra-v1:1'
-            body = {"prompt": STYLE + desc, "negative_prompt": NEG + (", " + neg if neg else ""), "aspect_ratio": "2:3",
+            body = {"prompt": STYLE.replace('adult man', 'adult ' + subject).replace('The man: ', 'The ' + subject + ': ') + desc, "negative_prompt": NEG + (", " + neg if neg else ""), "aspect_ratio": "2:3",
                     "output_format": "png", "seed": seed0 + i * 7919}
         with tempfile.TemporaryDirectory() as td:
             req, out = os.path.join(td, 'req.json'), os.path.join(td, 'out.json')
@@ -174,9 +174,10 @@ def main():
     ap.add_argument('--base'); ap.add_argument('--strength', type=float, default=0.75)
     ap.add_argument('--neg', default='', help='extra negative prompt terms for this character')
     ap.add_argument('--seed0', type=int, default=1000)
+    ap.add_argument('--subject', default='man', help="noun used in the prompt, e.g. 'woman'")
     args = ap.parse_args()
     if args.pick is None:
-        generate(args.name, args.desc, args.n, args.base, args.strength, args.neg, args.seed0)
+        generate(args.name, args.desc, args.n, args.base, args.strength, args.neg, args.seed0, args.subject)
         return
     fig = to_sprite(f'{GEN_DIR}/{args.name}_{args.pick}.png')
     sheet, fw = idle_sheet(fig)

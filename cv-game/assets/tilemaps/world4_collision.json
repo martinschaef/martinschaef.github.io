@@ -37517,11 +37517,6 @@
       "y": 1110
     },
     {
-      "id": "claire",
-      "x": 1050,
-      "y": 1110
-    },
-    {
       "id": "liana",
       "x": 1080,
       "y": 650
@@ -37637,7 +37632,7 @@
       ],
       "reveal_toast": "🍻 Everyone is at the bar in Palo Alto",
       "set": "fiji_drafted",
-      "text": "🍻 Formal drinking, Palo Alto.\n\nTeme draws the outline on a napkin. Jorge adds a loop. Dejan adds a solver. Tim adds a harder query. Liana fixes the bit-vectors. Stéphane and Claire add a second round.\n\nBy midnight the napkin is a paper. Tell Dejan."
+      "text": "🍻 Formal drinking, Palo Alto.\n\nTeme draws the outline on a napkin. Jorge adds a loop. Dejan adds a solver. Tim adds a harder query. Liana fixes the bit-vectors. Stéphane adds a second round.\n\nBy midnight the napkin is a paper. Tell Dejan."
     },
     {
       "id": "fiji_sfo",
@@ -37649,7 +37644,7 @@
       "reveal_toast": "✈️ Travel approved: SFO is waiting",
       "set": "fiji_done",
       "reward": "extra_heart:fiji",
-      "text": "✈️ SFO → Suva, Fiji. LPAR-20, November 2015.\n\nYou present 'Finding Inconsistencies in Programs with Loops'. Liana presents her bit-vector proofs. Stéphane and Claire present a very convincing tan.\n\n🌴 Bula! +1 heart."
+      "text": "✈️ SFO → Suva, Fiji. LPAR-20, November 2015.\n\nYou present 'Finding Inconsistencies in Programs with Loops'. Liana presents her bit-vector proofs. Stéphane presents a very convincing tan.\n\n🌴 Bula! +1 heart."
     }
   ]
 }
