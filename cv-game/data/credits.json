@@ -61,7 +61,7 @@
   },
   "thomas": {
     "sprite": "thomas",
-    "fw": 74,
+    "fw": 72,
     "name": "Thomas",
     "text": "Shape analysis, eleven papers together, and strictly below 14th Street."
   },
@@ -151,19 +151,19 @@
   },
   "teme": {
     "sprite": "teme",
-    "fw": 75,
+    "fw": 71,
     "name": "Teme",
     "text": "NASA Ames, Horn clauses, and the outline of the Fiji paper."
   },
   "jorge": {
     "sprite": "jorge",
-    "fw": 75,
+    "fw": 89,
     "name": "Jorge",
     "text": "Abstract interpreters and SeaHorn. Precisely, approximately right."
   },
   "liana": {
     "sprite": "liana",
-    "fw": 67,
+    "fw": 74,
     "name": "Liana",
     "text": "Coverity, fine-grained bit-vector proofs, and her own LPAR paper in Fiji."
   },

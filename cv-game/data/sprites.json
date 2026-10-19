@@ -204,19 +204,19 @@
     },
     "teme": {
       "path": "assets/sprites/teme.png",
-      "frameWidth": 75,
+      "frameWidth": 71,
       "frameHeight": 188,
       "scale": 0.4
     },
     "jorge": {
       "path": "assets/sprites/jorge.png",
-      "frameWidth": 75,
+      "frameWidth": 89,
       "frameHeight": 188,
       "scale": 0.4
     },
     "liana": {
       "path": "assets/sprites/liana.png",
-      "frameWidth": 67,
+      "frameWidth": 74,
       "frameHeight": 188,
       "scale": 0.4
     },
@@ -240,7 +240,7 @@
     },
     "thomas": {
       "path": "assets/sprites/thomas.png",
-      "frameWidth": 74,
+      "frameWidth": 72,
       "frameHeight": 188,
       "scale": 0.4
     }
