@@ -549,5 +549,27 @@
         "text": "There are {bugsLeft} of them. Get them all and I'll buy you a beer."
       }
     ]
+  },
+  "thomas": {
+    "sprite": "thomas",
+    "name": "Thomas",
+    "cycle": true,
+    "dialogue": [
+      {
+        "text": "Thomas. I'm one of Andreas's students at the MPI. Do you know Boolean heap programs? You do predicate abstraction, but over sets of heap cells instead of states. Then the abstract post is a validity question in monadic second-order logic over trees. MONA decides it. Simple, really."
+      },
+      {
+        "text": "The catch is that Cartesian abstraction forgets correlations between predicates. For a doubly-linked list you lose that x.next.prev = x. So we refine the abstraction lazily from the spurious counterexample. Unless the counterexample is real. Then it's your bug, not mine."
+      },
+      {
+        "text": "My shape analysis is called Bohne. That's German for 'bean'. It infers quantified reachability invariants for data structures with destructive updates. The name doesn't mean anything. Neither do most invariants, until you need one."
+      },
+      {
+        "text": "Field constraint analysis, in one sentence: a doubly-linked list isn't a tree, but if you squint at the next pointers and treat prev as a constraint on them, it's a tree with opinions. MONA likes trees. MONA does not like opinions."
+      },
+      {
+        "text": "Sorry, I have to run. MONA ran out of memory on a binary tree with parent pointers again. The automaton is only doubly exponential. Give or take an exponential."
+      }
+    ]
   }
 }

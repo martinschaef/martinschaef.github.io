@@ -59,6 +59,12 @@
     "name": "Balzac",
     "text": "Podelski's dog and the toughest reviewer in the group."
   },
+  "thomas": {
+    "sprite": "thomas",
+    "fw": 78,
+    "name": "Thomas",
+    "text": "Shape analysis, eleven papers together, and strictly below 14th Street."
+  },
   "byron": {
     "sprite": "byron",
     "fw": 60,
