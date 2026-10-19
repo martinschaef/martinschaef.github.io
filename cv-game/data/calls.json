@@ -1,0 +1,36 @@
+{
+  "5": [
+    {
+      "id": "monika_nyc",
+      "if": "monika_done",
+      "from": "Monika",
+      "delay": 5000,
+      "dialogue": [
+        {
+          "text": "I told you I'd call. I'm looking at New York on the map from Saarbrücken. Central Park is FULL of Pokémon."
+        },
+        {
+          "text": "Are you walking past PokéStops? Tell me you're walking past PokéStops.",
+          "choices": [
+            {
+              "text": "Every single day.",
+              "next": "yes"
+            },
+            {
+              "text": "I mostly take the subway.",
+              "next": "no"
+            }
+          ]
+        },
+        {
+          "id": "yes",
+          "text": "That's my little brother. Send me a screenshot of the Empire State gym. I need to know who holds it."
+        },
+        {
+          "id": "no",
+          "text": "The subway?! Underground! No GPS! I didn't raise you to miss spawns. Well, Mom did. Fine. Love you. Bye."
+        }
+      ]
+    }
+  ]
+}

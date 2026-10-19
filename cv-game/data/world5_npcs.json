@@ -253,5 +253,27 @@
         "set": "met_byron_nyc"
       }
     ]
+  },
+  "thomas": {
+    "sprite": "thomas",
+    "name": "Prof. Wies",
+    "cycle": true,
+    "dialogue": [
+      {
+        "text": "Martin! Welcome to New York. I'm a professor at NYU now, Courant, right on Washington Square. That's the real New York. Everything north of 14th Street is a rumor."
+      },
+      {
+        "text": "You came from Queens? Over the bridge? On purpose? I've been at NYU for years and I've been north of 14th Street exactly once. I fell asleep on the A train."
+      },
+      {
+        "text": "Where is Queens, actually? Past Midtown? I think of this island as a linked list. It starts at Washington Square and the tail is undefined behavior."
+      },
+      {
+        "text": "I'm only up here because I took a wrong turn looking for a coffee. If you want to meet, come downtown. Midtown isn't in my verified fragment."
+      },
+      {
+        "text": "We should write another paper. Eleven isn't a round number. Twelve isn't either, but it's closer to a dozen."
+      }
+    ]
   }
 }

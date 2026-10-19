@@ -131,19 +131,67 @@
   "stephan": {
     "sprite": "stephan",
     "name": "Stephan",
-    "cycle": true,
+    "states": [
+      {
+        "if": "freiburg_bounty",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "My GUI tests have been green for a week. I don't trust it. I click every button twice now, just to check."
+          },
+          {
+            "text": "If you ever go somewhere far away for a postdoc, tell me. I'm coming too. Someone has to test your GUIs.",
+            "set": "stephan_promise"
+          },
+          {
+            "text": "Balzac sat on my keyboard again. The paper improved."
+          }
+        ]
+      },
+      {
+        "if": "bugs_cleared_w2",
+        "dialogue": [
+          {
+            "text": "Wait. All of them? My test suite just passed. Every test. For the first time in two years."
+          },
+          {
+            "text": "I don't know whether to celebrate or file a bug about the missing bugs. Here, have this before I change my mind.",
+            "reward": "extra_heart:freiburg",
+            "set": "freiburg_bounty"
+          },
+          {
+            "text": "And if you ever go somewhere far away for a postdoc, tell me. I'm coming too. Someone has to test your GUIs.",
+            "set": "stephan_promise"
+          }
+        ]
+      },
+      {
+        "if": "stephan_bounty",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "{bugsLeft} {bugsNoun} still loose. They like the forest path and the vineyard. Bugs have taste."
+          },
+          {
+            "text": "If you ever go somewhere far away for a postdoc, tell me. I'm coming too. Someone has to test your GUIs.",
+            "set": "stephan_promise"
+          },
+          {
+            "text": "I clicked every button in this application 4,000 times. Then I wrote a program to click them for me. That's the whole thesis."
+          }
+        ]
+      }
+    ],
     "dialogue": [
       {
         "text": "Martin! Fellow PhD student, Stephan. Office across the hall. I'm working on GUI testing. Please don't tell anyone that's a real field."
       },
       {
-        "text": "I clicked every button in this application 4,000 times. Then I wrote a program to click them for me. That's the whole thesis."
+        "text": "Bad news: bugs got out of my test lab. {bugsLeft} of them, all over Freiburg. My test suite won't pass until they're gone."
       },
       {
-        "text": "If you ever go somewhere far away for a postdoc, tell me. I'm coming too. Someone has to test your GUIs."
-      },
-      {
-        "text": "Balzac sat on my keyboard again. The paper improved."
+        "text": "Squash them for me? Press Z near one. I'd do it myself, but I'm busy clicking buttons.",
+        "set": "stephan_bounty"
       }
     ]
   },
@@ -162,7 +210,8 @@
         "text": "Brunch in Boetzingen on Sunday? The wine hill is right there. We'll just look at it."
       },
       {
-        "text": "I've been thinking: when a program fails, which parts of the trace actually matter? One day I'll turn that into a paper."
+        "text": "I've been thinking: when a program fails, which parts of the trace actually matter? One day I'll turn that into a paper.",
+        "set": "evren_idea"
       }
     ]
   },
@@ -179,6 +228,25 @@
       },
       {
         "text": "(He waves vaguely. You won't really talk until New York, many years from now.)"
+      }
+    ]
+  },
+  "thomas": {
+    "sprite": "thomas",
+    "name": "Thomas",
+    "random": true,
+    "dialogue": [
+      {
+        "text": "Martin! Can't stay, I'm only passing through. I have to get back to Cambridge. Viktor has a verification condition waiting for me that's longer than the Charles River."
+      },
+      {
+        "text": "Just here to sign thesis paperwork with Andreas. Then the night train to Lausanne. EPFL has a lake, mountains, and decision procedures. Mostly decision procedures."
+      },
+      {
+        "text": "Passing through! On my way back to Vienna. Well, Klosterneuburg, IST Austria. Nobody knows where Klosterneuburg is, so I say Vienna."
+      },
+      {
+        "text": "I hear you're proving code is doomed now. Send me the draft. I'll read it on the train. Which train? Depends which week it is."
       }
     ]
   }

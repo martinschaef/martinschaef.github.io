@@ -103,15 +103,88 @@
   "monika": {
     "sprite": "monika",
     "name": "Monika",
+    "states": [
+      {
+        "if": "monika_done",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "I was nine when you were born. Hold that thought, a Snorlax just spawned by the Schloss."
+          },
+          {
+            "text": "Off to study? Then walk past every PokéStop on the way and spin them for me."
+          },
+          {
+            "text": "You take computers apart, I hatch 10 km eggs. We both walk a lot for our hobbies."
+          },
+          {
+            "text": "Raid at the Johanneskirche in five minutes. You're coming. Bring a power bank."
+          },
+          {
+            "text": "Call Mom on Sundays. Community Day is also on Sundays. Plan accordingly."
+          },
+          {
+            "text": "Still no shiny. Ask me again after the next ten thousand steps."
+          }
+        ]
+      },
+      {
+        "if": "pokestops>=3",
+        "dialogue": [
+          {
+            "text": "All three spun? My streak is saved! Seven days, unbroken. You have no idea what that means to me."
+          },
+          {
+            "text": "Here. The walking did you good. You look like someone who could survive a raid.",
+            "reward": "extra_heart:pokestops",
+            "set": "monika_done"
+          },
+          {
+            "text": "If you ever move somewhere with better spawns, call me. I mean it. I will call you."
+          }
+        ]
+      },
+      {
+        "if": "monika_quest",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "{flag:pokestops} of 3 PokéStops spun. The blue ones. They spin. You walk onto them. It's not complicated."
+          },
+          {
+            "text": "One by the university, one at the old steelworks, one at a fountain in the east. {flag:pokestops} of 3 so far."
+          },
+          {
+            "text": "My phone is at 2% now. No pressure. ({flag:pokestops} of 3.)"
+          }
+        ]
+      }
+    ],
     "dialogue": [
       {
-        "text": "I was nine when you were born. I've been cleaning up after you ever since."
+        "text": "I was nine when you were born. Hold that thought, a Snorlax just spawned by the Schloss."
       },
       {
-        "text": "Now you're the one taking computers apart. At least you put them back together these days."
+        "text": "Little brother, I need a favour. My phone is at 3% and I still have to spin three PokéStops today, or my streak breaks.",
+        "choices": [
+          {
+            "text": "I'll spin them for you.",
+            "next": "yes"
+          },
+          {
+            "text": "I don't even have the app.",
+            "next": "no"
+          }
+        ]
       },
       {
-        "text": "Go. Study. Call Mom on Sundays."
+        "id": "yes",
+        "text": "My hero. One by the university, one at the old steelworks, one at a fountain in the east. Walk onto the blue ones.",
+        "set": "monika_quest"
+      },
+      {
+        "id": "no",
+        "text": "Nobody has the app. The app has you. Ask me again when you're ready."
       }
     ]
   },
@@ -474,6 +547,28 @@
       },
       {
         "text": "There are {bugsLeft} of them. Get them all and I'll buy you a beer."
+      }
+    ]
+  },
+  "thomas": {
+    "sprite": "thomas",
+    "name": "Thomas",
+    "cycle": true,
+    "dialogue": [
+      {
+        "text": "Thomas. I'm one of Andreas's students at the MPI. Do you know Boolean heap programs? You do predicate abstraction, but over sets of heap cells instead of states. Then the abstract post is a validity question in monadic second-order logic over trees. MONA decides it. Simple, really."
+      },
+      {
+        "text": "The catch is that Cartesian abstraction forgets correlations between predicates. For a doubly-linked list you lose that x.next.prev = x. So we refine the abstraction lazily from the spurious counterexample. Unless the counterexample is real. Then it's your bug, not mine."
+      },
+      {
+        "text": "My shape analysis is called Bohne. That's German for 'bean'. It infers quantified reachability invariants for data structures with destructive updates. The name doesn't mean anything. Neither do most invariants, until you need one."
+      },
+      {
+        "text": "Field constraint analysis, in one sentence: a doubly-linked list isn't a tree, but if you squint at the next pointers and treat prev as a constraint on them, it's a tree with opinions. MONA likes trees. MONA does not like opinions."
+      },
+      {
+        "text": "Sorry, I have to run. MONA ran out of memory on a binary tree with parent pointers again. The automaton is only doubly exponential. Give or take an exponential."
       }
     ]
   }

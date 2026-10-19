@@ -1,5 +1,7 @@
 import { AUDIO, ASSET_VERSION } from '../config/audio.js';
 import { LEVELS } from '../config/levels.js';
+import { writeSave } from '../config/save.js';
+import { PAPER_TAGS } from '../config/quests.js';
 import { Player } from '../entities/Player.js';
 
 export class BaseScene extends Phaser.Scene {
@@ -52,13 +54,14 @@ export class BaseScene extends Phaser.Scene {
         this.load.json('enemyData', `data/enemies.json${v}`);
         this.load.json(`npcData_w${worldNum}`, `data/world${worldNum}_npcs.json${v}`);
         this.load.json('itemData', `data/items.json${v}`);
+        this.load.json('callData', `data/calls.json${v}`);
         this.load.json('publications', `../publications.json${v}`);
         this.load.once('loaderror', (file) => {
             if (file.key === 'publications') console.warn('publications.json not found — serve from the repo root (see README), otherwise no papers spawn.');
         });
-        this.load.spritesheet('items', 'assets/sprites/items.png', { frameWidth: 121, frameHeight: 100 });
-        this.load.image('door_closed', 'assets/sprites/door_closed.png');
-        this.load.image('door_open', 'assets/sprites/door_open.png');
+        this.load.spritesheet('items', `assets/sprites/items.png${v}`, { frameWidth: 121, frameHeight: 100 });
+        this.load.image('door_closed', `assets/sprites/door_closed.png${v}`);
+        this.load.image('door_open', `assets/sprites/door_open.png${v}`);
     }
 
     // ── Level creation (call in create) ───────────────────
@@ -119,6 +122,12 @@ export class BaseScene extends Phaser.Scene {
         // Map signs (building names added on top of the painted map)
         this._setupSigns(col, S);
 
+        // Walkable area, shared by paper placement and the smoke test's spot check
+        this._walk = this._walkGrid(col, S);
+
+        // Quest spots: PokéStops, secrets
+        this._setupSpots(col, S);
+
         // Auto-spawn publication papers
         this._setupPapers(worldNum, col, S);
 
@@ -168,6 +177,12 @@ export class BaseScene extends Phaser.Scene {
         this._hudMute = this.add.text(cam.width - 8, barH / 2, this.sound.mute ? '🔇' : '🔊', {
             fontSize: '16px'
         }).setOrigin(1, 0.5).setScrollFactor(0).setDepth(101).setInteractive({ useHandCursor: true });
+
+        // Papers found in this world, left of the mute button
+        this._hudPapers = this.add.text(cam.width - 40, barH / 2, '', {
+            fontSize: '12px', fontFamily: 'monospace', color: '#42f4a6'
+        }).setOrigin(1, 0.5).setScrollFactor(0).setDepth(101);
+        this._updatePaperCounter();
         this._hudMute.on('pointerdown', () => this._toggleMute());
         this.input.keyboard.on('keydown-M', () => this._toggleMute());
 
@@ -180,18 +195,35 @@ export class BaseScene extends Phaser.Scene {
             }).setOrigin(0, 1).setScrollFactor(0).setDepth(100).setAlpha(0.55);
         }
 
-        // Resize handler
+        // Resize handler. The scale manager is game-wide, so detach on shutdown or
+        // handlers from earlier visits pile up and touch destroyed objects.
         this._ww = ww; this._wh = wh;
-        this.scale.on('resize', (gs) => {
+        this._onResize = (gs) => {
             this.cameras.main.setSize(gs.width, gs.height);
             this.cameras.main.setBounds(0, 0, this._ww, this._wh);
             this._hudBar.setPosition(gs.width / 2, barH / 2).setSize(gs.width, barH);
             this._hudMute.setPosition(gs.width - 8, barH / 2);
+            this._hudPapers.setPosition(gs.width - 40, barH / 2);
             if (this._hudControls) this._hudControls.setPosition(10, gs.height - 10);
-        });
+            this._buildHearts();
+        };
+        this.scale.on('resize', this._onResize, this);
+        this.events.once('shutdown', () => this.scale.off('resize', this._onResize, this));
+
+        // Characters who phone in when you arrive (data/calls.json)
+        this._setupCalls(worldNum);
+
+        // Checkpoint: the title screen offers CONTINUE from here
+        writeSave(this.registry, this.scene.key);
 
         this.cameras.main.fadeIn(500);
         if (musicKey) this.playMusic(musicKey);
+    }
+
+    _updatePaperCounter() {
+        if (!this._hudPapers) return;
+        const total = this._papersTotal || 0;
+        this._hudPapers.setText(total ? `📄 ${this._papersFoundHere || 0}/${total}` : '');
     }
 
     _setupNPCs(col, npcData, spriteData, S) {
@@ -270,9 +302,12 @@ export class BaseScene extends Phaser.Scene {
         if (!col.enemies || !col.enemies.length) return;
 
         // Create animations for each enemy type
-        col.enemies.forEach(e => {
+        col.enemies.forEach((e, i) => {
             const cfg = enemyData[e.type];
             if (!cfg) return;
+            // Squashed on an earlier visit, or before a reload
+            const bugKey = `bug:w${this._worldNum}:${i}`;
+            if (this.getFlag(bugKey)) return;
             const t = e.type;
             if (!this.anims.exists(t + '_walk') && cfg.animations?.walk) {
                 const w = cfg.animations.walk;
@@ -288,6 +323,7 @@ export class BaseScene extends Phaser.Scene {
             spr.enemyCfg = cfg;
             spr._wanderTimer = 0;
             spr._type = t;
+            spr._bugKey = bugKey;
             this.enemyGroup.add(spr);
             this.enemies.push(spr);
         });
@@ -396,6 +432,8 @@ export class BaseScene extends Phaser.Scene {
     }
 
     _setupPapers(worldNum, col, S) {
+        this._papersTotal = 0;
+        this._papersFoundHere = 0;
         const pubs = this.cache.json.get('publications') || [];
         const level = LEVELS.find(l => l.key.includes(`World${worldNum}`));
         if (!level?.years) return;
@@ -403,26 +441,15 @@ export class BaseScene extends Phaser.Scene {
         const papers = pubs.filter(p => p.year >= yStart && p.year < yEnd);
         if (!papers.length) return;
 
-        // Build blocked set for walkability check
-        const bs = col.block_size;
-        const blocked = new Set();
-        const blockRect = (r) => {
-            const x0 = Math.floor(r.x/bs), y0 = Math.floor(r.y/bs);
-            const x1 = Math.ceil((r.x+r.w)/bs), y1 = Math.ceil((r.y+r.h)/bs);
-            for (let ty = y0; ty < y1; ty++) for (let tx = x0; tx < x1; tx++) blocked.add(tx+','+ty);
-        };
-        (col.water_rects || []).forEach(blockRect);
-        (col.border_rects || []).forEach(blockRect);
-        (col.blocked_tiles || []).forEach(([tx,ty]) => blocked.add(tx + ',' + ty));
-        const gridW = Math.ceil(col.world_width / bs), gridH = Math.ceil(col.world_height / bs);
-        for (let x = 0; x < gridW; x++) { blocked.add(x+',0'); blocked.add(x+','+(gridH-1)); }
-        for (let y = 0; y < gridH; y++) { blocked.add('0,'+y); blocked.add((gridW-1)+','+y); }
-        // Block tiles occupied by entities (NPCs, enemies, doors, items, player spawn)
+        const { walls, reachable, gridW, gridH, bs } = this._walk;
+        // Papers also avoid tiles occupied by entities (NPCs, enemies, doors, items, spots, player spawn)
+        const blocked = new Set(walls);
         const blockPoint = (px, py) => { blocked.add(Math.floor(px/bs)+','+Math.floor(py/bs)); };
         (col.npcs || []).forEach(n => blockPoint(n.x, n.y));
         (col.enemies || []).forEach(e => blockPoint(e.x, e.y));
         (col.doors || []).forEach(d => blockPoint(d.x, d.y));
         (col.items || []).forEach(it => blockPoint(it.x, it.y));
+        (col.spots || []).forEach(sp => blockPoint(sp.x, sp.y));
         if (col.player_spawn) blockPoint(col.player_spawn.x, col.player_spawn.y);
 
         // Seeded random from world number for consistent placement
@@ -441,14 +468,20 @@ export class BaseScene extends Phaser.Scene {
                 tx = 2 + Math.floor(rand() * (gridW - 4));
                 ty = 2 + Math.floor(rand() * (gridH - 4));
                 attempts++;
-            } while (attempts < 200 && (blocked.has(tx+','+ty) || placed.some(p => Math.abs(p[0]-tx) + Math.abs(p[1]-ty) < 3)));
+            } while (attempts < 200 && (blocked.has(tx+','+ty) || !reachable.has(tx+','+ty) || placed.some(p => Math.abs(p[0]-tx) + Math.abs(p[1]-ty) < 3)));
             if (attempts >= 200) return;
             placed.push([tx, ty]);
+            this._papersTotal++;
+
+            // Already collected on an earlier visit (or before a reload): keep the slot, skip the pickup
+            const paperKey = `paper:${paper.year}:${paper.title}`;
+            if (this.getFlag(paperKey)) { this._papersFoundHere++; return; }
 
             x = (tx * bs + bs/2) * S;
             y = (ty * bs + bs/2) * S;
 
             const spr = this.add.sprite(x, y, 'items', PAPER_FRAME).setScale(0.4).setDepth(5);
+            spr._paper = paper;
             this.tweens.add({ targets: spr, y: y - 6, duration: 800 + i * 50, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
             // Subtle glow
@@ -462,13 +495,135 @@ export class BaseScene extends Phaser.Scene {
                 this.sfx('pickup', { volume: 0.3 });
                 spr.destroy(); glow.destroy(); z.destroy();
                 this.registry.set('papersFound', (this.registry.get('papersFound') || 0) + 1);
+                this._papersFoundHere++;
+                this._updatePaperCounter();
+                this.setFlag(paperKey);
+                const tagged = PAPER_TAGS[paper.title];
+                if (tagged) this.setFlag('cite:' + tagged.tag);
                 this.setFlag(`papers_w${worldNum}`, (this.getFlag(`papers_w${worldNum}`) || 0) + 1);
                 const comment = commentFor(paper);
-                this.showMessage(`📄 "${paper.title}" (${paper.year})\n\n${comment}`);
+                const allHere = this._papersFoundHere === this._papersTotal ? `\n\n✨ That's every paper in this world!` : '';
+                this.showMessage(`📄 "${paper.title}" (${paper.year})\n\n${tagged ? tagged.note : comment}${allHere}`);
             });
         });
     }
 
+    // Walls and the player-reachable area on the map's tile grid. Open is not the same as
+    // reachable: a pocket sealed off by water or walls is open, but the player can never get
+    // there. Things the player must collect (papers, spots) belong in `reachable`.
+    _walkGrid(col, S) {
+        const bs = col.block_size;
+        const walls = new Set();
+        const blockRect = (r) => {
+            const x0 = Math.floor(r.x/bs), y0 = Math.floor(r.y/bs);
+            const x1 = Math.ceil((r.x+r.w)/bs), y1 = Math.ceil((r.y+r.h)/bs);
+            for (let ty = y0; ty < y1; ty++) for (let tx = x0; tx < x1; tx++) walls.add(tx+','+ty);
+        };
+        (col.water_rects || []).forEach(blockRect);
+        (col.border_rects || []).forEach(blockRect);
+        (col.blocked_tiles || []).forEach(([tx,ty]) => walls.add(tx + ',' + ty));
+        const gridW = Math.ceil(col.world_width / bs), gridH = Math.ceil(col.world_height / bs);
+        for (let x = 0; x < gridW; x++) { walls.add(x+',0'); walls.add(x+','+(gridH-1)); }
+        for (let y = 0; y < gridH; y++) { walls.add('0,'+y); walls.add((gridW-1)+','+y); }
+        const reachable = this._reachableTiles(col, walls, gridW, gridH, S);
+        return { walls, reachable, gridW, gridH, bs, isReachable: (mx, my) => reachable.has(Math.floor(mx/bs)+','+Math.floor(my/bs)) };
+    }
+
+    // Spots are map markers you walk onto (data in the collision JSON):
+    //   { id, x, y, icon, label, requires, text, set, count, reward, secret }
+    // A spot with `requires` stays invisible until its condition holds, then fades in.
+    // Walking onto it once sets "spot:<id>", applies set/count/reward and shows `text`.
+    // `count` names a numeric flag to increment (e.g. "pokestops"); `secret` counts toward
+    // the end-of-game stats.
+    _setupSpots(col, S) {
+        this._spots = [];
+        (col.spots || []).forEach(sd => {
+            if (this.getFlag('spot:' + sd.id)) return;
+            const x = sd.x * S, y = sd.y * S;
+            const color = sd.secret ? 0xf4e842 : 0x3b8cff;
+            const ring = this.add.circle(x, y, 18, color, 0.3).setStrokeStyle(2, color, 0.9).setDepth(4);
+            const icon = this.add.text(x, y, sd.icon || '❔', { fontSize: '22px' }).setOrigin(0.5).setDepth(5);
+            const label = this.add.text(x, y - 28, sd.label || '', {
+                fontSize: '10px', fontFamily: 'monospace', color: sd.secret ? '#f4e842' : '#9cc8ff',
+                stroke: '#000', strokeThickness: 2
+            }).setOrigin(0.5).setDepth(5);
+            this.tweens.add({ targets: ring, scale: 1.3, alpha: 0.35, duration: 900, yoyo: true, repeat: -1 });
+            this.tweens.add({ targets: icon, angle: sd.secret ? 0 : 360, y: sd.secret ? y - 4 : y, duration: sd.secret ? 800 : 3000,
+                yoyo: !!sd.secret, repeat: -1, ease: sd.secret ? 'Sine.easeInOut' : 'Linear' });
+            const parts = [ring, icon, label];
+            const spot = { def: sd, parts, revealed: this._cond(sd.requires), done: false };
+            if (!spot.revealed) parts.forEach(o => o.setVisible(false));
+            spot.check = () => {
+                if (spot.done || spot.revealed || !this._cond(sd.requires)) return;
+                spot.revealed = true;
+                parts.forEach(o => { o.setVisible(true); o.setAlpha(0); this.tweens.add({ targets: o, alpha: 1, duration: 600 }); });
+                if (sd.reveal_toast) this._toast(sd.reveal_toast);
+            };
+            const z = this.add.zone(x, y, 36, 36);
+            this.physics.add.existing(z, true);
+            this.physics.add.overlap(this.player.sprite, z, () => {
+                if (spot.done || !spot.revealed || this.dialogueActive) return;
+                spot.done = true;
+                this.setFlag('spot:' + sd.id);
+                if (sd.count) this.setFlag(sd.count, (Number(this.getFlag(sd.count)) || 0) + 1);
+                if (sd.secret) this.setFlag('secrets', (Number(this.getFlag('secrets')) || 0) + 1);
+                this._applyEffects(sd);
+                this.sfx('pickup', { volume: 0.35 });
+                this.tweens.add({ targets: parts, alpha: 0, scale: 1.6, duration: 400, onComplete: () => parts.forEach(o => o.destroy()) });
+                z.destroy();
+                if (sd.text) { this._currentNPC = null; this.showMessage(this._fillTemplate(sd.text)); }
+            });
+            this._spots.push(spot);
+        });
+    }
+
+    // Phone calls (data/calls.json, keyed by world number): [{ id, if, delay, from, dialogue }].
+    // Each call rings once per run, a few seconds after arriving, as soon as no dialogue is open.
+    _setupCalls(worldNum) {
+        const calls = (this.cache.json.get('callData') || {})[String(worldNum)] || [];
+        calls.forEach(c => {
+            if (this.getFlag('call:' + c.id) || !this._cond(c.if)) return;
+            const ring = () => {
+                if (!this.sys.isActive()) return;
+                if (this.dialogueActive || this._transitioning) { this.time.delayedCall(1500, ring); return; }
+                this.setFlag('call:' + c.id);
+                this.sfx('select', { volume: 0.4 });
+                this.cameras.main.shake(120, 0.002);
+                const lines = c.dialogue.map(n => ({ ...n, text: `📱 ${c.from}: ${n.text}` }));
+                this._currentNPC = { id: 'call:' + c.id, dialogue: lines };
+                this._showNode(0);
+            };
+            this.time.delayedCall(c.delay || 4000, ring);
+        });
+    }
+
+
+    // Tiles the player can stand on, starting from the map's spawn point. `walls` holds
+    // "tx,ty" keys of impassable tiles. The player's collision box can span more than one
+    // tile on fine-grained maps, so a position counts only if the whole box fits.
+    _reachableTiles(col, walls, gridW, gridH, S) {
+        const bs = col.block_size, tile = bs * S;
+        const body = this.player.sprite.body;
+        const fw = Math.max(1, Math.ceil(body.width / tile)), fh = Math.max(1, Math.ceil(body.height / tile));
+        const fits = (x, y) => {
+            if (x < 0 || y < 0 || x + fw > gridW || y + fh > gridH) return false;
+            for (let j = 0; j < fh; j++) for (let i = 0; i < fw; i++) if (walls.has((x+i)+','+(y+j))) return false;
+            return true;
+        };
+        const sp = col.player_spawn || { x: 350, y: 400 };
+        const start = [Math.floor(sp.x / bs), Math.floor(sp.y / bs)];
+        const seen = new Set([start.join(',')]), stack = [start], reach = new Set();
+        while (stack.length) {
+            const [x, y] = stack.pop();
+            for (let j = 0; j < fh; j++) for (let i = 0; i < fw; i++) reach.add((x+i)+','+(y+j));
+            for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+                const nx = x + dx, ny = y + dy, k = nx+','+ny;
+                if (seen.has(k) || !fits(nx, ny)) continue;
+                seen.add(k); stack.push([nx, ny]);
+            }
+        }
+        return reach;
+    }
 
     // Builds a comment generator for paper pickups: puns, co-author shoutouts, and
     // venue nods. Each pool is dealt without repeats until it is exhausted.
@@ -578,6 +733,7 @@ export class BaseScene extends Phaser.Scene {
     updateLevel() {
         this.player.update();
         if (this._hiddenDoors) this._hiddenDoors.forEach(d => d.check());
+        if (this._spots) this._spots.forEach(s => s.check());
 
         // Dialogue navigation
         if (this.dialogueActive) {
@@ -657,15 +813,16 @@ export class BaseScene extends Phaser.Scene {
 
         const cam = this.cameras.main;
         const w = cam.width, h = cam.height;
-        const boxH = choices ? 130 : 100;
         const boxW = Math.min(760, w - 40);
+        const style = { fontSize: '16px', fontFamily: 'monospace', color: '#ffffff', wordWrap: { width: boxW - 32 } };
+        // Size the box to the full text (it types out progressively), plus room for choices
+        const probe = this.add.text(0, 0, text, style).setVisible(false);
+        const textH = probe.height; probe.destroy();
+        const boxH = Math.max(100, textH + 24) + (choices ? choices.length * 22 + 8 : 0);
 
         this._msgBox = this.add.rectangle(w/2, h - boxH/2 - 10, boxW, boxH, 0x000000, 0.92)
             .setStrokeStyle(2, 0xf4e842).setScrollFactor(0).setDepth(100);
-        this._msgText = this.add.text(w/2 - boxW/2 + 16, h - boxH - 2, '', {
-            fontSize: '16px', fontFamily: 'monospace', color: '#ffffff',
-            wordWrap: { width: boxW - 32 }
-        }).setScrollFactor(0).setDepth(101);
+        this._msgText = this.add.text(w/2 - boxW/2 + 16, h - boxH - 2, '', style).setScrollFactor(0).setDepth(101);
 
         let i = 0, blipCounter = 0;
         this._typeTimer = this.time.addEvent({
@@ -760,13 +917,14 @@ export class BaseScene extends Phaser.Scene {
         this.showMessage(this._fillTemplate(nodes[index].text), nodes[index].choices || null);
     }
 
-    // Live values usable in dialogue text, e.g. "{bugsLeft} bugs to go"
+    // Live values usable in dialogue text, e.g. "{bugsLeft} bugs to go" or "{flag:pokestops}/3"
     _fillTemplate(text) {
         const left = (this.enemies || []).length;
         return text
             .replace(/\{bugsLeft\}/g, String(left))
             .replace(/\{bugsNoun\}/g, left === 1 ? 'bug' : 'bugs')
-            .replace(/\{papersHere\}/g, String(this.getFlag(`papers_w${this._worldNum}`) || 0));
+            .replace(/\{papersHere\}/g, String(this.getFlag(`papers_w${this._worldNum}`) || 0))
+            .replace(/\{flag:([\w:]+)\}/g, (_, f) => String(Number(this.getFlag(f)) || 0));
     }
 
     _findNode(id) {
@@ -823,6 +981,7 @@ export class BaseScene extends Phaser.Scene {
         const idx = this.enemies.indexOf(enemy);
         if (idx >= 0) this.enemies.splice(idx, 1);
         this.registry.set('bugsSquashed', (this.registry.get('bugsSquashed') || 0) + 1);
+        this.setFlag(enemy._bugKey);
         if (this.enemies.length === 0) this.setFlag(`bugs_cleared_w${this._worldNum}`);
         // Stop it from hurting the player while it dies
         enemy.body.enable = false;
@@ -886,7 +1045,11 @@ export class BaseScene extends Phaser.Scene {
         return f;
     }
 
-    setFlag(name, value = true) { this._flags()[name] = value; }
+    setFlag(name, value = true) {
+        this._flags()[name] = value;
+        // Flags are the run's progress: keep the save current (cheap, a few KB of JSON)
+        writeSave(this.registry, this.scene.key);
+    }
     getFlag(name) { return this._flags()[name]; }
 
     // Condition syntax: undefined (always), "flag", "!flag", "name>=N" (numeric flag), "talks>=N" (talks with the
@@ -908,6 +1071,8 @@ export class BaseScene extends Phaser.Scene {
         if (!obj) return;
         if (obj.set) [].concat(obj.set).forEach(f => this.setFlag(f));
         if (obj.reward) this._grantReward(obj.reward);
+        // Rewards change chips / max hearts after the flags were saved
+        if (obj.reward) writeSave(this.registry, this.scene.key);
     }
 
     _toast(msg) {
@@ -988,23 +1153,22 @@ export class BaseScene extends Phaser.Scene {
 
     // ── Helper: load NPC spritesheets from sprites.json ──
 
+    // Frame sizes come from data/sprites.json, the single source of truth. Call after loadLevelAssets:
+    // on the first level the JSON is still loading, so the sheets are queued once it arrives
+    // (Phaser loads files added during the same load pass).
     loadNPCSprites(npcIds) {
-        // Load sprites.json first, then in create we'll have it
-        // For preload, we need to load the spritesheets directly
-        // This reads the JSON synchronously if already cached, otherwise we load all known sprites
-        const knownSprites = {
-            doris: { w: 76 }, father: { w: 76 }, wolfgang: { w: 177 }, monika: { w: 75 },
-            christine: { w: 77 }, valentin: { w: 69 }, tobert: { w: 93 }, ben: { w: 81 },
-            podelski: { w: 76 }, podelski_dog: { w: 145 }, byron: { w: 60 }, byron2: { w: 57 }, dejan: { w: 80 },
-            evren: { w: 115 }, john: { w: 72 }, stephan: { w: 82 }, zhiming: { w: 71 },
-            lauren: { w: 118 }, willem: { w: 116 }, paul: { w: 76 },
-            tancrede: { w: 85 }, tancrede2: { w: 85 }, emmi: { w: 71 }, ioannis: { w: 90 }, numair: { w: 78 }
+        const v = `?v=${ASSET_VERSION}`;
+        const queue = (data) => {
+            npcIds.forEach(id => {
+                const s = data.sprites?.[id];
+                if (!s) { console.warn('No sprites.json entry for NPC sprite:', id); return; }
+                this.load.spritesheet(id, `${s.path}${v}`, { frameWidth: s.frameWidth, frameHeight: s.frameHeight });
+            });
+            const bug = data.enemies?.bug;
+            if (bug) this.load.spritesheet('bug', `${bug.path}${v}`, { frameWidth: bug.frameWidth, frameHeight: bug.frameHeight });
         };
-        npcIds.forEach(id => {
-            const s = knownSprites[id];
-            if (s) this.load.spritesheet(id, `assets/sprites/${id}.png?v=${ASSET_VERSION}`, { frameWidth: s.w, frameHeight: 188 });
-        });
-        // Bug enemy
-        this.load.spritesheet('bug', 'assets/sprites/bug.png', { frameWidth: 101, frameHeight: 94 });
+        const cached = this.cache.json.get('spriteData');
+        if (cached) queue(cached);
+        else this.load.once('filecomplete-json-spriteData', (key, type, data) => queue(data));
     }
 }

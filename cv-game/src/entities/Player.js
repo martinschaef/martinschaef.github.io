@@ -92,8 +92,10 @@ export class Player {
 
         this._layoutTouch();
 
-        // Reposition on resize
-        s.scale.on('resize', () => this._layoutTouch());
+        // Reposition on resize (the scale manager is game-wide: detach when the scene shuts down)
+        const onResize = () => this._layoutTouch();
+        s.scale.on('resize', onResize);
+        s.events.once('shutdown', () => s.scale.off('resize', onResize));
 
         // Joystick drag
         const self = this;

@@ -21,7 +21,7 @@
     "sprite": "monika",
     "fw": 75,
     "name": "Monika",
-    "text": "Big sister, nine years ahead, and voice of reason."
+    "text": "Big sister, nine years ahead, and will walk any distance for a Pokémon GO raid."
   },
   "christine": {
     "sprite": "christine",
@@ -58,6 +58,12 @@
     "fw": 145,
     "name": "Balzac",
     "text": "Podelski's dog and the toughest reviewer in the group."
+  },
+  "thomas": {
+    "sprite": "thomas",
+    "fw": 73,
+    "name": "Thomas",
+    "text": "Shape analysis, eleven papers together, and strictly below 14th Street."
   },
   "byron": {
     "sprite": "byron",
@@ -142,5 +148,41 @@
     "fw": 78,
     "name": "Numair",
     "text": "Co-author on delta debugging and the region paper, and a reliable reminder to go have brunch."
+  },
+  "teme": {
+    "sprite": "teme",
+    "fw": 71,
+    "name": "Teme",
+    "text": "NASA Ames, Horn clauses, and the outline of the Fiji paper."
+  },
+  "jorge": {
+    "sprite": "jorge",
+    "fw": 76,
+    "name": "Jorge",
+    "text": "Abstract interpreters and SeaHorn. Precisely, approximately right."
+  },
+  "liana": {
+    "sprite": "liana",
+    "fw": 74,
+    "name": "Liana",
+    "text": "Coverity, fine-grained bit-vector proofs, and her own LPAR paper in Fiji."
+  },
+  "tim": {
+    "sprite": "tim",
+    "fw": 73,
+    "name": "Tim",
+    "text": "Google, simplex tableaux, and the hardest SMT query at formal drinking."
+  },
+  "stephane": {
+    "sprite": "stephane",
+    "fw": 72,
+    "name": "Stéphane",
+    "text": "SRI proof theorist. No paper in Fiji, and the best time there."
+  },
+  "rody": {
+    "sprite": "rody",
+    "fw": 76,
+    "name": "Rody",
+    "text": "Coverity. Promised a paper at the next LPAR. Delivered it in Botswana."
   }
 }

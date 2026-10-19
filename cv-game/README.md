@@ -1,6 +1,6 @@
 # Career Quest
 
-A browser-based Phaser 3 RPG that serves as a playable CV for Martin Schaef. The player navigates through worlds representing career chapters: Saarbrücken → Freiburg → Macau → San Francisco → NYC.
+A browser-based Phaser 3 RPG that serves as a playable CV for Martin Schaef. The player navigates through worlds representing career chapters: Saarbrücken → Freiburg → Macau → San Francisco → NYC → the Office.
 
 **Live:** [www.martinschaef.de/cv-game](https://www.martinschaef.de/cv-game/)
 
@@ -32,16 +32,19 @@ cv-game/
 │   ├── scenes/
 │   │   ├── BaseScene.js        # Shared level logic (see below)
 │   │   ├── TitleScreen.js      # Main menu + level select (CREDITS rolls VictoryScreen)
+│   │   ├── VictoryScreen.js    # End card + rolling credits
 │   │   ├── World1_Saarbruecken.js  # Tutorial level
 │   │   ├── World2_Freiburg.js      # University level
-│   │   └── World3_Macau.js         # Far East level
+│   │   ├── World3_Macau.js         # Far East level
+│   │   ├── World4_SanFrancisco.js  # Research lab level
+│   │   ├── World5_NYC.js           # Big Apple level
+│   │   └── World6_Office.js        # Office level (entered through a door in NYC)
 │   └── entities/
 │       └── Player.js           # Movement, attack, health, mobile controls
 ├── data/
-│   ├── sprites.json            # Sprite registry (all NPCs, enemies, items)
-│   ├── world1_npcs.json        # World 1 NPC dialogue trees
-│   ├── world2_npcs.json        # World 2 NPC dialogue trees
-│   ├── world3_npcs.json        # World 3 NPC dialogue trees
+│   ├── sprites.json            # Sprite registry (all NPCs, enemies, items; frame sizes live here)
+│   ├── world1..6_npcs.json     # Per-world NPC dialogue trees
+│   ├── credits.json            # Cast names + tag lines for the credits roll
 │   ├── enemies.json            # Enemy stats (hp, damage, speed, behavior)
 │   └── items.json              # Quest items (name, description, frame index)
 ├── assets/
@@ -65,7 +68,7 @@ cv-game/
 All world scenes extend `BaseScene`, which provides:
 
 - **`loadLevelAssets(worldNum)`** — preloads bg, collision JSON, sprites.json, enemies.json, NPC data
-- **`loadNPCSprites([ids])`** — preloads NPC spritesheets + bug enemy sheet
+- **`loadNPCSprites([ids])`** — preloads NPC spritesheets + bug enemy sheet, with frame sizes read from `sprites.json` (call after `loadLevelAssets`)
 - **`loadAudio(...musicKeys)`** — preloads all SFX + specified music tracks
 - **`createLevel(worldNum, title, musicKey)`** — sets up everything:
   - Map background + collision walls (water, borders, blocked tiles)
@@ -160,16 +163,26 @@ Zelda-style branching dialogue trees:
 
 ### Quests (flags, states, locked doors)
 
-Quest state is a set of flags in the game registry, reset on START GAME.
+Quest state is a set of flags in the game registry. START GAME and LEVEL SELECT reset it;
+progress is saved to `localStorage` (`src/config/save.js`) on level entry and on every flag
+change, and the title screen offers CONTINUE. Finishing the game clears the save.
 
-- A node or choice can `"set": "flag"` (or a list) and grant a `"reward"` (`extra_heart`, `beer`, `heal` to refill hearts, `chips:N`).
+- A node or choice can `"set": "flag"` (or a list) and grant a `"reward"` (`extra_heart` or `extra_heart:<tag>`, each tag once; `beer`, `heal` to refill hearts, `chips:N`).
 - `"goto": "SceneKey"` on a node jumps to another scene when the node ends.
 - An NPC can have `"states": [{ "if": ..., "dialogue": [...] }]`. The first state whose
   condition holds is used; the top-level `dialogue` is the fallback.
-- Conditions: `"flag"`, `"!flag"`, `"talks>=N"` (visits to this NPC), or a list (all must hold).
+- Conditions: `"flag"`, `"!flag"`, `"talks>=N"` (visits to this NPC), `"name>=N"` (numeric flag, e.g. `"pokestops>=3"`, `"talks:tancrede2>=3"`), or a list (all must hold).
 - `"cycle": true` shows one line per visit in order; `"random": true` shows one random line.
-- Automatic flags: `has_<itemId>` on pickup, `bugs_cleared_w<N>` when a world's enemies are gone.
-- Text can use `{bugsLeft}` and `{bugsNoun}`.
+- Automatic flags: `has_<itemId>` on pickup, `bugs_cleared_w<N>` when a world's enemies are gone,
+  `paper:<year>:<title>` and `bug:w<N>:<i>` so collected papers and squashed bugs stay gone, `spot:<id>`.
+- Text can use `{bugsLeft}`, `{bugsNoun}`, `{papersHere}` and `{flag:name}` (a numeric flag's value).
+- Collision JSON `"spots"`: markers you walk onto, e.g. Monika's PokéStops and the secrets.
+  `{ id, x, y, icon, label, requires, text, set, count, reward, secret, reveal_toast }`. A spot with
+  `requires` is invisible until the condition holds. `count` increments a numeric flag.
+  Spots must be reachable from the spawn; the smoke test checks this.
+- `data/calls.json`: phone calls keyed by world number, `{ id, if, from, delay, dialogue }`; each rings once per run.
+- `src/config/quests.js` lists the side quests and secrets counted on the victory screen.
+  The smoke test checks each side-quest flag is set somewhere and each secret is a spot.
 - Doors in the collision JSON accept `"requires"` (a condition), `"locked_text"`, and an optional
   `"spawn": {"x","y"}` that places the player in the target scene (e.g. back outside the building you left).
   `"hidden": true` makes a door invisible and inert until its `requires` condition holds; it then fades in.
@@ -201,7 +214,7 @@ Generated by `process_map.py`, edited in the collision editor:
 open http://localhost:8080/tools/collision_editor.html
 ```
 
-Supports all maps (world1–4). Scroll wheel to zoom in/out, default zoomed to fit. Paint blocked tiles, place NPCs/doors/enemies/items. Save downloads JSON.
+Supports all maps (world1–6). Scroll wheel to zoom in/out, default zoomed to fit. Paint blocked tiles, place NPCs/doors/enemies/items. Save downloads JSON.
 
 ### Map Processing
 

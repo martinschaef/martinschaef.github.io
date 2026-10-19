@@ -12247,6 +12247,11 @@
       "y": 666
     },
     {
+      "id": "thomas",
+      "x": 330,
+      "y": 650
+    },
+    {
       "id": "evren",
       "x": 854,
       "y": 716
@@ -12308,5 +12313,48 @@
       "y": 614
     }
   ],
-  "harmless_enemies": true
+  "harmless_enemies": true,
+  "spots": [
+    {
+      "id": "pokestop_uni",
+      "x": 472,
+      "y": 632,
+      "icon": "🔵",
+      "label": "PokéStop",
+      "requires": "monika_quest",
+      "count": "pokestops",
+      "text": "🔵 PokéStop spun: Universität des Saarlandes, main building.\n\nThree Poké Balls and a Nanab Berry. ({flag:pokestops}/3 for Monika)"
+    },
+    {
+      "id": "pokestop_steel",
+      "x": 296,
+      "y": 120,
+      "icon": "🔵",
+      "label": "PokéStop",
+      "requires": "monika_quest",
+      "count": "pokestops",
+      "text": "🔵 PokéStop spun: the old steelworks gate.\n\nA Great Ball and some rust. ({flag:pokestops}/3 for Monika)"
+    },
+    {
+      "id": "pokestop_east",
+      "x": 1250,
+      "y": 200,
+      "icon": "🔵",
+      "label": "PokéStop",
+      "requires": "monika_quest",
+      "count": "pokestops",
+      "text": "🔵 PokéStop spun: a fountain nobody in Saarbrücken has ever noticed.\n\nIt's a PokéStop now, so it matters. ({flag:pokestops}/3 for Monika)"
+    },
+    {
+      "id": "secret_gameboy",
+      "x": 616,
+      "y": 488,
+      "icon": "🎮",
+      "label": "???",
+      "requires": "monika_done",
+      "secret": true,
+      "reveal_toast": "✨ Something sparkles in the old town",
+      "text": "✨ Secret found: a grey Game Boy with Pokémon Red.\n\nMonika's, from 1999. The save file has all 151. She'd want you to have it.\n\nShe would not. Put it back before she notices."
+    }
+  ]
 }
