@@ -21428,5 +21428,19 @@
       "x": 217,
       "y": 1630
     }
+  ],
+  "spots": [
+    {
+      "id": "secret_chip",
+      "x": 432,
+      "y": 1904,
+      "icon": "🪙",
+      "label": "???",
+      "requires": "paid_tanks",
+      "secret": true,
+      "reward": "chips:777",
+      "reveal_toast": "✨ Something rolled under the bar",
+      "text": "✨ Secret found: a lucky Laxino chip, marked 777.\n\nPaul swears the house always wins. The house dropped this one."
+    }
   ]
 }

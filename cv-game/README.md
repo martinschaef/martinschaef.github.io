@@ -163,16 +163,26 @@ Zelda-style branching dialogue trees:
 
 ### Quests (flags, states, locked doors)
 
-Quest state is a set of flags in the game registry, reset on START GAME.
+Quest state is a set of flags in the game registry. START GAME and LEVEL SELECT reset it;
+progress is saved to `localStorage` (`src/config/save.js`) on level entry and on every flag
+change, and the title screen offers CONTINUE. Finishing the game clears the save.
 
-- A node or choice can `"set": "flag"` (or a list) and grant a `"reward"` (`extra_heart`, `beer`, `heal` to refill hearts, `chips:N`).
+- A node or choice can `"set": "flag"` (or a list) and grant a `"reward"` (`extra_heart` or `extra_heart:<tag>`, each tag once; `beer`, `heal` to refill hearts, `chips:N`).
 - `"goto": "SceneKey"` on a node jumps to another scene when the node ends.
 - An NPC can have `"states": [{ "if": ..., "dialogue": [...] }]`. The first state whose
   condition holds is used; the top-level `dialogue` is the fallback.
-- Conditions: `"flag"`, `"!flag"`, `"talks>=N"` (visits to this NPC), or a list (all must hold).
+- Conditions: `"flag"`, `"!flag"`, `"talks>=N"` (visits to this NPC), `"name>=N"` (numeric flag, e.g. `"pokestops>=3"`, `"talks:tancrede2>=3"`), or a list (all must hold).
 - `"cycle": true` shows one line per visit in order; `"random": true` shows one random line.
-- Automatic flags: `has_<itemId>` on pickup, `bugs_cleared_w<N>` when a world's enemies are gone.
-- Text can use `{bugsLeft}` and `{bugsNoun}`.
+- Automatic flags: `has_<itemId>` on pickup, `bugs_cleared_w<N>` when a world's enemies are gone,
+  `paper:<year>:<title>` and `bug:w<N>:<i>` so collected papers and squashed bugs stay gone, `spot:<id>`.
+- Text can use `{bugsLeft}`, `{bugsNoun}`, `{papersHere}` and `{flag:name}` (a numeric flag's value).
+- Collision JSON `"spots"`: markers you walk onto, e.g. Monika's PokéStops and the secrets.
+  `{ id, x, y, icon, label, requires, text, set, count, reward, secret, reveal_toast }`. A spot with
+  `requires` is invisible until the condition holds. `count` increments a numeric flag.
+  Spots must be reachable from the spawn; the smoke test checks this.
+- `data/calls.json`: phone calls keyed by world number, `{ id, if, from, delay, dialogue }`; each rings once per run.
+- `src/config/quests.js` lists the side quests and secrets counted on the victory screen.
+  The smoke test checks each side-quest flag is set somewhere and each secret is a spot.
 - Doors in the collision JSON accept `"requires"` (a condition), `"locked_text"`, and an optional
   `"spawn": {"x","y"}` that places the player in the target scene (e.g. back outside the building you left).
   `"hidden": true` makes a door invisible and inert until its `requires` condition holds; it then fades in.

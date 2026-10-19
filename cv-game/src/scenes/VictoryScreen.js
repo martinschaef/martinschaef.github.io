@@ -1,6 +1,8 @@
 import { WALK } from '../entities/Player.js';
 import { AUDIO, ASSET_VERSION } from '../config/audio.js';
 import { LEVELS } from '../config/levels.js';
+import { SIDE_QUESTS, SECRETS } from '../config/quests.js';
+import { clearSave } from '../config/save.js';
 
 // Cast grouped by career chapter; ids refer to data/credits.json
 const CHAPTERS = [
@@ -32,6 +34,8 @@ export class VictoryScreen extends Phaser.Scene {
     init(data) {
         // From the title screen's CREDITS button: skip the victory card and roll immediately
         this._creditsOnly = !!(data && data.creditsOnly);
+        // The run is over: the title screen should offer a fresh start, not CONTINUE into the office
+        if (!this._creditsOnly) clearSave();
     }
 
     create() {
@@ -130,18 +134,23 @@ export class VictoryScreen extends Phaser.Scene {
             this._confetti(cx, h * 0.36);
         }
 
+        const flags = this.registry.get('flags') || {};
+        const quests = SIDE_QUESTS.filter(q => flags[q.flag]).length;
+        const secrets = SECRETS.filter(id => flags['spot:' + id]).length;
+        const S = '15px', L = '18px';
         const lines = [
-            [`${first} – ${new Date().getFullYear()}  ·  5 cities  ·  3 continents  ·  1 office`, LIGHT],
-            [pubs.length ? `📄 Papers collected: ${Math.min(found, pubs.length)} / ${pubs.length}` : `📄 Papers collected: ${found}`, '#42f4a6'],
-            [`🐛 Bugs squashed: ${bugs}`, '#e94560'],
-            ...(chips ? [[`🎰 Laxino chips: ${chips.toLocaleString('en-US')}`, '#f4a742']] : []),
-            ['', LIGHT],
-            ['Martin Schaef', YELLOW],
-            ['Principal Applied Scientist · AWS Automated Reasoning', LIGHT],
+            [`${first} – ${new Date().getFullYear()}  ·  5 cities  ·  3 continents  ·  1 office`, LIGHT, S],
+            [pubs.length ? `📄 Papers collected: ${Math.min(found, pubs.length)} / ${pubs.length}` : `📄 Papers collected: ${found}`, '#42f4a6', S],
+            [`🐛 Bugs squashed: ${bugs}`, '#e94560', S],
+            [`🗺  Side quests: ${quests} / ${SIDE_QUESTS.length}   ✨ Secrets: ${secrets} / ${SECRETS.length}`, '#9cc8ff', S],
+            ...(chips ? [[`🎰 Laxino chips: ${chips.toLocaleString('en-US')}`, '#f4a742', S]] : []),
+            ['', LIGHT, S],
+            ['Martin Schaef', YELLOW, L],
+            ['Principal Applied Scientist · AWS Automated Reasoning', LIGHT, L],
         ];
-        lines.forEach(([t, color], i) => {
-            const txt = this.add.text(cx, h * 0.52 + i * 26, t, {
-                fontSize: i >= 4 ? '18px' : '15px', fontFamily: 'monospace', color, stroke: '#000', strokeThickness: 3,
+        lines.forEach(([t, color, size], i) => {
+            const txt = this.add.text(cx, h * 0.5 + i * 26, t, {
+                fontSize: size, fontFamily: 'monospace', color, stroke: '#000', strokeThickness: 3,
                 align: 'center', wordWrap: { width: w - 40 }
             }).setOrigin(0.5).setAlpha(0);
             this.tweens.add({ targets: txt, alpha: 1, duration: 400, delay: 900 + i * 250 });

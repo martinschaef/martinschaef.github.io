@@ -61,25 +61,100 @@
   "stephan": {
     "sprite": "stephan",
     "name": "Stephan",
+    "states": [
+      {
+        "if": "macau_bounty",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "Joogie: Java into Boogie, find the code that can never run. It's going to CAV. The name stays."
+          },
+          {
+            "text": "I've eaten eleven egg tarts today. For science."
+          },
+          {
+            "text": "If you leave for America, I'm not following you there. Probably. Ask me again in a year."
+          }
+        ]
+      },
+      {
+        "if": "bugs_cleared_w3",
+        "dialogue": [
+          {
+            "text": "I ran Joogie on the whole casino floor and it found nothing. Then I realised: you squashed every bug in Macau."
+          },
+          {
+            "text": "The casino gave me chips for the clean report. I don't gamble. You have them.",
+            "reward": "chips:3000",
+            "set": "macau_bounty"
+          }
+        ]
+      },
+      {
+        "if": [
+          "stephan_promise",
+          "!stephan_macau_hi"
+        ],
+        "dialogue": [
+          {
+            "text": "Told you I'd follow you. Macau has great GUIs. The slot machines alone have thousands of buttons.",
+            "set": "stephan_macau_hi"
+          },
+          {
+            "text": "Bad news, though: the casinos have bugs. {bugsLeft} of them. Joogie needs a clean baseline. You know what to do."
+          }
+        ]
+      },
+      {
+        "if": "!stephan_macau_hi",
+        "dialogue": [
+          {
+            "text": "You moved to Macau and didn't tell me? I heard it from Balzac. Balzac! I followed anyway.",
+            "set": "stephan_macau_hi"
+          },
+          {
+            "text": "The slot machines here have thousands of buttons. Also {bugsLeft} bugs. Joogie needs a clean baseline. Squash them?"
+          }
+        ]
+      }
+    ],
     "cycle": true,
     "dialogue": [
       {
-        "text": "Told you I'd follow you. Macau has great GUIs. The slot machines alone have thousands of buttons."
+        "text": "{bugsLeft} {bugsNoun} still on the casino floor. Joogie can't find dead code while live bugs walk around."
       },
       {
         "text": "Joogie: Java into Boogie, find the code that can never run. It's going to CAV. The name stays."
       },
       {
         "text": "I've eaten eleven egg tarts today. For science."
-      },
-      {
-        "text": "If you leave for America, I'm not following you there. Probably. Ask me again in a year."
       }
     ]
   },
   "evren": {
     "sprite": "evren",
     "name": "Evren",
+    "states": [
+      {
+        "if": [
+          "evren_idea",
+          "!evren_payoff"
+        ],
+        "dialogue": [
+          {
+            "text": "Surprise! Just visiting for a week. The Mercedes couldn't make this trip, so I flew."
+          },
+          {
+            "text": "Remember Freiburg? 'Which parts of the trace actually matter?' I said I'd turn it into a paper."
+          },
+          {
+            "text": "Error invariants. Accepted at FM. You were the first person I told, so you get the first copy.",
+            "set": "evren_payoff",
+            "reward": "heal"
+          }
+        ]
+      }
+    ],
     "cycle": true,
     "dialogue": [
       {

@@ -1,5 +1,6 @@
 import { LEVELS } from '../config/levels.js';
 import { AUDIO, ASSET_VERSION } from '../config/audio.js';
+import { readSave, clearSave, loadRun, NEW_RUN } from '../config/save.js';
 
 // Pixel-art portraits across the decades (built by tools/build_title_portraits.py)
 const PORTRAIT_YEARS = ['1994', '1998', '2006', '2011', '2018', '2025'];
@@ -62,17 +63,30 @@ export class TitleScreen extends Phaser.Scene {
         this.add.rectangle(0, 0, w, disc.height + 10, 0xb31b1b).setOrigin(0).setDepth(20)
             .setStrokeStyle(2, 0x5c0a0a);
 
-        this._createButton(cx, h * 0.38, 'START GAME', () => this._start());
-        this._createButton(cx, h * 0.50, 'LEVEL SELECT ▾', () => this._toggleLevelSelect());
-        this._createButton(cx, h * 0.62, 'CREDITS', () => this._leave('VictoryScreen', { creditsOnly: true }));
-        this._createButton(cx, h * 0.74, 'ABOUT', () => this._showAbout());
+        // A saved run adds CONTINUE on top; ENTER then continues instead of starting over
+        this._save = readSave();
+        const saveLevel = this._save && LEVELS.find(l => l.key === this._save.scene);
+        if (!saveLevel) this._save = null;
+        const buttons = [
+            ...(this._save ? [[`CONTINUE · ${saveLevel.subtitle === 'The Office' ? 'The Office' : saveLevel.name}`, () => this._continue()]] : []),
+            ['START GAME', () => this._start()],
+            ['LEVEL SELECT ▾', () => this._toggleLevelSelect()],
+            ['CREDITS', () => this._leave('VictoryScreen', { creditsOnly: true })],
+            ['ABOUT', () => this._showAbout()],
+        ];
+        const top = this._save ? 0.34 : 0.38, step = this._save ? 0.105 : 0.12;
+        buttons.forEach(([label, cb], i) => {
+            const y = h * (top + i * step);
+            this._createButton(cx, y, label, cb);
+            if (label.startsWith('LEVEL SELECT')) this._levelSelectY = y;
+        });
 
-        const prompt = this.add.text(cx, h - 28, 'Press ENTER or tap START', {
+        const prompt = this.add.text(cx, h - 28, this._save ? 'Press ENTER to continue' : 'Press ENTER or tap START', {
             fontSize: '14px', fontFamily: 'monospace', color: '#cbdbfc', stroke: '#000', strokeThickness: 3
         }).setOrigin(0.5).setDepth(5);
         this.tweens.add({ targets: prompt, alpha: 0, duration: 600, yoyo: true, repeat: -1 });
 
-        this.input.keyboard.on('keydown-ENTER', () => this._start());
+        this.input.keyboard.on('keydown-ENTER', () => this._save ? this._continue() : this._start());
         this.input.keyboard.on('keydown-M', () => this._toggleMute());
         this._muteBtn = this.add.text(w - 10, 10, this.sound.mute ? '🔇' : '🔊', { fontSize: '20px' })
             .setOrigin(1, 0).setDepth(60).setInteractive({ useHandCursor: true })
@@ -87,7 +101,14 @@ export class TitleScreen extends Phaser.Scene {
     }
 
     _start() {
+        clearSave();
         this._goToLevel(LEVELS[0].key);
+    }
+
+    _continue() {
+        if (!this._save || !this._availableScenes.has(this._save.scene)) { this._start(); return; }
+        loadRun(this.registry, this._save);
+        this._leave(this._save.scene);
     }
 
     _goToLevel(key) {
@@ -95,11 +116,7 @@ export class TitleScreen extends Phaser.Scene {
             this._flash('Coming soon!');
             return;
         }
-        this.registry.set('papersFound', 0);
-        this.registry.set('bugsSquashed', 0);
-        this.registry.set('flags', {});
-        this.registry.set('maxHp', 3);
-        this.registry.set('chips', 0);
+        loadRun(this.registry, NEW_RUN);
         this._leave(key);
     }
 
@@ -272,7 +289,7 @@ export class TitleScreen extends Phaser.Scene {
         const panelW = Math.min(400, cam.width - 40);
         const lineH = 36;
         const panelH = LEVELS.length * lineH + 20;
-        const panelY = cam.height * 0.54 + 30;
+        const panelY = (this._levelSelectY || cam.height * 0.5) + 30;
 
         const bg = this.add.rectangle(cx, panelY + panelH/2, panelW, panelH, 0x16213e, 0.95)
             .setStrokeStyle(2, 0xf4e842).setDepth(50);
@@ -329,7 +346,8 @@ export class TitleScreen extends Phaser.Scene {
         this._aboutText = this.add.text(w/2, h/2,
             'Career Quest is a stylized walkthrough of Martin Schaef\'s CV.\n' +
             'Explore ' + LEVELS.length + ' worlds representing career chapters, talk to NPCs,\n' +
-            'collect publications, and fight bugs along the way.\n\n' +
+            'collect publications, and fight bugs along the way.\n' +
+            'Side quests, secrets, and progress that saves itself.\n\n' +
             '── Controls ──\n' +
             'Move:  Arrow Keys / WASD\n' +
             'Talk:  SPACE / E  (advance dialogue)\n' +

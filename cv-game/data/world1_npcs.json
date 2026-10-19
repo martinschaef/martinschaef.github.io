@@ -103,25 +103,88 @@
   "monika": {
     "sprite": "monika",
     "name": "Monika",
-    "cycle": true,
+    "states": [
+      {
+        "if": "monika_done",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "I was nine when you were born. Hold that thought, a Snorlax just spawned by the Schloss."
+          },
+          {
+            "text": "Off to study? Then walk past every PokéStop on the way and spin them for me."
+          },
+          {
+            "text": "You take computers apart, I hatch 10 km eggs. We both walk a lot for our hobbies."
+          },
+          {
+            "text": "Raid at the Johanneskirche in five minutes. You're coming. Bring a power bank."
+          },
+          {
+            "text": "Call Mom on Sundays. Community Day is also on Sundays. Plan accordingly."
+          },
+          {
+            "text": "Still no shiny. Ask me again after the next ten thousand steps."
+          }
+        ]
+      },
+      {
+        "if": "pokestops>=3",
+        "dialogue": [
+          {
+            "text": "All three spun? My streak is saved! Seven days, unbroken. You have no idea what that means to me."
+          },
+          {
+            "text": "Here. The walking did you good. You look like someone who could survive a raid.",
+            "reward": "extra_heart:pokestops",
+            "set": "monika_done"
+          },
+          {
+            "text": "If you ever move somewhere with better spawns, call me. I mean it. I will call you."
+          }
+        ]
+      },
+      {
+        "if": "monika_quest",
+        "cycle": true,
+        "dialogue": [
+          {
+            "text": "{flag:pokestops} of 3 PokéStops spun. The blue ones. They spin. You walk onto them. It's not complicated."
+          },
+          {
+            "text": "One by the university, one at the old steelworks, one at a fountain in the east. {flag:pokestops} of 3 so far."
+          },
+          {
+            "text": "My phone is at 2% now. No pressure. ({flag:pokestops} of 3.)"
+          }
+        ]
+      }
+    ],
     "dialogue": [
       {
         "text": "I was nine when you were born. Hold that thought, a Snorlax just spawned by the Schloss."
       },
       {
-        "text": "Off to study? Then walk past every PokéStop on the way and spin them for me."
+        "text": "Little brother, I need a favour. My phone is at 3% and I still have to spin three PokéStops today, or my streak breaks.",
+        "choices": [
+          {
+            "text": "I'll spin them for you.",
+            "next": "yes"
+          },
+          {
+            "text": "I don't even have the app.",
+            "next": "no"
+          }
+        ]
       },
       {
-        "text": "You take computers apart, I hatch 10 km eggs. We both walk a lot for our hobbies."
+        "id": "yes",
+        "text": "My hero. One by the university, one at the old steelworks, one at a fountain in the east. Walk onto the blue ones.",
+        "set": "monika_quest"
       },
       {
-        "text": "Raid at the Johanneskirche in five minutes. You're coming. Bring a power bank."
-      },
-      {
-        "text": "Call Mom on Sundays. Community Day is also on Sundays. Plan accordingly."
-      },
-      {
-        "text": "Still no shiny. Ask me again after the next ten thousand steps."
+        "id": "no",
+        "text": "Nobody has the app. The app has you. Ask me again when you're ready."
       }
     ]
   },

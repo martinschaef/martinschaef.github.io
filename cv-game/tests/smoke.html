@@ -28,8 +28,27 @@ import { World4_SanFrancisco } from '../src/scenes/World4_SanFrancisco.js';
 import { World5_NYC } from '../src/scenes/World5_NYC.js';
 import { World6_Office } from '../src/scenes/World6_Office.js';
 import { VictoryScreen } from '../src/scenes/VictoryScreen.js';
+import { SIDE_QUESTS, SECRETS } from '../src/config/quests.js';
 
 out('✓ All module imports OK');
+
+// Every listed secret must be a secret spot on some map, and every side quest's completion
+// flag must be set by some dialogue node (bugs_cleared_wN is set by the game code itself).
+const secretSpots = new Set();
+async function checkQuestData() {
+    SECRETS.filter(id => !secretSpots.has(id)).forEach(id => errors.push(`quests.js: secret ${id} is not a secret spot on any map`));
+    const sets = new Set();
+    const walk = (o) => {
+        if (Array.isArray(o)) { o.forEach(walk); return; }
+        if (!o || typeof o !== 'object') return;
+        if (o.set) [].concat(o.set).forEach(f => sets.add(f));
+        Object.values(o).forEach(walk);
+    };
+    for (let w = 1; w <= 6; w++) walk(await (await fetch(`../data/world${w}_npcs.json`)).json());
+    SIDE_QUESTS.filter(q => !/^bugs_cleared_w\d$/.test(q.flag) && !sets.has(q.flag))
+        .forEach(q => errors.push(`quests.js: side quest flag ${q.flag} is never set`));
+    out(`✓ Quest data checked: ${SIDE_QUESTS.length} side quests, ${secretSpots.size} secret spots`);
+}
 
 const scenes = [TitleScreen, World1_Saarbruecken, World2_Freiburg, World3_Macau, World4_SanFrancisco, World5_NYC, World6_Office, VictoryScreen];
 const toTest = ['TitleScreen', 'World1_Saarbruecken', 'World2_Freiburg', 'World3_Macau', 'World4_SanFrancisco', 'World5_NYC', 'World6_Office', 'VictoryScreen'];
@@ -65,12 +84,21 @@ try {
                 // An NPC whose spritesheet failed to load falls back to a placeholder rectangle
                 const placeholders = (scene.npcList || []).filter(n => !scene.textures.exists(n.cfg?.sprite)).map(n => n.id);
                 if (placeholders.length) errors.push(`${key}: NPC sprites not loaded: ${placeholders.join(', ')}`);
+                // Quest spots must be somewhere the player can walk to
+                if (scene._walk) {
+                    const col = scene.cache.json.get(`world${scene._worldNum}_collision`) || {};
+                    (col.spots || []).forEach(sp => {
+                        if (!scene._walk.isReachable(sp.x, sp.y)) errors.push(`${key}: spot ${sp.id} at ${sp.x},${sp.y} is not reachable`);
+                        if (sp.secret) secretSpots.add(sp.id);
+                    });
+                    if (scene._hudPapers === undefined) errors.push(`${key}: no paper counter in the HUD`);
+                }
                 idx++;
                 if (idx < toTest.length) {
                     // Start next scene
                     game.scene.start(toTest[idx]);
                 } else {
-                    finish();
+                    checkQuestData().catch(e => errors.push('Quest data check failed: ' + e)).then(finish);
                     return;
                 }
             }

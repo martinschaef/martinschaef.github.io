@@ -12281,5 +12281,18 @@
       "y": 201
     }
   ],
-  "items": []
+  "items": [],
+  "spots": [
+    {
+      "id": "secret_review",
+      "x": 1350,
+      "y": 1150,
+      "icon": "📝",
+      "label": "???",
+      "requires": "phd_done",
+      "secret": true,
+      "reveal_toast": "✨ Balzac buried something",
+      "text": "✨ Secret found: Reviewer #3's printed review of your first paper, chewed by Balzac.\n\nThe score used to say 'Strong Reject'. Now it says 'Woof'. Balzac reviews, after all."
+    }
+  ]
 }
