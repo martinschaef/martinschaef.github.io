@@ -70,6 +70,7 @@ export class BaseScene extends Phaser.Scene {
         const col = this.cache.json.get(`world${worldNum}_collision`);
         const S = col.display_scale || 3;
         this._S = S;
+        this._safePos = null; this._lockedShown = false; this._lockedHit = false; this._lockedLastHit = 0;
         const spriteData = this.cache.json.get('spriteData');
         const npcData = this.cache.json.get(`npcData_w${worldNum}`) || {};
         const enemyData = this.cache.json.get('enemyData') || {};
@@ -361,13 +362,19 @@ export class BaseScene extends Phaser.Scene {
                 if (this._transitioning) return;
                 if (d.hidden && !door.revealed) return;
                 if (!this._cond(d.requires)) {
-                    // Locked: bounce the player back out and explain, at most every few seconds
-                    const p = this.player, ang = Phaser.Math.Angle.Between(x, y, p.sprite.x, p.sprite.y);
-                    const out = Math.max(z.width, z.height) / 2 + 24;
-                    p.sprite.setPosition(x + Math.cos(ang) * out, y + Math.sin(ang) * out);
-                    p.sprite.setVelocity(0);
-                    if (!this.dialogueActive && this.time.now > (this._lockedMsgUntil || 0)) {
-                        this._lockedMsgUntil = this.time.now + 2500;
+                    // Locked: put the player back where they stood before touching the door
+                    // and explain once per attempt (not again until they step away).
+                    const p = this.player.sprite;
+                    this._lockedHit = true;
+                    if (this._safePos) p.setPosition(this._safePos.x, this._safePos.y);
+                    else {
+                        const ang = Phaser.Math.Angle.Between(x, y, p.x, p.y);
+                        const out = Math.max(z.width, z.height) / 2 + p.displayHeight;
+                        p.setPosition(x + Math.cos(ang) * out, y + Math.sin(ang) * out);
+                    }
+                    p.setVelocity(0);
+                    if (!this._lockedShown && !this.dialogueActive) {
+                        this._lockedShown = true;
                         this._currentNPC = null;
                         this.showMessage(d.locked_text || 'The door is locked.');
                     }
@@ -731,6 +738,15 @@ export class BaseScene extends Phaser.Scene {
     // ── Level update (call in update) ─────────────────────
 
     updateLevel() {
+        // Locked doors: remember the last position that did not touch one (physics ran already)
+        if (this._lockedHit) this._lockedLastHit = this.time.now;
+        else {
+            const p = this.player.sprite;
+            this._safePos = { x: p.x, y: p.y };
+            // re-arm the explanation only after the player has stayed away for a moment
+            if (!this.dialogueActive && this.time.now - (this._lockedLastHit || 0) > 1500) this._lockedShown = false;
+        }
+        this._lockedHit = false;
         this.player.update();
         if (this._hiddenDoors) this._hiddenDoors.forEach(d => d.check());
         if (this._spots) this._spots.forEach(s => s.check());
