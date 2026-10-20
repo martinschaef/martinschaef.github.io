@@ -50,7 +50,7 @@
     },
     "podelski": {
       "path": "assets/sprites/podelski.png",
-      "frameWidth": 76,
+      "frameWidth": 80,
       "frameHeight": 188,
       "scale": 0.4
     },
